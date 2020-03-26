@@ -1,20 +1,24 @@
 package main;
 
+import view.FrmClient;
+import view.FrmLanguage;
+import view.SplashScreen;
+
 public class Main {
+
     public static void main(String[] args) throws InterruptedException {
-//        SplashScreen splashScreen = new SplashScreen();
-//
-//        for (int i = 0; i <= 100; i++) {
-//            Thread.sleep(20);
-//            splashScreen.setVisible(true);
-//            splashScreen.lblLoading.setText("Loading..." + i + "%");
-//            splashScreen.pbLoading.setValue(i);
-//        }
+        SplashScreen splashScreen = new SplashScreen();
 
-        //new FrmLanguage("Choose language").setVisible(true);
+        for (int i = 0; i <= 100; i++) {
+            Thread.sleep(20);
+            splashScreen.setVisible(true);
+            splashScreen.getLblLoading().setText("Loading..." + i + "%");
+            splashScreen.getPbLoading().setValue(i);
+        }
 
-//        splashScreen.dispose();
+        new FrmLanguage().setVisible(true);
+        splashScreen.dispose();
 
-
+        //new FrmClient().setVisible(true);
     }
 }

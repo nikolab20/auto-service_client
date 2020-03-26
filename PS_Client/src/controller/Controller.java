@@ -56,7 +56,7 @@ public class Controller {
      * @throws IOException if file doesn't exist.
      */
     public Properties readPropertiesFile() throws IOException {
-        FileInputStream in = new FileInputStream("conn.properties");
+        FileInputStream in = new FileInputStream("props/conn.properties");
         Properties props = new Properties();
         props.load(in);
 
@@ -71,7 +71,7 @@ public class Controller {
      * @throws IOException if file doesn't exist.
      */
     public void writeIntoPropertiesFile(String host, String port) throws IOException {
-        FileInputStream in = new FileInputStream("conn.properties");
+        FileInputStream in = new FileInputStream("props/conn.properties");
         Properties props = new Properties();
         props.load(in);
 
