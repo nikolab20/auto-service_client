@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.panels;
+package view.panels.submenu;
 
+import controller.Controller;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import listeners.FormListener;
 
 /**
@@ -15,14 +17,13 @@ import listeners.FormListener;
  */
 public class PanelCustomer extends javax.swing.JPanel {
 
-    private List<FormListener> formListeners;
+    private List<FormListener> formListeners = new ArrayList<>();
 
     /**
      * Creates new form PanelCustomer
      */
     public PanelCustomer() {
         initComponents();
-        formListeners = new ArrayList<>();
     }
 
     /**
@@ -34,16 +35,17 @@ public class PanelCustomer extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnAddCustomer = new javax.swing.JButton();
         btnUpdateCustomer = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 52, 57));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("CUSTOMER");
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTitle.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitle.setText("CUSTOMER");
 
         btnAddCustomer.setBackground(new java.awt.Color(51, 52, 57));
         btnAddCustomer.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -52,7 +54,7 @@ public class PanelCustomer extends javax.swing.JPanel {
         btnAddCustomer.setText("Add customer");
         btnAddCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnAddCustomer.setFocusPainted(false);
-        btnAddCustomer.setIconTextGap(25);
+        btnAddCustomer.setIconTextGap(10);
         btnAddCustomer.setMinimumSize(new java.awt.Dimension(180, 0));
         btnAddCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -67,11 +69,25 @@ public class PanelCustomer extends javax.swing.JPanel {
         btnUpdateCustomer.setText("Edit customer");
         btnUpdateCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnUpdateCustomer.setFocusPainted(false);
-        btnUpdateCustomer.setIconTextGap(25);
+        btnUpdateCustomer.setIconTextGap(10);
         btnUpdateCustomer.setMinimumSize(new java.awt.Dimension(180, 0));
         btnUpdateCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnUpdateCustomerMouseClicked(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(51, 52, 57));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        jButton1.setText("Search customers");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton1.setFocusPainted(false);
+        jButton1.setIconTextGap(10);
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
             }
         });
 
@@ -83,25 +99,28 @@ public class PanelCustomer extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
+                    .addComponent(btnUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(lblTitle)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                    .addComponent(btnAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel2)
+                .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAddCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -113,13 +132,25 @@ public class PanelCustomer extends javax.swing.JPanel {
         openUpdateClient();
     }//GEN-LAST:event_btnUpdateCustomerMouseClicked
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        openSearchClient();
+    }//GEN-LAST:event_jButton1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCustomer;
     private javax.swing.JButton btnUpdateCustomer;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
+
+    public void preparePanel() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("customer_submenu_title"));
+        btnAddCustomer.setText(resourceBundle.getString("customer_submenu_add"));
+        btnUpdateCustomer.setText(resourceBundle.getString("customer_submenu_update"));
+    }
 
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
@@ -127,13 +158,19 @@ public class PanelCustomer extends javax.swing.JPanel {
 
     private void openAddClient() {
         for (FormListener formListener : formListeners) {
-            formListener.openAddClient();
+            formListener.openAddCustomer();
         }
     }
 
     private void openUpdateClient() {
         for (FormListener formListener : formListeners) {
-            formListener.openUpdateClient();
+            formListener.openUpdateCustomer();
+        }
+    }
+
+    private void openSearchClient() {
+        for (FormListener formListener : formListeners) {
+            formListener.openSearchCustomer();
         }
     }
 }

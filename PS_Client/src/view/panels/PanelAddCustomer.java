@@ -5,6 +5,7 @@
  */
 package view.panels;
 
+import controller.Controller;
 import domain.Klijent;
 import java.math.BigDecimal;
 import java.util.ResourceBundle;
@@ -97,7 +98,11 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
     private view.panels.components.PanelLTS panelNumOfVisits;
     // End of variables declaration//GEN-END:variables
 
-    public void preparePanel(ResourceBundle resourceBundle) {
+    public void preparePanel() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        btnAdd.setText(resourceBundle.getString("customer_btn_add"));
+        btnClear.setText(resourceBundle.getString("customer_btn_clear"));
+
         panelID.getTextField().setEnabled(false);
         panelID.setElementText(resourceBundle.getString("customer_btn_generate"),
                 resourceBundle.getString("customer_id") + ":", "");
@@ -108,7 +113,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
         panelNumOfVisits.setElementText(resourceBundle.getString("customer_num_of_visits") + ":", "0");
         panelDebt.setElementText(resourceBundle.getString("customer_debt") + ":", "0");
     }
-    
+
     @Override
     public Object getValue() {
         long id = new Long((String) panelID.getValue());
@@ -116,13 +121,13 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
         String lastName = (String) panelLastName.getValue();
         int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
         BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
-        
+
         Klijent klijent = new Klijent(firstName, lastName, numOfVisits, debt);
         klijent.setSifraKlijenta(id);
-        
+
         return klijent;
     }
-    
+
     @Override
     public void setValue(Object object) {
         Klijent klijent = (Klijent) object;

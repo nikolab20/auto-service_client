@@ -5,13 +5,9 @@
  */
 package view;
 
-import controller.Controller;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import listeners.FormListener;
@@ -31,7 +27,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
      */
     public FrmClient() {
         initComponents();
-        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        //resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         prepareView();
     }
 
@@ -54,17 +50,24 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnExit = new javax.swing.JButton();
         panelSubMenu = new javax.swing.JPanel();
         lpSubMenu = new javax.swing.JLayeredPane();
-        panelCustomer = new view.panels.PanelCustomer();
+        panelEmployee = new view.panels.submenu.PanelEmployee();
+        panelCustomer = new view.panels.submenu.PanelCustomer();
         panelHeader = new javax.swing.JPanel();
         lblIconUser = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
         panelContent = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         lpContentPane = new javax.swing.JLayeredPane();
+        panelSearchCustomer = new view.panels.PanelSearchCustomer();
         panelAddCustomer = new view.panels.PanelAddCustomer();
         panelUpdateCustomer = new view.panels.PanelUpdateCustomer();
+        panelAddEmployee = new view.panels.PanelAddEmployee();
+        panelUpdateEmployee = new view.panels.PanelUpdateEmployee();
+        panelDeleteEmployee = new view.panels.PanelDeleteEmployee();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(0, 550));
+        setMinimumSize(new java.awt.Dimension(450, 550));
+        setPreferredSize(new java.awt.Dimension(800, 700));
 
         panelMenu.setBackground(new java.awt.Color(51, 52, 57));
 
@@ -75,7 +78,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnCustomer.setText("Customer");
         btnCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnCustomer.setFocusPainted(false);
-        btnCustomer.setIconTextGap(25);
+        btnCustomer.setIconTextGap(10);
         btnCustomer.setMinimumSize(new java.awt.Dimension(180, 34));
         btnCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -96,9 +99,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnEmployee.setText("Employee");
         btnEmployee.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnEmployee.setFocusPainted(false);
-        btnEmployee.setIconTextGap(25);
+        btnEmployee.setIconTextGap(10);
         btnEmployee.setMinimumSize(new java.awt.Dimension(180, 34));
         btnEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEmployeeMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnEmployeeMouseEntered(evt);
             }
@@ -114,7 +120,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnMarket.setText("Market");
         btnMarket.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnMarket.setFocusPainted(false);
-        btnMarket.setIconTextGap(25);
+        btnMarket.setIconTextGap(10);
         btnMarket.setMinimumSize(new java.awt.Dimension(180, 34));
         btnMarket.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -132,7 +138,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnExcel.setText("Excel");
         btnExcel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnExcel.setFocusPainted(false);
-        btnExcel.setIconTextGap(25);
+        btnExcel.setIconTextGap(10);
         btnExcel.setMinimumSize(new java.awt.Dimension(180, 34));
         btnExcel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -150,7 +156,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnInventory.setText("Inventory");
         btnInventory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnInventory.setFocusPainted(false);
-        btnInventory.setIconTextGap(25);
+        btnInventory.setIconTextGap(10);
         btnInventory.setMinimumSize(new java.awt.Dimension(180, 34));
         btnInventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -168,7 +174,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnSettings.setText("Settings");
         btnSettings.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnSettings.setFocusPainted(false);
-        btnSettings.setIconTextGap(25);
+        btnSettings.setIconTextGap(10);
         btnSettings.setMinimumSize(new java.awt.Dimension(180, 34));
         btnSettings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -186,7 +192,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnExit.setText("Exit");
         btnExit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnExit.setFocusPainted(false);
-        btnExit.setIconTextGap(25);
+        btnExit.setIconTextGap(10);
         btnExit.setMinimumSize(new java.awt.Dimension(180, 34));
         btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -228,22 +234,30 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addComponent(btnInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
+        lpSubMenu.setLayer(panelEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpSubMenuLayout = new javax.swing.GroupLayout(lpSubMenu);
         lpSubMenu.setLayout(lpSubMenuLayout);
         lpSubMenuLayout.setHorizontalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpSubMenuLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
         );
         lpSubMenuLayout.setVerticalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelEmployee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelSubMenuLayout = new javax.swing.GroupLayout(panelSubMenu);
@@ -284,7 +298,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(btnMenu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 599, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblIconUser)
                 .addGap(20, 20, 20))
         );
@@ -300,8 +314,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
 
         panelContent.setBackground(new java.awt.Color(255, 255, 255));
 
+        lpContentPane.setLayer(panelSearchCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelAddCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelUpdateCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelAddEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelUpdateEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelDeleteEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpContentPaneLayout = new javax.swing.GroupLayout(lpContentPane);
         lpContentPane.setLayout(lpContentPaneLayout);
@@ -309,36 +327,78 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lpContentPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         lpContentPaneLayout.setVerticalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lpContentPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelAddEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(207, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
+
+        jScrollPane1.setViewportView(lpContentPane);
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lpContentPane)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lpContentPane)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -432,6 +492,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         new AnimationMenuThread(panelSubMenu, panelMenu).start();
     }//GEN-LAST:event_btnCustomerMouseClicked
 
+    private void btnEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmployeeMouseClicked
+        setAllLayerInvisible(lpSubMenu);
+        panelEmployee.setVisible(true);
+        new AnimationMenuThread(panelSubMenu, panelMenu).start();
+    }//GEN-LAST:event_btnEmployeeMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnEmployee;
@@ -441,27 +507,34 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private javax.swing.JButton btnMarket;
     private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnSettings;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblIconUser;
     private javax.swing.JLayeredPane lpContentPane;
     private javax.swing.JLayeredPane lpSubMenu;
     private view.panels.PanelAddCustomer panelAddCustomer;
+    private view.panels.PanelAddEmployee panelAddEmployee;
     private javax.swing.JPanel panelContent;
-    private view.panels.PanelCustomer panelCustomer;
+    private view.panels.submenu.PanelCustomer panelCustomer;
+    private view.panels.PanelDeleteEmployee panelDeleteEmployee;
+    private view.panels.submenu.PanelEmployee panelEmployee;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JPanel panelMenu;
+    private view.panels.PanelSearchCustomer panelSearchCustomer;
     private javax.swing.JPanel panelSubMenu;
     private view.panels.PanelUpdateCustomer panelUpdateCustomer;
+    private view.panels.PanelUpdateEmployee panelUpdateEmployee;
     // End of variables declaration//GEN-END:variables
 
     private void prepareView() {
         setAllLayerInvisible(lpContentPane);
         setAllLayerInvisible(lpSubMenu);
         setListenersToPanels();
-        preparePanels();
+        //preparePanels();
     }
 
     private void setListenersToPanels() {
         panelCustomer.addListener(this);
+        panelEmployee.addListener(this);
     }
 
     private void setAllLayerInvisible(JLayeredPane jp) {
@@ -471,21 +544,54 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     }
 
     @Override
-    public void openAddClient() {
+    public void openAddCustomer() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
         panelAddCustomer.setVisible(true);
     }
 
     @Override
-    public void openUpdateClient() {
+    public void openUpdateCustomer() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
         panelUpdateCustomer.setVisible(true);
     }
 
+    @Override
+    public void openSearchCustomer() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelSearchCustomer.setVisible(true);
+    }
+
     private void preparePanels() {
-        panelAddCustomer.preparePanel(resourceBundle);
-        panelUpdateCustomer.preparePanel(resourceBundle);
+        panelCustomer.preparePanel();
+        panelAddCustomer.preparePanel();
+        panelUpdateCustomer.preparePanel();
+        panelAddEmployee.preparePanel();
+        panelUpdateEmployee.preparePanel();
+        panelDeleteEmployee.preparePanel();
+        panelSearchCustomer.preparePanel();
+    }
+
+    @Override
+    public void openAddEmployee() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelAddEmployee.setVisible(true);
+    }
+
+    @Override
+    public void openUpdateEmployee() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelUpdateEmployee.setVisible(true);
+    }
+
+    @Override
+    public void openDeleteEmployee() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelDeleteEmployee.setVisible(true);
     }
 }

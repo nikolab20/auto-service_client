@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class Controller {
 
     /**
-     * The instance of the controller class.
-     * The instance created on this site ensures its uniqueness for the whole project.
+     * The instance of the controller class. The instance created on this site
+     * ensures its uniqueness for the whole project.
      *
      * @return the instance of the controller class.
      */
@@ -25,9 +26,11 @@ public class Controller {
     private static Controller instance = new Controller();
 
     /**
-     * A logical value that represents whether the server is set to the default configuration or not.
+     * A logical value that represents whether the server is set to the default
+     * configuration or not.
      *
-     * @param defaultConfig is the boolean value for the attribute defaultConfig of this class.
+     * @param defaultConfig is the boolean value for the attribute defaultConfig
+     * of this class.
      * @return the boolean value.
      */
     @Getter
@@ -52,7 +55,8 @@ public class Controller {
     /**
      * Method for reading a data from properties file.
      *
-     * @return An object of the {@link Properties} class that contains data from a file.
+     * @return An object of the {@link Properties} class that contains data from
+     * a file.
      * @throws IOException if file doesn't exist.
      */
     public Properties readPropertiesFile() throws IOException {
@@ -82,7 +86,7 @@ public class Controller {
     /**
      * Method for initial adjusting the form.
      *
-     * @param form      is the form tuned by this method.
+     * @param form is the form tuned by this method.
      * @param mainPanel is the content panel of this form.
      */
     public void defaultPrepareForm(JFrame form, JPanel mainPanel, Dimension dimension) {
@@ -99,7 +103,7 @@ public class Controller {
     /**
      * Method for putting icon on label.
      *
-     * @param file  is the image file for the icon.
+     * @param file is the image file for the icon.
      * @param label is the label on which the method places the icon.
      */
     public void setIconToLabel(String file, JLabel label) {
@@ -111,7 +115,7 @@ public class Controller {
     /**
      * Method for putting icon on button.
      *
-     * @param file   is the image file for the icon.
+     * @param file is the image file for the icon.
      * @param button is the button on which the method places the icon.
      */
     public void setIconToButton(String file, JButton button) {
@@ -124,5 +128,20 @@ public class Controller {
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setToolTipText(resourceBundle.getString("client_" + name + "_toolTip"));
+    }
+
+    public void generateRandomString() {
+        int leftLimit = 48;
+        int rightLimit = 122;
+        int targetStringLength = 12;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        System.out.println(generatedString);
     }
 }

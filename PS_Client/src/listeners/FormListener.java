@@ -11,7 +11,15 @@ package listeners;
  */
 public interface FormListener {
 
-    void openAddClient();
+    void openAddCustomer();
 
-    void openUpdateClient();
+    void openUpdateCustomer();
+
+    void openSearchCustomer();
+
+    void openAddEmployee();
+
+    void openUpdateEmployee();
+
+    void openDeleteEmployee();
 }

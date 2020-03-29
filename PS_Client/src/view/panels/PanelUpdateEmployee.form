@@ -24,16 +24,20 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelID" max="32767" attributes="0"/>
+                  <Component id="panelSearch" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelID" alignment="0" max="32767" attributes="0"/>
                   <Component id="panelFirstName" alignment="0" max="32767" attributes="0"/>
                   <Component id="panelLastName" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelNumOfVisits" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelDebt" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelAddress" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelPhone" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelIdentificationNumber" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelUsername" max="32767" attributes="0"/>
+                  <Component id="panelPassword" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnUpdate" min="-2" pref="102" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="panelSearch" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelAdministrator" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -44,16 +48,24 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelSearch" min="-2" pref="215" max="-2" attributes="0"/>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="panelID" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelFirstName" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelLastName" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelNumOfVisits" min="-2" max="-2" attributes="0"/>
+              <Component id="panelAddress" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelDebt" min="-2" max="-2" attributes="0"/>
+              <Component id="panelPhone" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="panelIdentificationNumber" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="panelAdministrator" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <Component id="panelUsername" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="panelPassword" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -62,21 +74,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.panels.components.PanelLTS" name="panelID">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelFirstName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelLastName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelNumOfVisits">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelDebt">
-    </Component>
-    <Component class="javax.swing.JButton" name="btnUpdate">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Update"/>
-      </Properties>
-    </Component>
     <Container class="javax.swing.JPanel" name="panelSearch">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -95,8 +92,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
-                      <Component id="panelCriteria" pref="693" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelCriteria" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -139,5 +136,28 @@
         </Container>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnUpdate">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Update"/>
+      </Properties>
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelID">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelFirstName">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelLastName">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelAddress">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelPhone">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelIdentificationNumber">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelUsername">
+    </Component>
+    <Component class="view.panels.components.PanelLTS" name="panelPassword">
+    </Component>
+    <Component class="view.panels.components.PanelL2RbS" name="panelAdministrator">
+    </Component>
   </SubComponents>
 </Form>
