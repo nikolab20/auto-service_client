@@ -16,7 +16,7 @@ import listeners.FormListener;
  * @author nikol
  */
 public class PanelEmployee extends javax.swing.JPanel {
-
+    
     private List<FormListener> formListeners = new ArrayList<>();
 
     /**
@@ -148,27 +148,28 @@ public class PanelEmployee extends javax.swing.JPanel {
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("customer_submenu_title"));
-        btnAddEmployee.setText(resourceBundle.getString("customer_submenu_add"));
-        btnEditEmployee.setText(resourceBundle.getString("customer_submenu_update"));
+        lblTitle.setText(resourceBundle.getString("employee_submenu_title"));
+        btnAddEmployee.setText(resourceBundle.getString("employee_submenu_add"));
+        btnEditEmployee.setText(resourceBundle.getString("employee_submenu_update"));
+        btnDeleteEmployee.setText(resourceBundle.getString("employee_submenu_delete"));
     }
-
+    
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
-
+    
     private void openAddEmployee() {
         for (FormListener formListener : formListeners) {
             formListener.openAddEmployee();
         }
     }
-
+    
     private void openUpdateEmployee() {
         for (FormListener formListener : formListeners) {
             formListener.openUpdateEmployee();
         }
     }
-
+    
     private void openDeleteEmployee() {
         for (FormListener formListener : formListeners) {
             formListener.openDeleteEmployee();

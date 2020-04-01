@@ -31,7 +31,7 @@
                       <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jButton1" max="32767" attributes="0"/>
+                  <Component id="btnSearchCustomer" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -49,7 +49,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnUpdateCustomer" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="50" max="-2" attributes="0"/>
+              <Component id="btnSearchCustomer" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace pref="66" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -133,7 +133,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnUpdateCustomerMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnSearchCustomer">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="39" green="34" red="33" type="rgb"/>
@@ -159,7 +159,7 @@
         <Property name="iconTextGap" type="int" value="10"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSearchCustomerMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>

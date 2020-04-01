@@ -5,24 +5,40 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
 import domain.Klijent;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import listeners.CustomComponentListener;
+import listeners.SearchListener;
+import listeners.TableListener;
 import view.interf.iFormValue;
+import view.tablemodels.TableModelClients;
 
 /**
  *
  * @author nikol
  */
-public class PanelUpdateCustomer extends javax.swing.JPanel implements iFormValue {
+public class PanelUpdateCustomer extends javax.swing.JPanel implements SearchListener, TableListener {
+
+    private TableModelClients tmc;
+    private List<Klijent> klijenti;
 
     /**
      * Creates new form PanelUpdateCustomer
      */
     public PanelUpdateCustomer() {
         initComponents();
+        klijenti = new ArrayList<>();
     }
 
     /**
@@ -34,56 +50,19 @@ public class PanelUpdateCustomer extends javax.swing.JPanel implements iFormValu
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelID = new view.panels.components.PanelLTS();
-        panelFirstName = new view.panels.components.PanelLTS();
-        panelLastName = new view.panels.components.PanelLTS();
-        panelNumOfVisits = new view.panels.components.PanelLTS();
-        panelDebt = new view.panels.components.PanelLTS();
         btnUpdate = new javax.swing.JButton();
-        panelSearch = new javax.swing.JPanel();
-        panelCriteria = new view.panels.components.PanelTBS();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        panelSearch = new view.panels.domain.PanelSearch();
+        panelCustomer = new view.panels.domain.PanelCustomer();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnUpdate.setText("Update");
-
-        panelSearch.setBackground(new java.awt.Color(255, 255, 255));
-        panelSearch.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        btnUpdate.setEnabled(false);
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout panelSearchLayout = new javax.swing.GroupLayout(panelSearch);
-        panelSearch.setLayout(panelSearchLayout);
-        panelSearchLayout.setHorizontalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(panelCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        panelSearchLayout.setVerticalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addComponent(panelCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,88 +71,81 @@ public class PanelUpdateCustomer extends javax.swing.JPanel implements iFormValu
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelNumOfVisits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelDebt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelNumOfVisits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelDebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnUpdate)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        try {
+            Klijent klijent = (Klijent) panelCustomer.getValue();
+            klijent = (Klijent) CommunicationController.getInstance().operationUpdate(klijent);
+            JOptionPane.showMessageDialog(this, "Uspesno izmenjen klijent " + klijent.getImeKlijenta()
+                    + " " + klijent.getPrezimeKlijenta() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            this.clearPanel();
+            btnUpdate.setEnabled(false);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private view.panels.components.PanelTBS panelCriteria;
-    private view.panels.components.PanelLTS panelDebt;
-    private view.panels.components.PanelLTS panelFirstName;
-    private view.panels.components.PanelLTS panelID;
-    private view.panels.components.PanelLTS panelLastName;
-    private view.panels.components.PanelLTS panelNumOfVisits;
-    private javax.swing.JPanel panelSearch;
+    private view.panels.domain.PanelCustomer panelCustomer;
+    private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnUpdate.setText(resourceBundle.getString("customer_btn_update"));
-        panelSearch.setBorder(new TitledBorder(resourceBundle.getString("customer_search_border")));
+        btnUpdate.setEnabled(false);
+        tmc = new TableModelClients(klijenti);
+        panelSearch.preparePanel(tmc);
+        panelCustomer.preparePanel();
+        panelSearch.addListener(this);
+        panelSearch.addTableListener(this);
+    }
 
-        panelCriteria.setElementText(resourceBundle.getString("customer_btn_search"), "");
-        panelID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("customer_id") + ":", "");
-        panelID.getTextField().setEnabled(false);
-        panelFirstName.setElementText(resourceBundle.getString("customer_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("customer_last_name") + ":", "");
-        panelNumOfVisits.setElementText(resourceBundle.getString("customer_num_of_visits") + ":", "0");
-        panelDebt.setElementText(resourceBundle.getString("customer_debt") + ":", "0");
+    public void clearPanel() {
+        klijenti.clear();
+        panelCustomer.clearPanel();
+        panelSearch.clearPanel(new TableModelClients(klijenti));
+        btnUpdate.setEnabled(false);
     }
 
     @Override
-    public Object getValue() {
-        long id = new Long((String) panelID.getValue());
-        String firstName = (String) panelFirstName.getValue();
-        String lastName = (String) panelLastName.getValue();
-        int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
-        BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
-
-        Klijent klijent = new Klijent(firstName, lastName, numOfVisits, debt);
-        klijent.setSifraKlijenta(id);
-
-        return klijent;
+    public AbstractTableModel searchOdo(String criteria) throws Exception {
+        try {
+            klijenti = CommunicationController.getInstance().operationSearchCustomer(criteria);
+            JOptionPane.showMessageDialog(this, "Uspesno vraceni klijenti!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            return new TableModelClients(klijenti);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 
     @Override
-    public void setValue(Object object) {
-        Klijent klijent = (Klijent) object;
-        panelID.setValue(klijent.getSifraKlijenta());
-        panelFirstName.setValue(klijent.getImeKlijenta());
-        panelLastName.setValue(klijent.getPrezimeKlijenta());
-        panelNumOfVisits.setValue(klijent.getBrojPoseta());
-        panelDebt.setValue(klijent.getDug());
+    public void clickRow(int row) {
+        Klijent klijent = klijenti.get(row);
+        panelCustomer.setValue(klijent);
+        btnUpdate.setEnabled(true);
     }
+
 }

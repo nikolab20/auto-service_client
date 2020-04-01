@@ -5,17 +5,25 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
+import domain.DomainObject;
 import domain.Klijent;
-import java.math.BigDecimal;
+import java.io.IOException;
 import java.util.ResourceBundle;
-import view.interf.iFormValue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import listeners.GenerateListener;
+import view.FrmClient;
+import view.panels.domain.PanelNewCustomer;
 
 /**
  *
  * @author nikol
  */
-public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
+public class PanelAddCustomer extends javax.swing.JPanel implements GenerateListener {
 
     /**
      * Creates new form PanelAddCustomer
@@ -35,17 +43,23 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
 
         btnAdd = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
-        panelID = new view.panels.components.PanelLTBS();
-        panelFirstName = new view.panels.components.PanelLTS();
-        panelLastName = new view.panels.components.PanelLTS();
-        panelNumOfVisits = new view.panels.components.PanelLTS();
-        panelDebt = new view.panels.components.PanelLTS();
+        panelNewCustomer = new view.panels.domain.PanelNewCustomer();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -54,15 +68,11 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
-                    .addComponent(panelFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelNumOfVisits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelDebt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelNewCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -70,15 +80,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelNumOfVisits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelDebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelNewCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
@@ -87,54 +89,55 @@ public class PanelAddCustomer extends javax.swing.JPanel implements iFormValue {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        panelNewCustomer.clearPanel();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try {
+            Klijent klijent = (Klijent) panelNewCustomer.getValue();
+            klijent = (Klijent) CommunicationController.getInstance().operationUpdate(klijent);
+            JOptionPane.showMessageDialog(this, "Uspesno insertovan klijent " + klijent.getImeKlijenta()
+                    + " " + klijent.getPrezimeKlijenta() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            panelNewCustomer.clearPanel();
+            btnAdd.setEnabled(false);
+            btnClear.setEnabled(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClear;
-    private view.panels.components.PanelLTS panelDebt;
-    private view.panels.components.PanelLTS panelFirstName;
-    private view.panels.components.PanelLTBS panelID;
-    private view.panels.components.PanelLTS panelLastName;
-    private view.panels.components.PanelLTS panelNumOfVisits;
+    private view.panels.domain.PanelNewCustomer panelNewCustomer;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnAdd.setText(resourceBundle.getString("customer_btn_add"));
         btnClear.setText(resourceBundle.getString("customer_btn_clear"));
+        panelNewCustomer.addListener(this);
+        panelNewCustomer.preparePanel();
+    }
 
-        panelID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("customer_btn_generate"),
-                resourceBundle.getString("customer_id") + ":", "");
-        panelID.getButton().requestFocus();
-        panelID.getTextField().setEditable(false);
-        panelFirstName.setElementText(resourceBundle.getString("customer_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("customer_last_name") + ":", "");
-        panelNumOfVisits.setElementText(resourceBundle.getString("customer_num_of_visits") + ":", "0");
-        panelDebt.setElementText(resourceBundle.getString("customer_debt") + ":", "0");
+    public void clearPanel() {
+        panelNewCustomer.clearPanel();
     }
 
     @Override
-    public Object getValue() {
-        long id = new Long((String) panelID.getValue());
-        String firstName = (String) panelFirstName.getValue();
-        String lastName = (String) panelLastName.getValue();
-        int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
-        BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
-
-        Klijent klijent = new Klijent(firstName, lastName, numOfVisits, debt);
-        klijent.setSifraKlijenta(id);
-
-        return klijent;
-    }
-
-    @Override
-    public void setValue(Object object) {
-        Klijent klijent = (Klijent) object;
-        panelID.setValue(klijent.getSifraKlijenta());
-        panelFirstName.setValue(klijent.getImeKlijenta());
-        panelLastName.setValue(klijent.getPrezimeKlijenta());
-        panelNumOfVisits.setValue(klijent.getBrojPoseta());
-        panelDebt.setValue(klijent.getDug());
+    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+        try {
+            DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
+            JOptionPane.showMessageDialog(this, "Uspesno generisan klijent!",
+                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            btnAdd.setEnabled(true);
+            btnClear.setEnabled(true);
+            return odo;
+        } catch (Exception ex) {
+            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 }

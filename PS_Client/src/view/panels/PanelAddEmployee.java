@@ -14,7 +14,7 @@ import view.interf.iFormValue;
  *
  * @author nikol
  */
-public class PanelAddEmployee extends javax.swing.JPanel implements iFormValue {
+public class PanelAddEmployee extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelAddEmployee
@@ -32,17 +32,9 @@ public class PanelAddEmployee extends javax.swing.JPanel implements iFormValue {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelID = new view.panels.components.PanelLTBS();
-        panelFirstName = new view.panels.components.PanelLTS();
-        panelLastName = new view.panels.components.PanelLTS();
-        panelAddress = new view.panels.components.PanelLTS();
-        panelPhone = new view.panels.components.PanelLTS();
-        panelIdentificationNumber = new view.panels.components.PanelLTS();
-        panelAdministrator = new view.panels.components.PanelL2RbS();
-        panelUsername = new view.panels.components.PanelLTS();
-        panelPassword = new view.panels.components.PanelLTBS();
         btnAdd = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        panelNewEmployee = new view.panels.domain.PanelNewEmployee();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -57,44 +49,20 @@ public class PanelAddEmployee extends javax.swing.JPanel implements iFormValue {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelIdentificationNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelAdministrator, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelNewEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelNewEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelIdentificationNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelAdministrator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnClear))
@@ -106,69 +74,17 @@ public class PanelAddEmployee extends javax.swing.JPanel implements iFormValue {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClear;
-    private view.panels.components.PanelLTS panelAddress;
-    private view.panels.components.PanelL2RbS panelAdministrator;
-    private view.panels.components.PanelLTS panelFirstName;
-    private view.panels.components.PanelLTBS panelID;
-    private view.panels.components.PanelLTS panelIdentificationNumber;
-    private view.panels.components.PanelLTS panelLastName;
-    private view.panels.components.PanelLTBS panelPassword;
-    private view.panels.components.PanelLTS panelPhone;
-    private view.panels.components.PanelLTS panelUsername;
+    private view.panels.domain.PanelNewEmployee panelNewEmployee;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnAdd.setText(resourceBundle.getString("employee_btn_add"));
         btnClear.setText(resourceBundle.getString("employee_btn_clear"));
-
-        panelID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("employee_btn_generate"),
-                resourceBundle.getString("employee_id") + ":", "");
-        panelID.getButton().requestFocus();
-        panelID.getTextField().setEditable(false);
-        panelFirstName.setElementText(resourceBundle.getString("employee_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("employee_last_name") + ":", "");
-        panelAddress.setElementText(resourceBundle.getString("employee_adress") + ":", "");
-        panelPhone.setElementText(resourceBundle.getString("employee_phone") + ":", "");
-        panelIdentificationNumber.setElementText(resourceBundle.getString("employee_id_number") + ":", "");
-        panelAdministrator.setElementText(resourceBundle.getString("employee_administrator") + ":",
-                resourceBundle.getString("employee_administrator_true"),
-                resourceBundle.getString("employee_administrator_false"));
-        panelUsername.setElementText(resourceBundle.getString("employee_username") + ":", "");
-        panelPassword.setElementText(resourceBundle.getString("employee_btn_generate"),
-                resourceBundle.getString("employee_password") + ":", "");
+        panelNewEmployee.preparePanel();
     }
-
-    @Override
-    public Object getValue() {
-        long id = new Long((String) panelID.getValue());
-        String firstName = (String) panelFirstName.getValue();
-        String lastName = (String) panelLastName.getValue();
-        String address = (String) panelAddress.getValue();
-        String phoneNumber = (String) panelPhone.getValue();
-        String identificationNumber = (String) panelIdentificationNumber.getValue();
-        boolean administrator = (boolean) panelAdministrator.getValue();
-        String username = (String) panelUsername.getValue();
-        String password = (String) panelPassword.getValue();
-
-        Radnik radnik = new Radnik(firstName, lastName, address, phoneNumber, identificationNumber, administrator, username, password);
-        radnik.setSifraRadnika(id);
-
-        return radnik;
-    }
-
-    @Override
-    public void setValue(Object object) {
-        Radnik radnik = (Radnik) object;
-        panelID.setValue(radnik.getSifraRadnika());
-        panelFirstName.setValue(radnik.getImeRadnika());
-        panelLastName.setValue(radnik.getPrezimeRadnika());
-        panelAddress.setValue(radnik.getAdresa());
-        panelPhone.setValue(radnik.getTelefon());
-        panelIdentificationNumber.setValue(radnik.getJMBG());
-        panelAdministrator.setValue(radnik.isAdministrator());
-        panelUsername.setValue(radnik.getUsername());
-        panelPassword.setValue(radnik.getPassword());
+    
+    public void clearPanel(){
+        panelNewEmployee.clearPanel();
     }
 }

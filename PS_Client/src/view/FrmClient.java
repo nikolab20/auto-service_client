@@ -5,9 +5,13 @@
  */
 package view;
 
+import controller.Controller;
+import domain.Radnik;
 import java.awt.Color;
 import java.awt.Component;
+import java.net.URL;
 import java.util.ResourceBundle;
+import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import listeners.FormListener;
@@ -27,7 +31,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
      */
     public FrmClient() {
         initComponents();
-        //resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         prepareView();
     }
 
@@ -50,6 +54,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnExit = new javax.swing.JButton();
         panelSubMenu = new javax.swing.JPanel();
         lpSubMenu = new javax.swing.JLayeredPane();
+        panelInventory = new view.panels.submenu.PanelInventory();
         panelEmployee = new view.panels.submenu.PanelEmployee();
         panelCustomer = new view.panels.submenu.PanelCustomer();
         panelHeader = new javax.swing.JPanel();
@@ -58,16 +63,18 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelContent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lpContentPane = new javax.swing.JLayeredPane();
-        panelSearchCustomer = new view.panels.PanelSearchCustomer();
         panelAddCustomer = new view.panels.PanelAddCustomer();
-        panelUpdateCustomer = new view.panels.PanelUpdateCustomer();
         panelAddEmployee = new view.panels.PanelAddEmployee();
-        panelUpdateEmployee = new view.panels.PanelUpdateEmployee();
         panelDeleteEmployee = new view.panels.PanelDeleteEmployee();
+        panelSearchCustomer = new view.panels.PanelSearchCustomer();
+        panelUpdateCustomer = new view.panels.PanelUpdateCustomer();
+        panelUpdateEmployee = new view.panels.PanelUpdateEmployee();
+        panelAddCarPart = new view.panels.PanelAddCarPart();
+        panelAddService = new view.panels.PanelAddService();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(450, 550));
-        setPreferredSize(new java.awt.Dimension(800, 700));
+        setMinimumSize(new java.awt.Dimension(450, 450));
+        setPreferredSize(new java.awt.Dimension(548, 550));
 
         panelMenu.setBackground(new java.awt.Color(51, 52, 57));
 
@@ -81,14 +88,16 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnCustomer.setIconTextGap(10);
         btnCustomer.setMinimumSize(new java.awt.Dimension(180, 34));
         btnCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCustomerMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnCustomerMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnCustomerMouseExited(evt);
+            }
+        });
+        btnCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerActionPerformed(evt);
             }
         });
 
@@ -102,14 +111,16 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnEmployee.setIconTextGap(10);
         btnEmployee.setMinimumSize(new java.awt.Dimension(180, 34));
         btnEmployee.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnEmployeeMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnEmployeeMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnEmployeeMouseExited(evt);
+            }
+        });
+        btnEmployee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmployeeActionPerformed(evt);
             }
         });
 
@@ -164,6 +175,11 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnInventoryMouseExited(evt);
+            }
+        });
+        btnInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventoryActionPerformed(evt);
             }
         });
 
@@ -234,11 +250,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addComponent(btnInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
+        lpSubMenu.setLayer(panelInventory, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -246,25 +263,30 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lpSubMenu.setLayout(lpSubMenuLayout);
         lpSubMenuLayout.setHorizontalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpSubMenuLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(panelCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addGroup(lpSubMenuLayout.createSequentialGroup()
+                    .addComponent(panelEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpSubMenuLayout.createSequentialGroup()
+                    .addComponent(panelInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         lpSubMenuLayout.setVerticalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelEmployee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelSubMenuLayout = new javax.swing.GroupLayout(panelSubMenu);
         panelSubMenu.setLayout(panelSubMenuLayout);
         panelSubMenuLayout.setHorizontalGroup(
             panelSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lpSubMenu)
+            .addComponent(lpSubMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         panelSubMenuLayout.setVerticalGroup(
             panelSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,7 +299,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lblIconUser.setForeground(new java.awt.Color(255, 255, 255));
         lblIconUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblIconUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user.png"))); // NOI18N
-        lblIconUser.setText("Nikola Bakic");
+        lblIconUser.setText("user");
         lblIconUser.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblIconUser.setIconTextGap(25);
 
@@ -314,78 +336,68 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
 
         panelContent.setBackground(new java.awt.Color(255, 255, 255));
 
-        lpContentPane.setLayer(panelSearchCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelAddCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        lpContentPane.setLayer(panelUpdateCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelAddEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        lpContentPane.setLayer(panelUpdateEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelDeleteEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelSearchCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelUpdateCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelUpdateEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelAddCarPart, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelAddService, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpContentPaneLayout = new javax.swing.GroupLayout(lpContentPane);
         lpContentPane.setLayout(lpContentPaneLayout);
         lpContentPaneLayout.setHorizontalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lpContentPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAddCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAddService, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
         );
         lpContentPaneLayout.setVerticalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lpContentPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 431, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                    .addComponent(panelAddCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 418, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelAddEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 264, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 460, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 174, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelAddEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(207, Short.MAX_VALUE)))
+                    .addComponent(panelAddCarPart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 74, Short.MAX_VALUE)))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(panelAddService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 161, Short.MAX_VALUE)))
         );
 
         jScrollPane1.setViewportView(lpContentPane);
@@ -394,7 +406,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,8 +422,8 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(panelSubMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelContent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -486,17 +498,23 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         new AnimationMenuThread(panelMenu, panelSubMenu).start();
     }//GEN-LAST:event_btnMenuMouseClicked
 
-    private void btnCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomerMouseClicked
-        setAllLayerInvisible(lpSubMenu);
-        panelCustomer.setVisible(true);
-        new AnimationMenuThread(panelSubMenu, panelMenu).start();
-    }//GEN-LAST:event_btnCustomerMouseClicked
-
-    private void btnEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmployeeMouseClicked
+    private void btnEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeeActionPerformed
         setAllLayerInvisible(lpSubMenu);
         panelEmployee.setVisible(true);
         new AnimationMenuThread(panelSubMenu, panelMenu).start();
-    }//GEN-LAST:event_btnEmployeeMouseClicked
+    }//GEN-LAST:event_btnEmployeeActionPerformed
+
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        setAllLayerInvisible(lpSubMenu);
+        panelCustomer.setVisible(true);
+        new AnimationMenuThread(panelSubMenu, panelMenu).start();
+    }//GEN-LAST:event_btnCustomerActionPerformed
+
+    private void btnInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventoryActionPerformed
+        setAllLayerInvisible(lpSubMenu);
+        panelInventory.setVisible(true);
+        new AnimationMenuThread(panelSubMenu, panelMenu).start();
+    }//GEN-LAST:event_btnInventoryActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
@@ -511,13 +529,16 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private javax.swing.JLabel lblIconUser;
     private javax.swing.JLayeredPane lpContentPane;
     private javax.swing.JLayeredPane lpSubMenu;
+    private view.panels.PanelAddCarPart panelAddCarPart;
     private view.panels.PanelAddCustomer panelAddCustomer;
     private view.panels.PanelAddEmployee panelAddEmployee;
+    private view.panels.PanelAddService panelAddService;
     private javax.swing.JPanel panelContent;
     private view.panels.submenu.PanelCustomer panelCustomer;
     private view.panels.PanelDeleteEmployee panelDeleteEmployee;
     private view.panels.submenu.PanelEmployee panelEmployee;
     private javax.swing.JPanel panelHeader;
+    private view.panels.submenu.PanelInventory panelInventory;
     private javax.swing.JPanel panelMenu;
     private view.panels.PanelSearchCustomer panelSearchCustomer;
     private javax.swing.JPanel panelSubMenu;
@@ -526,15 +547,40 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     // End of variables declaration//GEN-END:variables
 
     private void prepareView() {
+        setTitle(resourceBundle.getString("client_title"));
+        URL imageUrl = ClassLoader.getSystemResource("img/transportation.png");
+        ImageIcon imageIcon = new ImageIcon(imageUrl);
+        setIconImage(imageIcon.getImage());
+
+        Radnik radnik = Controller.getInstance().getRadnik();
+
+        if (radnik.isAdministrator()) {
+            lblIconUser.setText(radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika() + " (admin)");
+        } else {
+            lblIconUser.setText(radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika());
+            btnEmployee.setEnabled(false);
+            btnSettings.setEnabled(false);
+        }
+
+        btnCustomer.setText(resourceBundle.getString("client_btn_customer"));
+        btnEmployee.setText(resourceBundle.getString("client_btn_employee"));
+        btnMarket.setText(resourceBundle.getString("client_btn_market"));
+        btnExcel.setText(resourceBundle.getString("client_btn_excel"));
+        btnInventory.setText(resourceBundle.getString("client_btn_inventory"));
+        btnSettings.setText(resourceBundle.getString("client_btn_setting"));
+        btnExit.setText(resourceBundle.getString("client_btn_exit"));
         setAllLayerInvisible(lpContentPane);
         setAllLayerInvisible(lpSubMenu);
         setListenersToPanels();
-        //preparePanels();
+        preparePanels();
     }
 
     private void setListenersToPanels() {
         panelCustomer.addListener(this);
         panelEmployee.addListener(this);
+        panelInventory.addListener(this);
+        //panelCarParts.addListener(this);
+        //panelServices.addListener(this);
     }
 
     private void setAllLayerInvisible(JLayeredPane jp) {
@@ -547,6 +593,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openAddCustomer() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelAddCustomer.clearPanel();
         panelAddCustomer.setVisible(true);
     }
 
@@ -554,6 +601,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openUpdateCustomer() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelUpdateCustomer.clearPanel();
         panelUpdateCustomer.setVisible(true);
     }
 
@@ -561,6 +609,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openSearchCustomer() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelSearchCustomer.clearPanel();
         panelSearchCustomer.setVisible(true);
     }
 
@@ -572,12 +621,17 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelUpdateEmployee.preparePanel();
         panelDeleteEmployee.preparePanel();
         panelSearchCustomer.preparePanel();
+        panelEmployee.preparePanel();
+        panelInventory.preparePanel();
+        //panelCarParts.preparePanel();
+        //panelServices.preparePanel();
     }
 
     @Override
     public void openAddEmployee() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelAddEmployee.clearPanel();
         panelAddEmployee.setVisible(true);
     }
 
@@ -585,6 +639,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openUpdateEmployee() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelUpdateEmployee.clearPanel();
         panelUpdateEmployee.setVisible(true);
     }
 
@@ -592,6 +647,53 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openDeleteEmployee() {
         setAllLayerInvisible(lpContentPane);
         new AnimationMenuCloseThread(panelSubMenu).start();
+        panelDeleteEmployee.clearPanel();
         panelDeleteEmployee.setVisible(true);
+    }
+
+    @Override
+    public void openCarParts() {
+        setAllLayerInvisible(lpContentPane);
+    }
+
+    @Override
+    public void openServices() {
+        setAllLayerInvisible(lpContentPane);
+    }
+
+    @Override
+    public void openAddCarPart() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelAddCarPart.clearPanel();
+        panelAddCarPart.setVisible(true);
+    }
+
+    @Override
+    public void openSearchCarPart() {
+
+    }
+
+    @Override
+    public void openDeleteCarPart() {
+
+    }
+
+    @Override
+    public void openAddService() {
+        setAllLayerInvisible(lpContentPane);
+        new AnimationMenuCloseThread(panelSubMenu).start();
+        panelAddService.clearPanel();
+        panelAddService.setVisible(true);
+    }
+
+    @Override
+    public void openUpdateService() {
+
+    }
+
+    @Override
+    public void openDeleteService() {
+
     }
 }

@@ -21,24 +21,16 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelPassword" max="32767" attributes="0"/>
-                  <Component id="panelID" max="32767" attributes="0"/>
-                  <Component id="panelFirstName" max="32767" attributes="0"/>
-                  <Component id="panelLastName" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelAddress" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelPhone" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelIdentificationNumber" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelUsername" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnClear" min="-2" pref="102" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAdd" min="-2" pref="102" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="panelAdministrator" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelNewEmployee" alignment="0" pref="508" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -46,26 +38,10 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelID" min="-2" max="-2" attributes="0"/>
+              <Component id="panelNewEmployee" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelFirstName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelLastName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelAddress" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelPhone" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelIdentificationNumber" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelAdministrator" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelUsername" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelPassword" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnClear" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -76,24 +52,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.panels.components.PanelLTBS" name="panelID">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelFirstName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelLastName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelAddress">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelPhone">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelIdentificationNumber">
-    </Component>
-    <Component class="view.panels.components.PanelL2RbS" name="panelAdministrator">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelUsername">
-    </Component>
-    <Component class="view.panels.components.PanelLTBS" name="panelPassword">
-    </Component>
     <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
@@ -103,6 +61,8 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Clear"/>
       </Properties>
+    </Component>
+    <Component class="view.panels.domain.PanelNewEmployee" name="panelNewEmployee">
     </Component>
   </SubComponents>
 </Form>

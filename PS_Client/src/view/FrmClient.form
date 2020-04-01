@@ -4,10 +4,10 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[450, 550]"/>
+      <Dimension value="[450, 450]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[800, 700]"/>
+      <Dimension value="[548, 550]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -34,9 +34,9 @@
               <Component id="panelMenu" min="-2" pref="0" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Component id="panelSubMenu" min="-2" pref="0" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="panelContent" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
+          <Component id="panelContent" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -93,7 +93,7 @@
                   <Component id="btnInventory" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSettings" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace pref="73" max="32767" attributes="0"/>
+                  <EmptySpace pref="57" max="32767" attributes="0"/>
                   <Component id="btnExit" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -130,9 +130,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCustomerMouseClicked"/>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCustomerMouseEntered"/>
             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCustomerMouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCustomerActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnEmployee">
@@ -164,9 +164,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEmployeeMouseClicked"/>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEmployeeMouseEntered"/>
             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEmployeeMouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEmployeeActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnMarket">
@@ -266,6 +266,7 @@
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInventoryMouseEntered"/>
             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInventoryMouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInventoryActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnSettings">
@@ -341,7 +342,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="lpSubMenu" alignment="0" max="32767" attributes="0"/>
+              <Component id="lpSubMenu" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -356,26 +357,36 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="panelCustomer" max="32767" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="panelCustomer" min="-2" max="-2" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="panelEmployee" alignment="0" pref="220" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="panelEmployee" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="panelInventory" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCustomer" alignment="1" max="32767" attributes="0"/>
+                  <Component id="panelCustomer" pref="478" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Component id="panelEmployee" alignment="1" pref="512" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
+                      <Component id="panelInventory" alignment="0" pref="512" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
+            <Component class="view.panels.submenu.PanelInventory" name="panelInventory">
+            </Component>
             <Component class="view.panels.submenu.PanelEmployee" name="panelEmployee">
             </Component>
             <Component class="view.panels.submenu.PanelCustomer" name="panelCustomer">
@@ -429,7 +440,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/user.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Nikola Bakic"/>
+            <Property name="text" type="java.lang.String" value="user"/>
             <Property name="horizontalTextPosition" type="int" value="2"/>
             <Property name="iconTextGap" type="int" value="25"/>
           </Properties>
@@ -461,7 +472,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="883" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" alignment="0" pref="548" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -480,105 +491,97 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="panelAddCustomer" pref="1002" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="panelDeleteEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelUpdateCustomer" pref="1002" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="panelAddCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelAddEmployee" pref="1002" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="panelAddEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelUpdateEmployee" pref="1002" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="panelSearchCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="4" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelDeleteEmployee" pref="1002" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="panelUpdateCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelSearchCustomer" pref="1002" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="panelUpdateEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
+                          <Component id="panelAddCarPart" alignment="0" pref="548" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
+                          <Component id="panelAddService" alignment="0" pref="548" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="panelAddCustomer" pref="623" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="panelDeleteEmployee" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="431" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelUpdateCustomer" pref="623" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelAddCustomer" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="418" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelAddEmployee" min="-2" pref="427" max="-2" attributes="0"/>
-                              <EmptySpace pref="207" max="32767" attributes="0"/>
+                              <Component id="panelAddEmployee" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelUpdateEmployee" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="panelSearchCustomer" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="460" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="4" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelDeleteEmployee" pref="623" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelUpdateCustomer" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="174" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="panelUpdateEmployee" pref="708" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelSearchCustomer" pref="623" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelAddCarPart" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="74" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelAddService" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="161" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="view.panels.PanelSearchCustomer" name="panelSearchCustomer">
-                </Component>
                 <Component class="view.panels.PanelAddCustomer" name="panelAddCustomer">
-                </Component>
-                <Component class="view.panels.PanelUpdateCustomer" name="panelUpdateCustomer">
                 </Component>
                 <Component class="view.panels.PanelAddEmployee" name="panelAddEmployee">
                 </Component>
+                <Component class="view.panels.PanelDeleteEmployee" name="panelDeleteEmployee">
+                </Component>
+                <Component class="view.panels.PanelSearchCustomer" name="panelSearchCustomer">
+                </Component>
+                <Component class="view.panels.PanelUpdateCustomer" name="panelUpdateCustomer">
+                </Component>
                 <Component class="view.panels.PanelUpdateEmployee" name="panelUpdateEmployee">
                 </Component>
-                <Component class="view.panels.PanelDeleteEmployee" name="panelDeleteEmployee">
+                <Component class="view.panels.PanelAddCarPart" name="panelAddCarPart">
+                </Component>
+                <Component class="view.panels.PanelAddService" name="panelAddService">
                 </Component>
               </SubComponents>
             </Container>

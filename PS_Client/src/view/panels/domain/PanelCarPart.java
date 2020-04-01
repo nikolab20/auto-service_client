@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.panels;
+package view.panels.domain;
 
 import controller.Controller;
 import domain.Deo;
@@ -39,6 +39,7 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
         panelName = new view.panels.components.PanelLTS();
         panelManufacturer = new view.panels.components.PanelLTS();
         panelDescription = new view.panels.components.PanelLTaS();
+        panelStock = new view.panels.components.PanelLTS();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -52,11 +53,12 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
             .addGroup(panelCarPartLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelCarPartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelObjectOfSaleID, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
-                    .addComponent(panelSerialNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelManufacturer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(panelObjectOfSaleID, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(panelSerialNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(panelName, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(panelManufacturer, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(panelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelStock, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelCarPartLayout.setVerticalGroup(
@@ -72,6 +74,8 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
                 .addComponent(panelManufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -88,8 +92,8 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelCarPart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -101,6 +105,7 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
     private view.panels.components.PanelLTS panelName;
     private view.panels.components.PanelLTS panelObjectOfSaleID;
     private view.panels.components.PanelLTS panelSerialNumber;
+    private view.panels.components.PanelLTS panelStock;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
@@ -112,6 +117,16 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
         panelName.setElementText(resourceBundle.getString("part_name") + ":", "");
         panelManufacturer.setElementText(resourceBundle.getString("part_manufacturer") + ":", "");
         panelDescription.setElementText(resourceBundle.getString("part_description") + ":", "");
+        panelStock.setElementText(resourceBundle.getString("part_stock") + ":", "");
+    }
+    
+    public void clearPanel(){
+        panelObjectOfSaleID.clearPanel();
+        panelSerialNumber.clearPanel();
+        panelName.clearPanel();
+        panelManufacturer.clearPanel();
+        panelDescription.clearPanel();
+        panelStock.clearPanel();
     }
 
     @Override
@@ -121,8 +136,9 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
         String name = (String) panelName.getValue();
         String manufacturer = (String) panelManufacturer.getValue();
         String description = (String) panelDescription.getValue();
+        int stock = Integer.parseInt((String) panelStock.getValue());
 
-        Deo deo = new Deo(serialNumber, name, manufacturer, description, objectOfSaleID);
+        Deo deo = new Deo(serialNumber, name, manufacturer, description, stock, objectOfSaleID);
         return deo;
     }
 
@@ -134,6 +150,7 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
         panelName.setValue(deo.getNazivDela());
         panelManufacturer.setValue(deo.getProizvodjac());
         panelDescription.setValue(deo.getOpis());
+        panelStock.setValue(deo.getStanje());
     }
 
 }

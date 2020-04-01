@@ -23,7 +23,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelCarPart" max="32767" attributes="0"/>
+              <Component id="panelCustomer" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -32,21 +32,21 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelCarPart" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="panelCustomer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="panelCarPart">
+    <Container class="javax.swing.JPanel" name="panelCustomer">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Car part"/>
+            <TitledBorder title="Customer"/>
           </Border>
         </Property>
       </Properties>
@@ -57,11 +57,11 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelObjectOfSaleID" alignment="0" pref="729" max="32767" attributes="0"/>
-                      <Component id="panelSerialNumber" alignment="0" max="32767" attributes="0"/>
-                      <Component id="panelName" alignment="0" max="32767" attributes="0"/>
-                      <Component id="panelManufacturer" alignment="0" max="32767" attributes="0"/>
-                      <Component id="panelDescription" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="panelID" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelFirstName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelLastName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelNumOfVisits" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelDebt" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -71,30 +71,30 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelObjectOfSaleID" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelID" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelSerialNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelFirstName" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelName" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelLastName" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelManufacturer" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelNumOfVisits" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelDescription" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelDebt" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="view.panels.components.PanelLTS" name="panelObjectOfSaleID">
+        <Component class="view.panels.components.PanelLTS" name="panelID">
         </Component>
-        <Component class="view.panels.components.PanelLTS" name="panelSerialNumber">
+        <Component class="view.panels.components.PanelLTS" name="panelFirstName">
         </Component>
-        <Component class="view.panels.components.PanelLTS" name="panelName">
+        <Component class="view.panels.components.PanelLTS" name="panelLastName">
         </Component>
-        <Component class="view.panels.components.PanelLTS" name="panelManufacturer">
+        <Component class="view.panels.components.PanelLTS" name="panelNumOfVisits">
         </Component>
-        <Component class="view.panels.components.PanelLTaS" name="panelDescription">
+        <Component class="view.panels.components.PanelLTS" name="panelDebt">
         </Component>
       </SubComponents>
     </Container>

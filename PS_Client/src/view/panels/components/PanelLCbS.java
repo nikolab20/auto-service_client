@@ -44,6 +44,8 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
         label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         label.setText("label");
 
+        comboBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,6 +81,10 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
         for (Object comboBoxElement : comboBoxElements) {
             comboBox.addItem(comboBoxElement);
         }
+    }
+
+    public void clearPanel() {
+        comboBox.setSelectedIndex(0);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class PanelLTS extends javax.swing.JPanel implements iFormValue {
         label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         label.setText("label");
 
-        textField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        textField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         textField.setBorder(null);
 
         separator.setForeground(new java.awt.Color(0, 0, 0));
@@ -78,6 +78,10 @@ public class PanelLTS extends javax.swing.JPanel implements iFormValue {
     public void setElementText(String labelText, String textFieldString) {
         label.setText(labelText);
         textField.setText(textFieldString);
+    }
+    
+    public void clearPanel() {
+        this.setValue("");
     }
     
     public JLabel getLabel() {

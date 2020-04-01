@@ -24,15 +24,11 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelID" pref="658" max="32767" attributes="0"/>
-                  <Component id="panelFirstName" max="32767" attributes="0"/>
-                  <Component id="panelLastName" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelNumOfVisits" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelDebt" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panelNewCustomer" alignment="0" pref="423" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnClear" min="-2" pref="102" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAdd" min="-2" pref="102" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -42,17 +38,9 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelID" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelFirstName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelLastName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelNumOfVisits" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelDebt" min="-2" max="-2" attributes="0"/>
+              <Component id="panelNewCustomer" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -68,21 +56,19 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnClear">
       <Properties>
         <Property name="text" type="java.lang.String" value="Clear"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="view.panels.components.PanelLTBS" name="panelID">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelFirstName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelLastName">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelNumOfVisits">
-    </Component>
-    <Component class="view.panels.components.PanelLTS" name="panelDebt">
+    <Component class="view.panels.domain.PanelNewCustomer" name="panelNewCustomer">
     </Component>
   </SubComponents>
 </Form>

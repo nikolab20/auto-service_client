@@ -6,21 +6,27 @@
 package view.panels;
 
 import controller.Controller;
+import domain.Radnik;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import javax.swing.border.TitledBorder;
-import view.interf.iFormValue;
+import view.tablemodels.TableModelEmployees;
 
 /**
  *
  * @author nikol
  */
-public class PanelDeleteEmployee extends javax.swing.JPanel implements iFormValue {
+public class PanelDeleteEmployee extends javax.swing.JPanel {
+
+    private TableModelEmployees tme;
+    private List<Radnik> radnici;
 
     /**
      * Creates new form PanelDeleteEmployee
      */
     public PanelDeleteEmployee() {
         initComponents();
+        radnici = new ArrayList<>();
     }
 
     /**
@@ -32,49 +38,10 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements iFormValu
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelSearch = new javax.swing.JPanel();
-        panelCriteria = new view.panels.components.PanelTBS();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         btnDelete = new javax.swing.JButton();
+        panelSearch = new view.panels.domain.PanelSearch();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        panelSearch.setBackground(new java.awt.Color(255, 255, 255));
-        panelSearch.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout panelSearchLayout = new javax.swing.GroupLayout(panelSearch);
-        panelSearch.setLayout(panelSearchLayout);
-        panelSearchLayout.setHorizontalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(panelCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        panelSearchLayout.setVerticalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addComponent(panelCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         btnDelete.setText("button");
 
@@ -85,7 +52,7 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements iFormValu
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -105,27 +72,18 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements iFormValu
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private view.panels.components.PanelTBS panelCriteria;
-    private javax.swing.JPanel panelSearch;
+    private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        panelSearch.setBorder(new TitledBorder(resourceBundle.getString("customer_search_border")));
-
-        panelCriteria.setElementText(resourceBundle.getString("customer_btn_search"), "");
+        tme = new TableModelEmployees(radnici);
+        panelSearch.preparePanel(tme);
         btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
     }
-
-    @Override
-    public Object getValue() {
-       return null;
-    }
-
-    @Override
-    public void setValue(Object object) {
-        
+    
+    public void clearPanel(){
+        radnici.clear();
+        panelSearch.clearPanel(new TableModelEmployees(radnici));
     }
 }

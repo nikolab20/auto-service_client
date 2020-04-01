@@ -11,10 +11,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +24,7 @@ import javax.swing.JOptionPane;
  * @author nikol
  */
 public class FrmConfiguration extends javax.swing.JFrame {
-    
+
     private ResourceBundle resourceBundle;
 
     /**
@@ -220,18 +222,18 @@ public class FrmConfiguration extends javax.swing.JFrame {
         try {
             Controller.getInstance().setDefaultConfig(true);
             Properties properties = Controller.getInstance().readPropertiesFile();
-            
+
             txtHost.setEditable(false);
             txtHost.requestFocus();
             jSeparator1.setBackground(new Color(119, 118, 116));
             txtPort.setEditable(false);
             jSeparator2.setBackground(new Color(119, 118, 116));
-            
+
             txtHost.setText(properties.getProperty("default_host"));
             txtPort.setText(properties.getProperty("default_port"));
-            
+
             btnConnect.setEnabled(true);
-            
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, resourceBundle.getString("problemsWithFile"),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -240,12 +242,12 @@ public class FrmConfiguration extends javax.swing.JFrame {
 
     private void btnCustomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomMouseClicked
         Controller.getInstance().setDefaultConfig(false);
-        
+
         txtHost.setEditable(true);
         jSeparator1.setBackground(new Color(255, 255, 255));
         txtPort.setEditable(true);
         jSeparator2.setBackground(new Color(255, 255, 255));
-        
+
         txtHost.setText("");
         txtPort.setText("");
         btnConnect.setEnabled(true);
@@ -275,9 +277,9 @@ public class FrmConfiguration extends javax.swing.JFrame {
             if (!Controller.getInstance().isDefaultConfig()) {
                 Controller.getInstance().writeIntoPropertiesFile(txtHost.getText(), txtPort.getText());
             }
-            
+
             CommunicationController.getInstance().operationChooseLanguage(Controller.getInstance().getLocale());
-            
+
             lblUsername.setVisible(true);
             txtUsername.setVisible(true);
             jSeparator3.setVisible(true);
@@ -288,15 +290,15 @@ public class FrmConfiguration extends javax.swing.JFrame {
             btnLogin.setVisible(true);
             txtUsername.setEditable(true);
             txtPassword.setEditable(true);
-            
+
             txtHost.setEditable(false);
             txtPort.setEditable(false);
             btnCancel1.setVisible(false);
             btnConnect.setEnabled(false);
-            
+
             JOptionPane.showMessageDialog(this.getContentPane(), "Uspesna konekcija na server",
                     "Uspeh", JOptionPane.INFORMATION_MESSAGE);
-            
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, resourceBundle.getString("problemsWithFile"),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -335,10 +337,14 @@ public class FrmConfiguration extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void prepareView() {
+        URL imageUrl = ClassLoader.getSystemResource("img/transportation.png");
+        ImageIcon icon = new ImageIcon(imageUrl);
+        setIconImage(icon.getImage());
+
         setBackground(new Color(0, 0, 0, 0));
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
-        
+
         lblConfiguration.setText(resourceBundle.getString("client_lblConfiguration") + ":");
         Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnDefault") + ".png", btnDefault);
         Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCustom") + ".png", btnCustom);
@@ -350,7 +356,7 @@ public class FrmConfiguration extends javax.swing.JFrame {
         Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCancel") + ".png", btnCancel1);
         Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCancel") + ".png", btnCancel2);
         Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnConnect") + ".png", btnConnect);
-        
+
         lblUsername.setVisible(false);
         txtUsername.setVisible(false);
         jSeparator3.setVisible(false);

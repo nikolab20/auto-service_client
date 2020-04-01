@@ -5,8 +5,11 @@
  */
 package view.panels.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import listeners.CustomComponentListener;
 import view.interf.iFormValue;
 
 /**
@@ -14,6 +17,8 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelTBS extends javax.swing.JPanel implements iFormValue {
+    
+    private List<CustomComponentListener> customComponentListeners = new ArrayList<>();
 
     /**
      * Creates new form PanelTBS
@@ -39,10 +44,15 @@ public class PanelTBS extends javax.swing.JPanel implements iFormValue {
 
         separator.setForeground(new java.awt.Color(0, 0, 0));
 
-        textField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        textField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         textField.setBorder(null);
 
         button.setText("button");
+        button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,6 +75,10 @@ public class PanelTBS extends javax.swing.JPanel implements iFormValue {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionPerformed
+        clickButton();
+    }//GEN-LAST:event_buttonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button;
@@ -76,31 +90,44 @@ public class PanelTBS extends javax.swing.JPanel implements iFormValue {
         button.setText(buttonText);
         textField.setText(textFieldString);
     }
-
+    
+    public void clearPanel() {
+        this.setValue("");
+    }
+    
     public JButton getButton() {
         return button;
     }
-
+    
     public void setButton(JButton button) {
         this.button = button;
     }
-
+    
     public JTextField getTextField() {
         return textField;
     }
-
+    
     public void setTextField(JTextField textField) {
         this.textField = textField;
     }
-
+    
     @Override
     public Object getValue() {
         return textField.getText();
     }
-
+    
     @Override
     public void setValue(Object object) {
         textField.setText((String) object);
     }
-
+    
+    public void addListener(CustomComponentListener toAdd) {
+        customComponentListeners.add(toAdd);
+    }
+    
+    private void clickButton() {
+        for (CustomComponentListener customComponentListener : customComponentListeners) {
+            customComponentListener.pressButton();
+        }
+    }
 }

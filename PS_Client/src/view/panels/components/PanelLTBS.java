@@ -5,17 +5,22 @@
  */
 package view.panels.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import view.interf.iFormValue;
+import listeners.CustomComponentListener;
 
 /**
  *
  * @author nikol
  */
 public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
+
+    private List<CustomComponentListener> customComponentListeners = new ArrayList<>();
 
     /**
      * Creates new form PanelLTBS
@@ -44,9 +49,15 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
         label.setText("label");
 
         button.setText("button");
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonMouseClicked(evt);
+            }
+        });
 
-        textField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        textField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         textField.setBorder(null);
+        textField.setDisabledTextColor(new java.awt.Color(0, 0, 0));
 
         separator.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -75,6 +86,10 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonMouseClicked
+        clickButton();
+    }//GEN-LAST:event_buttonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button;
@@ -88,47 +103,60 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
         label.setText(labelText);
         textField.setText(textFieldString);
     }
-    
+
+    public void clearPanel() {
+        this.setValue("");
+    }
+
     public JButton getButton() {
         return button;
     }
-    
+
     public void setButton(JButton button) {
         this.button = button;
     }
-    
+
     public JLabel getLabel() {
         return label;
     }
-    
+
     public void setLabel(JLabel label) {
         this.label = label;
     }
-    
+
     public JSeparator getSeparator() {
         return separator;
     }
-    
+
     public void setSeparator(JSeparator separator) {
         this.separator = separator;
     }
-    
+
     public JTextField getTextField() {
         return textField;
     }
-    
+
     public void setTextField(JTextField textField) {
         this.textField = textField;
     }
-    
+
     @Override
     public Object getValue() {
         return textField.getText();
     }
-    
+
     @Override
     public void setValue(Object object) {
         textField.setText((String) object);
     }
-    
+
+    public void addListener(CustomComponentListener toAdd) {
+        customComponentListeners.add(toAdd);
+    }
+
+    private void clickButton() {
+        for (CustomComponentListener customComponentListener : customComponentListeners) {
+            customComponentListener.pressButton();
+        }
+    }
 }

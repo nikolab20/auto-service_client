@@ -22,4 +22,20 @@ public interface FormListener {
     void openUpdateEmployee();
 
     void openDeleteEmployee();
+
+    void openCarParts();
+
+    void openServices();
+
+    void openAddCarPart();
+
+    void openSearchCarPart();
+
+    void openDeleteCarPart();
+
+    void openAddService();
+
+    void openUpdateService();
+
+    void openDeleteService();
 }

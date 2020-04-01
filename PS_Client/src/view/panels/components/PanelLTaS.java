@@ -46,6 +46,7 @@ public class PanelLTaS extends javax.swing.JPanel implements iFormValue {
         separator.setForeground(new java.awt.Color(0, 0, 0));
 
         textArea.setColumns(20);
+        textArea.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
 
@@ -83,47 +84,51 @@ public class PanelLTaS extends javax.swing.JPanel implements iFormValue {
         label.setText(labelText);
         textArea.setText(textAreaString);
     }
-
+    
+    public void clearPanel() {
+        this.setValue("");
+    }
+    
     @Override
     public Object getValue() {
         return textArea.getText();
     }
-
+    
     @Override
     public void setValue(Object object) {
         textArea.setText((String) object);
     }
-
+    
     public JScrollPane getjScrollPane1() {
         return jScrollPane1;
     }
-
+    
     public void setjScrollPane1(JScrollPane jScrollPane1) {
         this.jScrollPane1 = jScrollPane1;
     }
-
+    
     public JLabel getLabel() {
         return label;
     }
-
+    
     public void setLabel(JLabel label) {
         this.label = label;
     }
-
+    
     public JSeparator getSeparator() {
         return separator;
     }
-
+    
     public void setSeparator(JSeparator separator) {
         this.separator = separator;
     }
-
+    
     public JTextArea getTextArea() {
         return textArea;
     }
-
+    
     public void setTextArea(JTextArea textArea) {
         this.textArea = textArea;
     }
-
+    
 }

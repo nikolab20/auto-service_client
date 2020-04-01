@@ -21,9 +21,9 @@ import java.util.Map;
 /**
  * @author nikol
  */
-
 /**
- * Provides methods for controlling client application and communication between client and server application.
+ * Provides methods for controlling client application and communication between
+ * client and server application.
  */
 public class CommunicationController {
 
@@ -33,18 +33,19 @@ public class CommunicationController {
     private static CommunicationController instance;
 
     /**
-     * A socket that it uses to communicate between the server and the client application.
+     * A socket that it uses to communicate between the server and the client
+     * application.
      */
     private Socket socket;
 
     /**
      * The worker which logged.
      *
-     * @return an object of class {@link Radnik} that represents a logged in worker.
+     * @return an object of class {@link Radnik} that represents a logged in
+     * worker.
      */
     //@Getter
     //private Radnik radnik;
-
     /**
      * Constructor for this class without parameters.
      */
@@ -71,7 +72,8 @@ public class CommunicationController {
     /**
      * Меthod for sending request to server application.
      *
-     * @param request is an object that contains the operation and the data required for this operation.
+     * @param request is an object that contains the operation and the data
+     * required for this operation.
      * @throws IOException if problems with stream arise.
      */
     private void sendRequest(RequestObject request) throws IOException {
@@ -83,9 +85,11 @@ public class CommunicationController {
     /**
      * Method for receiving a response from server.
      *
-     * @return an object that contains data as a result of the operation and an exception if it occurred.
-     * @throws IOException            if problems with stream arise.
-     * @throws ClassNotFoundException if object from stream con't cast to response object.
+     * @return an object that contains data as a result of the operation and an
+     * exception if it occurred.
+     * @throws IOException if problems with stream arise.
+     * @throws ClassNotFoundException if object from stream con't cast to
+     * response object.
      */
     private ResponseObject receiveResponse() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -127,7 +131,7 @@ public class CommunicationController {
 
     public DomainObject operationGenerate(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
-        request.setOperation(Operation.OPERATION_GENERATE_CUSTOMER);
+        request.setOperation(Operation.OPERATION_GENERATE);
         request.setData(odo);
 
         sendRequest(request);
@@ -141,9 +145,9 @@ public class CommunicationController {
         return odo;
     }
 
-    public Klijent operationAddCustomer(Klijent klijent) throws Exception {
+    public Klijent operationInsert(Klijent klijent) throws Exception {
         RequestObject request = new RequestObject();
-        request.setOperation(Operation.OPERATION_ADD_CUSTOMER);
+        request.setOperation(Operation.OPERATION_INSERT);
         request.setData(klijent);
 
         sendRequest(request);
@@ -172,10 +176,10 @@ public class CommunicationController {
         return customers;
     }
 
-    public void operationUpdateCustomer(Klijent klijent) throws Exception {
+    public DomainObject operationUpdate(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
-        request.setOperation(Operation.OPERATION_UPDATE_CUSTOMER);
-        request.setData(klijent);
+        request.setOperation(Operation.OPERATION_UPDATE);
+        request.setData(odo);
 
         sendRequest(request);
         ResponseObject response = receiveResponse();
@@ -183,6 +187,8 @@ public class CommunicationController {
         if (response.getException() != null) {
             throw response.getException();
         }
+
+        return (DomainObject) response.getData();
     }
 
 }

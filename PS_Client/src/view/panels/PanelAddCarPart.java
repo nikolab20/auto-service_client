@@ -30,9 +30,9 @@ public class PanelAddCarPart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelObjectOfSale = new view.panels.PanelObjectOfSale();
+        panelObjectOfSale = new view.panels.domain.PanelNewObjectOfSale();
         btnAddObject = new javax.swing.JButton();
-        panelCarPart = new view.panels.PanelCarPart();
+        panelCarPart = new view.panels.domain.PanelCarPart();
         btnAddPart = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -48,7 +48,7 @@ public class PanelAddCarPart extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE)
+                    .addComponent(panelCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                     .addComponent(panelObjectOfSale, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -76,8 +76,8 @@ public class PanelAddCarPart extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddObject;
     private javax.swing.JButton btnAddPart;
-    private view.panels.PanelCarPart panelCarPart;
-    private view.panels.PanelObjectOfSale panelObjectOfSale;
+    private view.panels.domain.PanelCarPart panelCarPart;
+    private view.panels.domain.PanelNewObjectOfSale panelObjectOfSale;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
@@ -88,5 +88,10 @@ public class PanelAddCarPart extends javax.swing.JPanel {
 
         btnAddObject.setText(resourceBundle.getString("part_button_add"));
         btnAddPart.setText(resourceBundle.getString("part_button_add"));
+    }
+
+    public void clearPanel() {
+        panelObjectOfSale.clearPanel();
+        panelCarPart.clearPanel();
     }
 }

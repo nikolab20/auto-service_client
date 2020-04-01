@@ -97,6 +97,10 @@ public class PanelL2RbS extends javax.swing.JPanel implements iFormValue {
         secondRadioButton.setText(secondRdbtnText);
     }
     
+    public void clearPanel() {
+        this.setValue(true);
+    }
+    
     public ButtonGroup getButtonGroup1() {
         return buttonGroup1;
     }

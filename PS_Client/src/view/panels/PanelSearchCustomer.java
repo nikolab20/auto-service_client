@@ -5,22 +5,32 @@
  */
 package view.panels;
 
-import controller.Controller;
-import java.util.ResourceBundle;
-import javax.swing.border.TitledBorder;
-import view.interf.iFormValue;
+import controller.CommunicationController;
+import domain.Klijent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
+import listeners.SearchListener;
+import view.tablemodels.TableModelClients;
 
 /**
  *
  * @author nikol
  */
-public class PanelSearchCustomer extends javax.swing.JPanel implements iFormValue {
+public class PanelSearchCustomer extends javax.swing.JPanel implements SearchListener {
+
+    private TableModelClients tmc;
+    private List<Klijent> klijenti;
 
     /**
      * Creates new form PanelSearchCustomer
      */
     public PanelSearchCustomer() {
         initComponents();
+        klijenti = new ArrayList<>();
     }
 
     /**
@@ -32,48 +42,9 @@ public class PanelSearchCustomer extends javax.swing.JPanel implements iFormValu
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelSearch = new javax.swing.JPanel();
-        panelCriteria = new view.panels.components.PanelTBS();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        panelSearch = new view.panels.domain.PanelSearch();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        panelSearch.setBackground(new java.awt.Color(255, 255, 255));
-        panelSearch.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout panelSearchLayout = new javax.swing.GroupLayout(panelSearch);
-        panelSearch.setLayout(panelSearchLayout);
-        panelSearchLayout.setHorizontalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(panelCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        panelSearchLayout.setVerticalGroup(
-            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSearchLayout.createSequentialGroup()
-                .addComponent(panelCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -81,7 +52,7 @@ public class PanelSearchCustomer extends javax.swing.JPanel implements iFormValu
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -95,25 +66,30 @@ public class PanelSearchCustomer extends javax.swing.JPanel implements iFormValu
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private view.panels.components.PanelTBS panelCriteria;
-    private javax.swing.JPanel panelSearch;
+    private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        panelSearch.setBorder(new TitledBorder(resourceBundle.getString("customer_search_border")));
-        panelCriteria.setElementText(resourceBundle.getString("customer_btn_search"), "");
+        tmc = new TableModelClients(klijenti);
+        panelSearch.preparePanel(tmc);
+        panelSearch.addListener(this);
+    }
+
+    public void clearPanel() {
+        klijenti.clear();
+        panelSearch.clearPanel(new TableModelClients(klijenti));
     }
 
     @Override
-    public Object getValue() {
-        return null;
+    public AbstractTableModel searchOdo(String criteria) throws Exception {
+        try {
+            klijenti = CommunicationController.getInstance().operationSearchCustomer(criteria);
+            JOptionPane.showMessageDialog(this, "Uspesno vraceni klijenti!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            return new TableModelClients(klijenti);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 
-    @Override
-    public void setValue(Object object) {
-
-    }
 }

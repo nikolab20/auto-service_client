@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.panels;
+package view.panels.domain;
 
 import controller.Controller;
 import domain.PoreskaStopa;
@@ -37,10 +37,10 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue 
     private void initComponents() {
 
         panelObjectOfSale = new javax.swing.JPanel();
-        panelID = new view.panels.components.PanelLTBS();
         panelPrice = new view.panels.components.PanelLTS();
         panelPriceWithTax = new view.panels.components.PanelLTS();
         panelTax = new view.panels.components.PanelLCbS();
+        panelID = new view.panels.components.PanelLTS();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -54,23 +54,24 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue 
             .addGroup(panelObjectOfSaleLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelObjectOfSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelTax, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE))
+                    .addComponent(panelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                    .addComponent(panelPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                    .addComponent(panelTax, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelObjectOfSaleLayout.setVerticalGroup(
             panelObjectOfSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelObjectOfSaleLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(panelID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addComponent(panelPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPriceWithTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -93,7 +94,7 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private view.panels.components.PanelLTBS panelID;
+    private view.panels.components.PanelLTS panelID;
     private javax.swing.JPanel panelObjectOfSale;
     private view.panels.components.PanelLTS panelPrice;
     private view.panels.components.PanelLTS panelPriceWithTax;
@@ -104,13 +105,19 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue 
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
         panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel")));
-        panelID.setElementText(resourceBundle.getString("sale_btn_generate"),
-                resourceBundle.getString("sale_object_of_sale_id" + ":"), "");
+        panelID.setElementText(resourceBundle.getString("sale_object_of_sale_id" + ":"), "");
         panelID.getTextField().setEnabled(false);
         panelPrice.setElementText(resourceBundle.getString("sale_price") + ":", "");
         panelPriceWithTax.setElementText(resourceBundle.getString("sale_price_with_tax") + ":", "");
 
         panelTax.setElementText(resourceBundle.getString("sale_tax") + ":", new ArrayList<>());
+    }
+
+    public void clearPanel() {
+        panelID.clearPanel();
+        panelPrice.clearPanel();
+        panelPriceWithTax.clearPanel();
+        panelTax.clearPanel();
     }
 
     @Override
@@ -133,5 +140,4 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue 
         panelPriceWithTax.setValue(objectOfSale.getCenaSaPorezom());
         panelTax.setValue(objectOfSale.getPoreskaStopa());
     }
-
 }

@@ -39,7 +39,7 @@ public class FrmLanguage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(350, 150));
+        setPreferredSize(new java.awt.Dimension(350, 200));
         getContentPane().setLayout(new java.awt.GridLayout(3, 2));
         getContentPane().add(jPanel1);
         getContentPane().add(jPanel3);

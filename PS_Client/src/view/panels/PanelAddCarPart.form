@@ -24,7 +24,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCarPart" pref="683" max="32767" attributes="0"/>
+                  <Component id="panelCarPart" pref="462" max="32767" attributes="0"/>
                   <Component id="panelObjectOfSale" pref="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -55,14 +55,14 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="view.panels.PanelObjectOfSale" name="panelObjectOfSale">
+    <Component class="view.panels.domain.PanelNewObjectOfSale" name="panelObjectOfSale">
     </Component>
     <Component class="javax.swing.JButton" name="btnAddObject">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add object"/>
       </Properties>
     </Component>
-    <Component class="view.panels.PanelCarPart" name="panelCarPart">
+    <Component class="view.panels.domain.PanelCarPart" name="panelCarPart">
     </Component>
     <Component class="javax.swing.JButton" name="btnAddPart">
       <Properties>
