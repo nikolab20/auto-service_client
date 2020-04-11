@@ -15,13 +15,13 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author nikol
  */
-public class TabelModelBillItem extends AbstractTableModel {
+public class TableModelBillItem extends AbstractTableModel {
 
     private List<StavkaRacuna> stavkeRacuna;
     private String[] columnNames;
     private ResourceBundle resourceBundle;
 
-    public TabelModelBillItem(List<StavkaRacuna> stavkeRacuna) {
+    public TableModelBillItem(List<StavkaRacuna> stavkeRacuna) {
         this.stavkeRacuna = stavkeRacuna;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         this.columnNames = new String[]{

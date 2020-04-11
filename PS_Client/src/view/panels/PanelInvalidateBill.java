@@ -7,7 +7,7 @@ package view.panels;
 
 import controller.CommunicationController;
 import controller.Controller;
-import domain.Radnik;
+import domain.Racun;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,24 +17,25 @@ import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
+import view.tablemodels.TableModelBill;
 import view.tablemodels.TableModelEmployees;
 
 /**
  *
  * @author nikol
  */
-public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchListener, TableListener {
-
-    private TableModelEmployees tme;
-    private List<Radnik> radnici;
-    private Radnik radnik;
+public class PanelInvalidateBill extends javax.swing.JPanel implements SearchListener, TableListener {
+    
+    private TableModelBill tmb;
+    private List<Racun> racuni;
+    private Racun racun;
 
     /**
-     * Creates new form PanelDeleteEmployee
+     * Creates new form PanelInvalidateBill
      */
-    public PanelDeleteEmployee() {
+    public PanelInvalidateBill() {
         initComponents();
-        radnici = new ArrayList<>();
+        racuni = new ArrayList<>();
     }
 
     /**
@@ -46,16 +47,16 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnDelete = new javax.swing.JButton();
         panelSearch = new view.panels.domain.PanelSearch();
+        btnInvalidate = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        btnDelete.setText("button");
-        btnDelete.setEnabled(false);
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+        btnInvalidate.setText("Invalidate");
+        btnInvalidate.setEnabled(false);
+        btnInvalidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
+                btnInvalidateActionPerformed(evt);
             }
         });
 
@@ -66,10 +67,10 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnInvalidate, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -78,50 +79,50 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
                 .addContainerGap()
                 .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete)
+                .addComponent(btnInvalidate)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+    private void btnInvalidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvalidateActionPerformed
         try {
-            radnik = (Radnik) CommunicationController.getInstance().operationDelete(radnik);
-            JOptionPane.showMessageDialog(this, "Uspesno obrisan radnik " + radnik.getImeRadnika()
-                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            racun.setStorniran(true);
+            racun = (Racun) CommunicationController.getInstance().operationUpdate(racun);
+            JOptionPane.showMessageDialog(null, "Uspesno storniran racun!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
             this.clearPanel();
-            btnDelete.setEnabled(false);
+            btnInvalidate.setEnabled(false);
         } catch (Exception ex) {
             Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    }//GEN-LAST:event_btnInvalidateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnInvalidate;
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        tme = new TableModelEmployees(radnici);
-        panelSearch.preparePanel(tme);
-        btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
+        tmb = new TableModelBill(racuni);
+        panelSearch.preparePanel(tmb);
+        btnInvalidate.setText(resourceBundle.getString("btn_invalidate"));
         panelSearch.addListener(this);
         panelSearch.addTableListener(this);
     }
 
     public void clearPanel() {
-        radnik = null;
-        radnici.clear();
-        panelSearch.clearPanel(new TableModelEmployees(radnici));
+        racun = null;
+        racuni.clear();
+        panelSearch.clearPanel(new TableModelBill(racuni));
     }
-
+    
     @Override
     public AbstractTableModel searchOdo(String criteria) throws Exception {
         try {
-            radnici = CommunicationController.getInstance().operationSearchEmployee(criteria);
-            JOptionPane.showMessageDialog(this, "Uspesno vraceni radnici!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
-            return new TableModelEmployees(radnici);
+            racuni = CommunicationController.getInstance().operationSearchBill(criteria);
+            JOptionPane.showMessageDialog(null, "Uspesno vraceni racuni!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            return new TableModelBill(racuni);
         } catch (Exception ex) {
             Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -130,7 +131,7 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
 
     @Override
     public void clickRow(int row) {
-        radnik = radnici.get(row);
-        btnDelete.setEnabled(true);
+        racun = racuni.get(row);
+        btnInvalidate.setEnabled(true);
     }
 }

@@ -24,11 +24,11 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelSearch" pref="570" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="btnDelete" min="-2" pref="102" max="-2" attributes="0"/>
+                      <Component id="btnInvalidate" min="-2" pref="102" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="panelSearch" alignment="0" pref="600" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -40,23 +40,23 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelSearch" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnDelete" min="-2" max="-2" attributes="0"/>
+              <Component id="btnInvalidate" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="btnDelete">
+    <Component class="view.panels.domain.PanelSearch" name="panelSearch">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnInvalidate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="button"/>
+        <Property name="text" type="java.lang.String" value="Invalidate"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInvalidateActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="view.panels.domain.PanelSearch" name="panelSearch">
     </Component>
   </SubComponents>
 </Form>

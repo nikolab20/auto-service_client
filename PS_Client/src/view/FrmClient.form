@@ -93,7 +93,7 @@
                   <Component id="btnInventory" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSettings" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace pref="147" max="32767" attributes="0"/>
+                  <EmptySpace pref="66" max="32767" attributes="0"/>
                   <Component id="btnExit" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -371,16 +371,25 @@
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="panelMarket" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCustomer" pref="568" max="32767" attributes="0"/>
+                  <Component id="panelCustomer" pref="487" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Component id="panelEmployee" alignment="1" pref="512" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
                       <Component id="panelInventory" alignment="0" pref="512" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
+                      <Component id="panelMarket" alignment="0" pref="568" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -391,6 +400,8 @@
             <Component class="view.panels.submenu.PanelEmployee" name="panelEmployee">
             </Component>
             <Component class="view.panels.submenu.PanelCustomer" name="panelCustomer">
+            </Component>
+            <Component class="view.panels.submenu.PanelMarket" name="panelMarket">
             </Component>
           </SubComponents>
         </Container>
@@ -473,7 +484,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="scrollPane" alignment="0" pref="726" max="32767" attributes="0"/>
+              <Component id="scrollPane" alignment="0" pref="713" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -506,7 +517,10 @@
                           <Component id="panelUpdateCustomer" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
-                          <Component id="panelUpdateEmployee" alignment="0" pref="710" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelUpdateEmployee" pref="700" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
                           <Component id="panelAddCarPart" alignment="0" pref="710" max="32767" attributes="0"/>
@@ -527,7 +541,10 @@
                           <Component id="panelDeleteService" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="12" groupAlignment="0" attributes="0">
-                          <Component id="panelMarket" alignment="0" pref="710" max="32767" attributes="0"/>
+                          <Component id="panelAddBill" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="13" groupAlignment="0" attributes="0">
+                          <Component id="panelInvalidateBill" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -562,7 +579,7 @@
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="panelUpdateEmployee" pref="761" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -605,8 +622,14 @@
                       </Group>
                       <Group type="103" rootIndex="12" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="panelMarket" min="-2" max="-2" attributes="0"/>
+                              <Component id="panelAddBill" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="399" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="13" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelInvalidateBill" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="708" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -637,7 +660,9 @@
                 </Component>
                 <Component class="view.panels.PanelDeleteService" name="panelDeleteService">
                 </Component>
-                <Component class="view.panels.PanelMarket" name="panelMarket">
+                <Component class="view.panels.PanelAddBill" name="panelAddBill">
+                </Component>
+                <Component class="view.panels.PanelInvalidateBill" name="panelInvalidateBill">
                 </Component>
               </SubComponents>
             </Container>

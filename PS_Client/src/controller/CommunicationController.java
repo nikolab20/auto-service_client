@@ -4,6 +4,7 @@ import domain.Deo;
 import domain.DomainObject;
 import domain.Klijent;
 import domain.PredmetProdaje;
+import domain.Racun;
 import domain.Radnik;
 import domain.StavkaRacuna;
 import domain.Usluga;
@@ -314,6 +315,22 @@ public class CommunicationController {
         if (response.getException() != null) {
             throw response.getException();
         }
+    }
+
+    public List<Racun> operationSearchBill(String criteria) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_BILL);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Racun> bills = (List<Racun>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return bills;
     }
 
 }

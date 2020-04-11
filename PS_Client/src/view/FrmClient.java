@@ -14,7 +14,7 @@ import listeners.FormListener;
 import lombok.Getter;
 import threads.AnimationMenuCloseThread;
 import threads.AnimationMenuThread;
-import view.tablemodels.TabelModelBillItem;
+import view.tablemodels.TableModelBillItem;
 
 /**
  *
@@ -50,6 +50,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelInventory = new view.panels.submenu.PanelInventory();
         panelEmployee = new view.panels.submenu.PanelEmployee();
         panelCustomer = new view.panels.submenu.PanelCustomer();
+        panelMarket = new view.panels.submenu.PanelMarket();
         panelHeader = new javax.swing.JPanel();
         lblIconUser = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
@@ -68,7 +69,8 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelSearchCarPart = new view.panels.PanelSearchCarPart();
         panelUpdateService = new view.panels.PanelUpdateService();
         panelDeleteService = new view.panels.PanelDeleteService();
-        panelMarket = new view.panels.PanelMarket();
+        panelAddBill = new view.panels.PanelAddBill();
+        panelInvalidateBill = new view.panels.PanelInvalidateBill();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(450, 450));
@@ -253,7 +255,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addComponent(btnInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -261,6 +263,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lpSubMenu.setLayer(panelInventory, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelEmployee, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpSubMenu.setLayer(panelMarket, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpSubMenuLayout = new javax.swing.GroupLayout(lpSubMenu);
         lpSubMenu.setLayout(lpSubMenuLayout);
@@ -275,14 +278,20 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addGroup(lpSubMenuLayout.createSequentialGroup()
                     .addComponent(panelInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpSubMenuLayout.createSequentialGroup()
+                    .addComponent(panelMarket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         lpSubMenuLayout.setVerticalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelEmployee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelMarket, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelSubMenuLayout = new javax.swing.GroupLayout(panelSubMenu);
@@ -351,7 +360,8 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lpContentPane.setLayer(panelSearchCarPart, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelUpdateService, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelDeleteService, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        lpContentPane.setLayer(panelMarket, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelAddBill, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelInvalidateBill, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpContentPaneLayout = new javax.swing.GroupLayout(lpContentPane);
         lpContentPane.setLayout(lpContentPaneLayout);
@@ -367,7 +377,9 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+                    .addContainerGap()))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelAddCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,7 +393,9 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelDeleteService, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelMarket, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddBill, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelInvalidateBill, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
         );
         lpContentPaneLayout.setVerticalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,7 +419,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                     .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 227, Short.MAX_VALUE)))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpContentPaneLayout.createSequentialGroup()
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,8 +448,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                     .addGap(0, 484, Short.MAX_VALUE)))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addComponent(panelMarket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAddBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 399, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelInvalidateBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 708, Short.MAX_VALUE)))
         );
 
         scrollPane.setViewportView(lpContentPane);
@@ -444,7 +462,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -553,9 +571,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnMarketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarketActionPerformed
-        panelMarket.clearPanel();
-        panelMarket.preparePanel();
-        openPanel(scrollPane, lpContentPane, panelMenu, panelMarket);
+        openSubmenu(lpSubMenu, panelMarket, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnMarketActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -570,6 +586,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private javax.swing.JLabel lblIconUser;
     private javax.swing.JLayeredPane lpContentPane;
     private javax.swing.JLayeredPane lpSubMenu;
+    private view.panels.PanelAddBill panelAddBill;
     private view.panels.PanelAddCarPart panelAddCarPart;
     private view.panels.PanelAddCustomer panelAddCustomer;
     private view.panels.PanelAddEmployee panelAddEmployee;
@@ -580,8 +597,9 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private view.panels.PanelDeleteService panelDeleteService;
     private view.panels.submenu.PanelEmployee panelEmployee;
     private javax.swing.JPanel panelHeader;
+    private view.panels.PanelInvalidateBill panelInvalidateBill;
     private view.panels.submenu.PanelInventory panelInventory;
-    private view.panels.PanelMarket panelMarket;
+    private view.panels.submenu.PanelMarket panelMarket;
     private javax.swing.JPanel panelMenu;
     private view.panels.PanelSearchCarPart panelSearchCarPart;
     private view.panels.PanelSearchCustomer panelSearchCustomer;
@@ -624,6 +642,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelCustomer.addListener(this);
         panelEmployee.addListener(this);
         panelInventory.addListener(this);
+        panelMarket.addListener(this);
     }
 
     private void setAllLayerInvisible(JLayeredPane jp) {
@@ -662,6 +681,9 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelSearchCarPart.preparePanel();
         panelUpdateService.preparePanel();
         panelDeleteService.preparePanel();
+        panelMarket.preparePanel();
+        panelAddBill.preparePanel();
+        panelInvalidateBill.preparePanel();
     }
 
     @Override
@@ -734,5 +756,17 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     public void openUpdateCarPart() {
         panelUpdateCarPart.clearPanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelUpdateCarPart);
+    }
+
+    @Override
+    public void openAddBill() {
+        panelAddBill.clearPanel();
+        openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddBill);
+    }
+
+    @Override
+    public void openInvalidateBill() {
+        panelInvalidateBill.clearPanel();
+        openPanel(scrollPane, lpContentPane, panelSubMenu, panelInvalidateBill);
     }
 }

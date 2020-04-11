@@ -27,25 +27,25 @@ import listeners.PayBillDialogListener;
 import view.FrmClient;
 import view.dialog.DialogChooseObjectOfSale;
 import view.dialog.DialogPayBill;
-import view.tablemodels.TabelModelBillItem;
+import view.tablemodels.TableModelBillItem;
 
 /**
  *
  * @author nikol
  */
-public class PanelMarket extends javax.swing.JPanel implements GenerateListener, ObjectOfSaleDialogListener, PayBillDialogListener {
+public class PanelAddBill extends javax.swing.JPanel implements GenerateListener, ObjectOfSaleDialogListener, PayBillDialogListener {
 
     private Racun racun;
     private Klijent klijent;
     private List<StavkaRacuna> stavkeRacuna;
     private DialogChooseObjectOfSale dialogChooseObjectOfSale;
     private DialogPayBill dialogPayBill;
-    private TabelModelBillItem tmbi;
+    private TableModelBillItem tmbi;
 
     /**
      * Creates new form PanelAddBill
      */
-    public PanelMarket() {
+    public PanelAddBill() {
         initComponents();
         stavkeRacuna = new ArrayList<>();
     }
@@ -178,7 +178,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
             btnAddBill.setEnabled(false);
             btnAddItem.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(PanelMarket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAddBillActionPerformed
 
@@ -199,7 +199,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
             btnAddItem.setVisible(false);
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelMarket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -230,7 +230,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
         btnCancel.setText(resourceBundle.getString("btn_cancel"));
         btnProcessBill.setText(resourceBundle.getString("btn_process"));
         panelBill.addListener(this);
-        tmbi = new TabelModelBillItem(stavkeRacuna);
+        tmbi = new TableModelBillItem(stavkeRacuna);
         tableBillItems.setModel(tmbi);
         panelBill.preparePanel();
         btnCancel.setVisible(false);
@@ -242,7 +242,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
     public void clearPanel() {
         stavkeRacuna.clear();
         panelBill.clearPanel();
-        tmbi = new TabelModelBillItem(stavkeRacuna);
+        tmbi = new TableModelBillItem(stavkeRacuna);
         tableBillItems.setModel(tmbi);
     }
 
@@ -283,7 +283,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
             CommunicationController.getInstance().operationInsertListOfDomainObject(stavkeRacuna);
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelMarket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -298,7 +298,7 @@ public class PanelMarket extends javax.swing.JPanel implements GenerateListener,
             CommunicationController.getInstance().operationInsertListOfDomainObject(stavkeRacuna);
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelMarket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
