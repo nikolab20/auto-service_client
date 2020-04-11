@@ -1,5 +1,6 @@
 package controller;
 
+import domain.Klijent;
 import domain.Radnik;
 import lombok.Getter;
 import lombok.Setter;
@@ -89,10 +90,8 @@ public class Controller {
      * @param form is the form tuned by this method.
      * @param mainPanel is the content panel of this form.
      */
-    public void defaultPrepareForm(JFrame form, JPanel mainPanel, Dimension dimension) {
+    public void defaultPrepareForm(JFrame form) {
         form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        form.setContentPane(mainPanel);
-        form.setPreferredSize(dimension);
         form.pack();
         form.setLocationRelativeTo(null);
         URL imageUrl = ClassLoader.getSystemResource("img/transportation.png");
@@ -130,7 +129,7 @@ public class Controller {
         button.setToolTipText(resourceBundle.getString("client_" + name + "_toolTip"));
     }
 
-    public void generateRandomString() {
+    public String generateRandomString() {
         int leftLimit = 48;
         int rightLimit = 122;
         int targetStringLength = 12;
@@ -142,6 +141,6 @@ public class Controller {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
-        System.out.println(generatedString);
+        return generatedString;
     }
 }

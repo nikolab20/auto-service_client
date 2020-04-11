@@ -6,6 +6,7 @@
 package view.panels.domain;
 
 import controller.Controller;
+import events.ClickButtonEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,7 +24,7 @@ import listeners.TableListener;
  * @author nikol
  */
 public class PanelSearch extends javax.swing.JPanel implements iFormValue, CustomComponentListener {
-    
+
     private List<SearchListener> searchListeners = new ArrayList<>();
     private List<TableListener> tableListeners = new ArrayList<>();
 
@@ -128,33 +129,33 @@ public class PanelSearch extends javax.swing.JPanel implements iFormValue, Custo
         panelCriteria.addListener(this);
         table.setModel(tableModel);
     }
-    
+
     public void clearPanel(AbstractTableModel tableModel) {
         panelCriteria.clearPanel();
         table.setModel(tableModel);
     }
-    
+
     @Override
     public Object getValue() {
         return table.getSelectedRow();
     }
-    
+
     @Override
     public void setValue(Object object) {
         AbstractTableModel tableModel = (AbstractTableModel) object;
         table.setModel(tableModel);
     }
-    
+
     public void addListener(SearchListener toAdd) {
         searchListeners.add(toAdd);
     }
-    
+
     public void addTableListener(TableListener toAdd) {
         tableListeners.add(toAdd);
     }
-    
+
     @Override
-    public void pressButton() {
+    public void pressButton(ClickButtonEvent evt) {
         for (SearchListener searchListener : searchListeners) {
             try {
                 AbstractTableModel tableModel = searchListener.searchOdo((String) panelCriteria.getValue());
@@ -165,7 +166,7 @@ public class PanelSearch extends javax.swing.JPanel implements iFormValue, Custo
             }
         }
     }
-    
+
     private void clickTable(int row) {
         for (TableListener tableListener : tableListeners) {
             tableListener.clickRow(row);

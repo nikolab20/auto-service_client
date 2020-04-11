@@ -35,7 +35,7 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
 
         panelService = new javax.swing.JPanel();
         panelObjectOfSaleID = new view.panels.components.PanelLTS();
-        panelSerialNumber = new view.panels.components.PanelLTS();
+        panelID = new view.panels.components.PanelLTS();
         panelName = new view.panels.components.PanelLTS();
         panelDescription = new view.panels.components.PanelLTaS();
 
@@ -52,7 +52,7 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
                 .addContainerGap()
                 .addGroup(panelServiceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelObjectOfSaleID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelSerialNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -63,7 +63,7 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
                 .addContainerGap()
                 .addComponent(panelObjectOfSaleID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -92,9 +92,9 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private view.panels.components.PanelLTaS panelDescription;
+    private view.panels.components.PanelLTS panelID;
     private view.panels.components.PanelLTS panelName;
     private view.panels.components.PanelLTS panelObjectOfSaleID;
-    private view.panels.components.PanelLTS panelSerialNumber;
     private javax.swing.JPanel panelService;
     // End of variables declaration//GEN-END:variables
 
@@ -102,35 +102,38 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
         panelService.setBorder(new TitledBorder(resourceBundle.getString("service_panel")));
+        panelObjectOfSaleID.getTextField().setEnabled(false);
+        panelID.getTextField().setEnabled(false);
         panelObjectOfSaleID.setElementText(resourceBundle.getString("service_object_of_sale_id") + ":", "");
-        panelSerialNumber.setElementText(resourceBundle.getString("service_service_id"), "");
+        panelObjectOfSaleID.getTextField().setEnabled(false);
+        panelID.setElementText(resourceBundle.getString("service_service_id"), "");
         panelName.setElementText(resourceBundle.getString("service_name") + ":", "");
         panelDescription.setElementText(resourceBundle.getString("service_description") + ":", "");
     }
 
     public void clearPanel() {
         panelObjectOfSaleID.clearPanel();
-        panelSerialNumber.clearPanel();
+        panelID.clearPanel();
         panelName.clearPanel();
         panelDescription.clearPanel();
     }
 
     @Override
     public Object getValue() {
-        long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
-        long serviceID = new Long((String) panelSerialNumber.getValue());
+        //long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
+        long serviceID = new Long((String) panelID.getValue());
         String name = (String) panelName.getValue();
         String description = (String) panelDescription.getValue();
 
-        Usluga usluga = new Usluga(serviceID, name, description, objectOfSaleID);
+        Usluga usluga = new Usluga(serviceID, name, description, null);
         return usluga;
     }
 
     @Override
     public void setValue(Object object) {
         Usluga usluga = (Usluga) object;
-        panelObjectOfSaleID.setValue(usluga.getSifraPredmetaProdaje());
-        panelSerialNumber.setValue(usluga.getSifraUsluge());
+        panelObjectOfSaleID.setValue(usluga.getPredmetProdaje().getSifraPredmetaProdaje() + "");
+        panelID.setValue(usluga.getSifraUsluge() + "");
         panelName.setValue(usluga.getNazivUsluge());
         panelDescription.setValue(usluga.getOpisUsluge());
     }

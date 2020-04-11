@@ -133,8 +133,7 @@ public class PanelCustomer extends javax.swing.JPanel implements iFormValue {
         int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
         BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
         
-        Klijent klijent = new Klijent(firstName, lastName, numOfVisits, debt);
-        klijent.setSifraKlijenta(id);
+        Klijent klijent = new Klijent(id, firstName, lastName, numOfVisits, debt);
         
         return klijent;
     }

@@ -8,20 +8,15 @@ package view.panels;
 import controller.CommunicationController;
 import controller.Controller;
 import domain.Klijent;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
-import listeners.CustomComponentListener;
 import listeners.SearchListener;
 import listeners.TableListener;
-import view.interf.iFormValue;
 import view.tablemodels.TableModelClients;
 
 /**

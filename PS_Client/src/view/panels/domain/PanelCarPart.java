@@ -113,14 +113,16 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
 
         panelCarPart.setBorder(new TitledBorder(resourceBundle.getString("part_panel")));
         panelObjectOfSaleID.setElementText(resourceBundle.getString("part_object_of_sale_id") + ":", "");
+        panelObjectOfSaleID.getTextField().setEnabled(false);
         panelSerialNumber.setElementText(resourceBundle.getString("part_serial_number"), "");
+        panelSerialNumber.getTextField().setEnabled(false);
         panelName.setElementText(resourceBundle.getString("part_name") + ":", "");
         panelManufacturer.setElementText(resourceBundle.getString("part_manufacturer") + ":", "");
         panelDescription.setElementText(resourceBundle.getString("part_description") + ":", "");
         panelStock.setElementText(resourceBundle.getString("part_stock") + ":", "");
     }
-    
-    public void clearPanel(){
+
+    public void clearPanel() {
         panelObjectOfSaleID.clearPanel();
         panelSerialNumber.clearPanel();
         panelName.clearPanel();
@@ -131,26 +133,26 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
 
     @Override
     public Object getValue() {
-        long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
+        //long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
         long serialNumber = new Long((String) panelSerialNumber.getValue());
         String name = (String) panelName.getValue();
         String manufacturer = (String) panelManufacturer.getValue();
         String description = (String) panelDescription.getValue();
         int stock = Integer.parseInt((String) panelStock.getValue());
 
-        Deo deo = new Deo(serialNumber, name, manufacturer, description, stock, objectOfSaleID);
+        Deo deo = new Deo(serialNumber, name, manufacturer, description, stock, null);
         return deo;
     }
 
     @Override
     public void setValue(Object object) {
         Deo deo = (Deo) object;
-        panelObjectOfSaleID.setValue(deo.getSifraPredmetaProdaje());
-        panelSerialNumber.setValue(deo.getSerijskiBroj());
+        panelObjectOfSaleID.setValue(deo.getPredmetProdaje().getSifraPredmetaProdaje() + "");
+        panelSerialNumber.setValue(deo.getSerijskiBroj() + "");
         panelName.setValue(deo.getNazivDela());
         panelManufacturer.setValue(deo.getProizvodjac());
         panelDescription.setValue(deo.getOpis());
-        panelStock.setValue(deo.getStanje());
+        panelStock.setValue(deo.getStanje() + "");
     }
 
 }

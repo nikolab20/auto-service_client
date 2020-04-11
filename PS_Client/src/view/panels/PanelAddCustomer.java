@@ -97,7 +97,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
         try {
             Klijent klijent = (Klijent) panelNewCustomer.getValue();
             klijent = (Klijent) CommunicationController.getInstance().operationUpdate(klijent);
-            JOptionPane.showMessageDialog(this, "Uspesno insertovan klijent " + klijent.getImeKlijenta()
+            JOptionPane.showMessageDialog(null, "Uspesno insertovan klijent " + klijent.getImeKlijenta()
                     + " " + klijent.getPrezimeKlijenta() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
             panelNewCustomer.clearPanel();
             btnAdd.setEnabled(false);
@@ -130,7 +130,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
     public DomainObject generateOdo(DomainObject domainObject) throws Exception {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(this, "Uspesno generisan klijent!",
+            JOptionPane.showMessageDialog(null, "Uspesno generisan klijent!",
                     "Uspeh", JOptionPane.INFORMATION_MESSAGE);
             btnAdd.setEnabled(true);
             btnClear.setEnabled(true);

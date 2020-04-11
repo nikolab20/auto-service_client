@@ -1,10 +1,12 @@
 package controller;
 
+import domain.Deo;
 import domain.DomainObject;
 import domain.Klijent;
+import domain.PredmetProdaje;
 import domain.Radnik;
-import lombok.Getter;
-import lombok.Setter;
+import domain.StavkaRacuna;
+import domain.Usluga;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.Operation;
@@ -70,7 +72,7 @@ public class CommunicationController {
     }
 
     /**
-     * Меthod for sending request to server application.
+     * Method for sending request to server application.
      *
      * @param request is an object that contains the operation and the data
      * required for this operation.
@@ -88,7 +90,7 @@ public class CommunicationController {
      * @return an object that contains data as a result of the operation and an
      * exception if it occurred.
      * @throws IOException if problems with stream arise.
-     * @throws ClassNotFoundException if object from stream con't cast to
+     * @throws ClassNotFoundException if object from stream can't cast to
      * response object.
      */
     private ResponseObject receiveResponse() throws IOException, ClassNotFoundException {
@@ -145,10 +147,26 @@ public class CommunicationController {
         return odo;
     }
 
-    public Klijent operationInsert(Klijent klijent) throws Exception {
+    public DomainObject operationInsert(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_INSERT);
-        request.setData(klijent);
+        request.setData(odo);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        odo = (DomainObject) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return odo;
+    }
+
+    public DomainObject operationUpdate(DomainObject odo) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_UPDATE);
+        request.setData(odo);
 
         sendRequest(request);
         ResponseObject response = receiveResponse();
@@ -157,7 +175,22 @@ public class CommunicationController {
             throw response.getException();
         }
 
-        return klijent;
+        return (DomainObject) response.getData();
+    }
+
+    public DomainObject operationDelete(DomainObject odo) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_DELETE);
+        request.setData(odo);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (DomainObject) response.getData();
     }
 
     public List<Klijent> operationSearchCustomer(String criteria) throws Exception {
@@ -176,10 +209,25 @@ public class CommunicationController {
         return customers;
     }
 
-    public DomainObject operationUpdate(DomainObject odo) throws Exception {
+    public List<Radnik> operationSearchEmployee(String criteria) throws Exception {
         RequestObject request = new RequestObject();
-        request.setOperation(Operation.OPERATION_UPDATE);
-        request.setData(odo);
+        request.setOperation(Operation.OPERATION_SEARCH_EMPLOYEE);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Radnik> radnici = (List<Radnik>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return radnici;
+    }
+
+    public List<DomainObject> operationSelectAllTax() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_TAX);
 
         sendRequest(request);
         ResponseObject response = receiveResponse();
@@ -188,7 +236,84 @@ public class CommunicationController {
             throw response.getException();
         }
 
-        return (DomainObject) response.getData();
+        return (List<DomainObject>) response.getData();
+    }
+
+    public List<Deo> operationSearchCarPart(String criteria) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_CAR_PART);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Deo> parts = (List<Deo>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return parts;
+    }
+
+    public List<Usluga> operationSearchService(String criteria) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_SERVICE);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Usluga> services = (List<Usluga>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return services;
+    }
+
+    public PredmetProdaje operationSearchObjectOfSale(Long criteria) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_OBJECT_OF_SALE);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        PredmetProdaje predmetProdaje = (PredmetProdaje) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return predmetProdaje;
+    }
+
+    public Map<DomainObject, String> operationGetAllObjectOfSale(String criteria) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_GET_ALL_OBJECT_OF_SALES);
+        request.setData(criteria);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        Map<DomainObject, String> predmetiProdaje = (HashMap<DomainObject, String>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return predmetiProdaje;
+    }
+
+    public void operationInsertListOfDomainObject(List<? extends DomainObject> listOdo) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_INSERT_LIST);
+        request.setData(listOdo);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
     }
 
 }

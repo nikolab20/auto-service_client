@@ -5,21 +5,29 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
 import domain.Radnik;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
+import listeners.SearchListener;
+import listeners.TableListener;
 import view.tablemodels.TableModelEmployees;
 
 /**
  *
  * @author nikol
  */
-public class PanelDeleteEmployee extends javax.swing.JPanel {
+public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchListener, TableListener {
 
     private TableModelEmployees tme;
     private List<Radnik> radnici;
+    private Radnik radnik;
 
     /**
      * Creates new form PanelDeleteEmployee
@@ -44,6 +52,12 @@ public class PanelDeleteEmployee extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnDelete.setText("button");
+        btnDelete.setEnabled(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -69,6 +83,18 @@ public class PanelDeleteEmployee extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        try {
+            radnik = (Radnik) CommunicationController.getInstance().operationDelete(radnik);
+            JOptionPane.showMessageDialog(this, "Uspesno obrisan radnik " + radnik.getImeRadnika()
+                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            this.clearPanel();
+            btnDelete.setEnabled(false);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
@@ -80,10 +106,32 @@ public class PanelDeleteEmployee extends javax.swing.JPanel {
         tme = new TableModelEmployees(radnici);
         panelSearch.preparePanel(tme);
         btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
+        panelSearch.addListener(this);
+        panelSearch.addTableListener(this);
     }
-    
-    public void clearPanel(){
+
+    public void clearPanel() {
+        radnik = null;
         radnici.clear();
         panelSearch.clearPanel(new TableModelEmployees(radnici));
+    }
+
+    @Override
+    public AbstractTableModel searchOdo(String criteria) throws Exception {
+        try {
+            radnici = CommunicationController.getInstance().operationSearchEmployee(criteria);
+            JOptionPane.showMessageDialog(this, "Uspesno vraceni radnici!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            return new TableModelEmployees(radnici);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void clickRow(int row) {
+        radnik = radnici.get(row);
+        btnDelete.setEnabled(true);
+        btnDelete.setEnabled(true);
     }
 }

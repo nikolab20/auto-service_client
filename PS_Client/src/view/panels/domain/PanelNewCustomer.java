@@ -8,19 +8,17 @@ package view.panels.domain;
 import controller.Controller;
 import domain.DomainObject;
 import domain.Klijent;
+import events.ClickButtonEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import listeners.CustomComponentListener;
 import listeners.GenerateListener;
 import view.interf.iFormValue;
-import view.panels.components.PanelLTBS;
-import view.panels.components.PanelLTS;
 
 /**
  *
@@ -148,8 +146,7 @@ public class PanelNewCustomer extends javax.swing.JPanel implements iFormValue, 
         int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
         BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
 
-        Klijent klijent = new Klijent(firstName, lastName, numOfVisits, debt);
-        klijent.setSifraKlijenta(id);
+        Klijent klijent = new Klijent(id, firstName, lastName, numOfVisits, debt);
 
         return klijent;
     }
@@ -169,7 +166,7 @@ public class PanelNewCustomer extends javax.swing.JPanel implements iFormValue, 
     }
 
     @Override
-    public void pressButton() {
+    public void pressButton(ClickButtonEvent evt) {
         for (GenerateListener generateListener : generateListeners) {
             try {
                 DomainObject odo = generateListener.generateOdo(new Klijent());

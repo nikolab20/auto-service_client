@@ -5,21 +5,30 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
+import domain.Klijent;
 import domain.Radnik;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import listeners.SearchListener;
+import listeners.TableListener;
 import view.interf.iFormValue;
+import view.tablemodels.TableModelClients;
 import view.tablemodels.TableModelEmployees;
 
 /**
  *
  * @author nikol
  */
-public class PanelUpdateEmployee extends javax.swing.JPanel {
-    
+public class PanelUpdateEmployee extends javax.swing.JPanel implements SearchListener, TableListener {
+
     private TableModelEmployees tme;
     private List<Radnik> radnici;
 
@@ -47,6 +56,11 @@ public class PanelUpdateEmployee extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -75,6 +89,19 @@ public class PanelUpdateEmployee extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        try {
+            Radnik radnik = (Radnik) panelEmployee.getValue();
+            radnik = (Radnik) CommunicationController.getInstance().operationUpdate(radnik);
+            JOptionPane.showMessageDialog(this, "Uspesno izmenjen radnik " + radnik.getImeRadnika()
+                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            this.clearPanel();
+            btnUpdate.setEnabled(false);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdate;
@@ -88,11 +115,32 @@ public class PanelUpdateEmployee extends javax.swing.JPanel {
         tme = new TableModelEmployees(radnici);
         panelSearch.preparePanel(tme);
         panelEmployee.preparePanel();
+        panelSearch.addListener(this);
+        panelSearch.addTableListener(this);
     }
-    
+
     public void clearPanel() {
         radnici.clear();
         panelEmployee.clearPanel();
         panelSearch.clearPanel(new TableModelEmployees(radnici));
+    }
+
+    @Override
+    public AbstractTableModel searchOdo(String criteria) throws Exception {
+        try {
+            radnici = CommunicationController.getInstance().operationSearchEmployee(criteria);
+            JOptionPane.showMessageDialog(this, "Uspesno vraceni radnici!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            return new TableModelEmployees(radnici);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void clickRow(int row) {
+        Radnik radnik = radnici.get(row);
+        panelEmployee.setValue(radnik);
+        btnUpdate.setEnabled(true);
     }
 }

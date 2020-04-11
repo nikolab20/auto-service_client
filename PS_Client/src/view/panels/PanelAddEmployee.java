@@ -5,16 +5,23 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
+import domain.DomainObject;
 import domain.Radnik;
 import java.util.ResourceBundle;
-import view.interf.iFormValue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import listeners.GenerateListener;
+import listeners.PasswordListener;
+import view.FrmClient;
 
 /**
  *
  * @author nikol
  */
-public class PanelAddEmployee extends javax.swing.JPanel {
+public class PanelAddEmployee extends javax.swing.JPanel implements GenerateListener, PasswordListener {
 
     /**
      * Creates new form PanelAddEmployee
@@ -39,8 +46,18 @@ public class PanelAddEmployee extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -70,6 +87,24 @@ public class PanelAddEmployee extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        panelNewEmployee.clearPanel();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try {
+            Radnik radnik = (Radnik) panelNewEmployee.getValue();
+            radnik = (Radnik) CommunicationController.getInstance().operationUpdate(radnik);
+            JOptionPane.showMessageDialog(this, "Uspesno insertovan radnik " + radnik.getImeRadnika()
+                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            panelNewEmployee.clearPanel();
+            btnAdd.setEnabled(false);
+            btnClear.setEnabled(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -82,9 +117,31 @@ public class PanelAddEmployee extends javax.swing.JPanel {
         btnAdd.setText(resourceBundle.getString("employee_btn_add"));
         btnClear.setText(resourceBundle.getString("employee_btn_clear"));
         panelNewEmployee.preparePanel();
+        panelNewEmployee.addListener(this);
+        panelNewEmployee.addPasswordListener(this);
     }
-    
-    public void clearPanel(){
+
+    public void clearPanel() {
         panelNewEmployee.clearPanel();
+    }
+
+    @Override
+    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+        try {
+            DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
+            JOptionPane.showMessageDialog(this, "Uspesno generisan radnik!",
+                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            btnAdd.setEnabled(true);
+            btnClear.setEnabled(true);
+            return odo;
+        } catch (Exception ex) {
+            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public String generatePassword() {
+        return Controller.getInstance().generateRandomString();
     }
 }

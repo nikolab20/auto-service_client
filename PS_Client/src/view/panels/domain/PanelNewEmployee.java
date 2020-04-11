@@ -6,16 +6,29 @@
 package view.panels.domain;
 
 import controller.Controller;
+import domain.DomainObject;
+import domain.Klijent;
 import domain.Radnik;
+import events.ClickButtonEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
+import listeners.CustomComponentListener;
+import listeners.GenerateListener;
+import listeners.PasswordListener;
 import view.interf.iFormValue;
 
 /**
  *
  * @author nikol
  */
-public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue {
+public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue, CustomComponentListener {
+
+    private List<GenerateListener> generateListeners = new ArrayList<>();
+    private List<PasswordListener> passwordListeners = new ArrayList<>();
 
     /**
      * Creates new form PanelNewEmployee
@@ -143,6 +156,9 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue {
         panelUsername.setElementText(resourceBundle.getString("employee_username") + ":", "");
         panelPassword.setElementText(resourceBundle.getString("employee_btn_generate"),
                 resourceBundle.getString("employee_password") + ":", "");
+
+        panelID.addListener(this);
+        panelPassword.addListener(this);
     }
 
     public void clearPanel() {
@@ -169,10 +185,17 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue {
         String username = (String) panelUsername.getValue();
         String password = (String) panelPassword.getValue();
 
-        Radnik radnik = new Radnik(firstName, lastName, address, phoneNumber, identificationNumber, administrator, username, password);
-        radnik.setSifraRadnika(id);
+        Radnik radnik = new Radnik(id, firstName, lastName, address, phoneNumber, identificationNumber, administrator, username, password);
 
         return radnik;
+    }
+
+    public void addListener(GenerateListener toAdd) {
+        generateListeners.add(toAdd);
+    }
+
+    public void addPasswordListener(PasswordListener toAdd) {
+        passwordListeners.add(toAdd);
     }
 
     @Override
@@ -187,5 +210,28 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue {
         panelAdministrator.setValue(radnik.isAdministrator());
         panelUsername.setValue(radnik.getUsername());
         panelPassword.setValue(radnik.getPassword());
+    }
+
+    @Override
+    public void pressButton(ClickButtonEvent evt) {
+        if (evt.getSource() == panelID) {
+            for (GenerateListener generateListener : generateListeners) {
+                try {
+                    DomainObject odo = generateListener.generateOdo(new Radnik());
+                    panelID.setValue(odo.getObjectId() + "");
+                } catch (Exception ex) {
+                    Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            for (PasswordListener passwordListener : passwordListeners) {
+                try {
+                    String pass = passwordListener.generatePassword();
+                    panelPassword.setValue(pass);
+                } catch (Exception ex) {
+                    Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 }

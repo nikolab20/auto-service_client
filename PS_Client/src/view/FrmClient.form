@@ -93,7 +93,7 @@
                   <Component id="btnInventory" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSettings" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace pref="57" max="32767" attributes="0"/>
+                  <EmptySpace pref="147" max="32767" attributes="0"/>
                   <Component id="btnExit" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -130,8 +130,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCustomerMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCustomerMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCustomerActionPerformed"/>
           </Events>
         </Component>
@@ -164,8 +164,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEmployeeMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEmployeeMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEmployeeActionPerformed"/>
           </Events>
         </Component>
@@ -198,8 +198,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnMarketMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnMarketMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMarketActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnExcel">
@@ -231,8 +232,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExcelMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExcelMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnInventory">
@@ -264,8 +265,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInventoryMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInventoryMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInventoryActionPerformed"/>
           </Events>
         </Component>
@@ -298,8 +299,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSettingsMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSettingsMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnExit">
@@ -331,8 +332,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExitMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExitMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mouseExited"/>
           </Events>
         </Component>
       </SubComponents>
@@ -374,7 +375,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCustomer" pref="478" max="32767" attributes="0"/>
+                  <Component id="panelCustomer" pref="568" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Component id="panelEmployee" alignment="1" pref="512" max="32767" attributes="0"/>
                   </Group>
@@ -457,7 +458,7 @@
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnMenuMouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMenuActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -472,17 +473,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="548" max="32767" attributes="0"/>
+              <Component id="scrollPane" alignment="0" pref="726" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
+              <Component id="scrollPane" alignment="0" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+        <Container class="javax.swing.JScrollPane" name="scrollPane">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
@@ -491,27 +492,42 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelDeleteEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
+                      <Component id="panelDeleteEmployee" alignment="0" pref="710" max="32767" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Component id="panelAddCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelAddCustomer" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                          <Component id="panelAddEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelAddEmployee" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
-                          <Component id="panelSearchCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelSearchCustomer" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="4" groupAlignment="0" attributes="0">
-                          <Component id="panelUpdateCustomer" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelUpdateCustomer" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
-                          <Component id="panelUpdateEmployee" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelUpdateEmployee" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
-                          <Component id="panelAddCarPart" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelAddCarPart" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
-                          <Component id="panelAddService" alignment="0" pref="548" max="32767" attributes="0"/>
+                          <Component id="panelAddService" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
+                          <Component id="panelUpdateCarPart" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
+                          <Component id="panelSearchCarPart" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="10" groupAlignment="0" attributes="0">
+                          <Component id="panelUpdateService" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="11" groupAlignment="0" attributes="0">
+                          <Component id="panelDeleteService" alignment="0" pref="710" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" rootIndex="12" groupAlignment="0" attributes="0">
+                          <Component id="panelMarket" alignment="0" pref="710" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -519,48 +535,78 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="panelDeleteEmployee" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="431" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="708" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelAddCustomer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="418" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="470" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelAddEmployee" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="315" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelSearchCustomer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="460" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="513" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="4" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelUpdateCustomer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="174" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="227" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="5" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="panelUpdateEmployee" pref="708" max="32767" attributes="0"/>
+                              <Component id="panelUpdateEmployee" pref="761" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelAddCarPart" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="74" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" rootIndex="7" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelAddService" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="161" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="211" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="8" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelUpdateCarPart" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="135" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="9" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelSearchCarPart" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="513" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="10" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelUpdateService" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="211" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="11" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelDeleteService" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="484" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" rootIndex="12" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelMarket" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="399" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -582,6 +628,16 @@
                 <Component class="view.panels.PanelAddCarPart" name="panelAddCarPart">
                 </Component>
                 <Component class="view.panels.PanelAddService" name="panelAddService">
+                </Component>
+                <Component class="view.panels.PanelUpdateCarPart" name="panelUpdateCarPart">
+                </Component>
+                <Component class="view.panels.PanelSearchCarPart" name="panelSearchCarPart">
+                </Component>
+                <Component class="view.panels.PanelUpdateService" name="panelUpdateService">
+                </Component>
+                <Component class="view.panels.PanelDeleteService" name="panelDeleteService">
+                </Component>
+                <Component class="view.panels.PanelMarket" name="panelMarket">
                 </Component>
               </SubComponents>
             </Container>

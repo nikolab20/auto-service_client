@@ -167,8 +167,7 @@ public class PanelEmployee extends javax.swing.JPanel implements iFormValue {
         String username = (String) panelUsername.getValue();
         String password = (String) panelPassword.getValue();
 
-        Radnik radnik = new Radnik(firstName, lastName, address, phoneNumber, identificationNumber, administrator, username, password);
-        radnik.setSifraRadnika(id);
+        Radnik radnik = new Radnik(id, firstName, lastName, address, phoneNumber, identificationNumber, administrator, username, password);
 
         return radnik;
     }
@@ -176,7 +175,7 @@ public class PanelEmployee extends javax.swing.JPanel implements iFormValue {
     @Override
     public void setValue(Object object) {
         Radnik radnik = (Radnik) object;
-        panelID.setValue(radnik.getSifraRadnika());
+        panelID.setValue(radnik.getSifraRadnika() + "");
         panelFirstName.setValue(radnik.getImeRadnika());
         panelLastName.setValue(radnik.getPrezimeRadnika());
         panelAddress.setValue(radnik.getAdresa());

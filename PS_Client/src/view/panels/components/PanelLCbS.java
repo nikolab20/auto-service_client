@@ -5,10 +5,15 @@
  */
 package view.panels.components;
 
+import domain.DomainObject;
+import events.SelectionChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import listeners.ComboBoxListener;
 import view.interf.iFormValue;
 
 /**
@@ -16,6 +21,8 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
+
+    private List<ComboBoxListener> comboBoxListeners = new ArrayList<>();
 
     /**
      * Creates new form PaneaLCbS
@@ -45,6 +52,11 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
         label.setText("label");
 
         comboBox.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        comboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,6 +80,10 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
+        changeSelection();
+    }//GEN-LAST:event_comboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Object> comboBox;
@@ -75,12 +91,17 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 
-    public void setElementText(String labelText, List<Object> comboBoxElements) {
+    public void setElementText(String labelText, List<DomainObject> comboBoxElements) {
         label.setText(labelText);
 
-        for (Object comboBoxElement : comboBoxElements) {
+        for (DomainObject comboBoxElement : comboBoxElements) {
             comboBox.addItem(comboBoxElement);
         }
+    }
+
+    public void setElementText(String labelText, DefaultComboBoxModel cbModel) {
+        label.setText(labelText);
+        comboBox.setModel(cbModel);
     }
 
     public void clearPanel() {
@@ -119,6 +140,16 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
 
     public void setSeparator(JSeparator separator) {
         this.separator = separator;
+    }
+
+    public void addListener(ComboBoxListener toAdd) {
+        comboBoxListeners.add(toAdd);
+    }
+
+    private void changeSelection() {
+        for (ComboBoxListener comboBoxListener : comboBoxListeners) {
+            comboBoxListener.onChangeSelected(new SelectionChangeEvent(this));
+        }
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package view.panels.components;
 
+import events.ClickButtonEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -156,7 +157,7 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
 
     private void clickButton() {
         for (CustomComponentListener customComponentListener : customComponentListeners) {
-            customComponentListener.pressButton();
+            customComponentListener.pressButton(new ClickButtonEvent(this));
         }
     }
 }

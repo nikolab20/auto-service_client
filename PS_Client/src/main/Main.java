@@ -1,9 +1,11 @@
 package main;
 
 import controller.Controller;
+import javax.swing.JFrame;
 import view.FrmClient;
 import view.FrmLanguage;
 import view.SplashScreen;
+import view.dialog.MessageDialog;
 
 public class Main {
 
@@ -20,6 +22,7 @@ public class Main {
         new FrmLanguage().setVisible(true);
         splashScreen.dispose();
 
-//        new FrmClient().setVisible(true);
+        //new MessageDialog(new JFrame(), true).setVisible(true);
+        //new FrmClient().setVisible(true);
     }
 }

@@ -58,7 +58,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="panelObjectOfSaleID" alignment="0" max="32767" attributes="0"/>
-                      <Component id="panelSerialNumber" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelID" alignment="0" max="32767" attributes="0"/>
                       <Component id="panelName" alignment="0" max="32767" attributes="0"/>
                       <Component id="panelDescription" alignment="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -72,7 +72,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="panelObjectOfSaleID" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelSerialNumber" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelID" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="panelName" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -85,7 +85,7 @@
       <SubComponents>
         <Component class="view.panels.components.PanelLTS" name="panelObjectOfSaleID">
         </Component>
-        <Component class="view.panels.components.PanelLTS" name="panelSerialNumber">
+        <Component class="view.panels.components.PanelLTS" name="panelID">
         </Component>
         <Component class="view.panels.components.PanelLTS" name="panelName">
         </Component>

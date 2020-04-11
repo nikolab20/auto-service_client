@@ -5,14 +5,25 @@
  */
 package view.panels;
 
+import controller.CommunicationController;
 import controller.Controller;
+import domain.DomainObject;
+import domain.PredmetProdaje;
+import domain.Usluga;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import listeners.GenerateListener;
+import view.FrmClient;
 
 /**
  *
  * @author nikol
  */
-public class PanelAddService extends javax.swing.JPanel {
+public class PanelAddService extends javax.swing.JPanel implements GenerateListener {
+
+    private PredmetProdaje predmetProdaje;
 
     /**
      * Creates new form PanelAddService
@@ -38,8 +49,18 @@ public class PanelAddService extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnAddObject.setText("Add object");
+        btnAddObject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddObjectActionPerformed(evt);
+            }
+        });
 
         btnAddService.setText("Add service");
+        btnAddService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServiceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -72,6 +93,36 @@ public class PanelAddService extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddObjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddObjectActionPerformed
+        try {
+            predmetProdaje = (PredmetProdaje) panelObjectOfSale.getValue();
+            predmetProdaje = (PredmetProdaje) CommunicationController.getInstance().operationUpdate(predmetProdaje);
+            JOptionPane.showMessageDialog(null, "Uspesno insertovan predmet prodaje!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            btnAddObject.setEnabled(false);
+            panelObjectOfSale.clearPanel();
+            Usluga usluga = new Usluga();
+            usluga.setPredmetProdaje(predmetProdaje);
+            usluga = (Usluga) CommunicationController.getInstance().operationInsert(usluga);
+            panelService.setValue(usluga);
+            btnAddService.setEnabled(true);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddObjectActionPerformed
+
+    private void btnAddServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServiceActionPerformed
+        try {
+            Usluga usluga = (Usluga) panelService.getValue();
+            usluga.setPredmetProdaje(predmetProdaje);
+            usluga = (Usluga) CommunicationController.getInstance().operationUpdate(usluga);
+            JOptionPane.showMessageDialog(null, "Uspesno insertovana usluga " + usluga.getNazivUsluge() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            btnAddService.setEnabled(false);
+            panelService.clearPanel();
+        } catch (Exception ex) {
+            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddServiceActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddObject;
@@ -81,17 +132,35 @@ public class PanelAddService extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelObjectOfSale.preparePanel();
-        panelService.preparePanel();
-
-        btnAddObject.setText(resourceBundle.getString("part_button_add"));
-        btnAddService.setText(resourceBundle.getString("part_button_add"));
+            panelObjectOfSale.preparePanel(CommunicationController.getInstance().operationSelectAllTax());
+            panelService.preparePanel();
+            panelObjectOfSale.addListener(this);
+            btnAddObject.setText(resourceBundle.getString("part_button_add"));
+            btnAddService.setText(resourceBundle.getString("part_button_add"));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     public void clearPanel() {
         panelObjectOfSale.clearPanel();
         panelService.clearPanel();
+    }
+
+    @Override
+    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+        try {
+            DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
+            JOptionPane.showMessageDialog(null, "Uspesno generisan predmet prodaje!",
+                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            btnAddObject.setEnabled(true);
+            return odo;
+        } catch (Exception ex) {
+            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 }

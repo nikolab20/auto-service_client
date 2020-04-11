@@ -37,8 +37,13 @@ public class PanelInventory extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        btnParts = new javax.swing.JButton();
-        btnServices = new javax.swing.JButton();
+        btnAddPart = new javax.swing.JButton();
+        btnEditPart = new javax.swing.JButton();
+        btnSearchPart = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        btnAddService = new javax.swing.JButton();
+        btnEditService = new javax.swing.JButton();
+        btnDeleteService = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 52, 57));
 
@@ -46,31 +51,87 @@ public class PanelInventory extends javax.swing.JPanel {
         lblTitle.setForeground(new java.awt.Color(255, 255, 255));
         lblTitle.setText("INVENTORY");
 
-        btnParts.setBackground(new java.awt.Color(51, 52, 57));
-        btnParts.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnParts.setForeground(new java.awt.Color(255, 255, 255));
-        btnParts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/car.png"))); // NOI18N
-        btnParts.setText("Car parts");
-        btnParts.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnParts.setFocusPainted(false);
-        btnParts.setIconTextGap(5);
-        btnParts.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPartsMouseClicked(evt);
+        btnAddPart.setBackground(new java.awt.Color(51, 52, 57));
+        btnAddPart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddPart.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddPart.setText("Add part");
+        btnAddPart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnAddPart.setFocusPainted(false);
+        btnAddPart.setIconTextGap(10);
+        btnAddPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPartActionPerformed(evt);
             }
         });
 
-        btnServices.setBackground(new java.awt.Color(51, 52, 57));
-        btnServices.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnServices.setForeground(new java.awt.Color(255, 255, 255));
-        btnServices.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/customer-support.png"))); // NOI18N
-        btnServices.setText("Services");
-        btnServices.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btnServices.setFocusPainted(false);
-        btnServices.setIconTextGap(10);
-        btnServices.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnEditPart.setBackground(new java.awt.Color(51, 52, 57));
+        btnEditPart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditPart.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pencil.png"))); // NOI18N
+        btnEditPart.setText("Edit part");
+        btnEditPart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnEditPart.setFocusPainted(false);
+        btnEditPart.setIconTextGap(10);
+        btnEditPart.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnServicesMouseClicked(evt);
+                btnEditPartMouseClicked(evt);
+            }
+        });
+
+        btnSearchPart.setBackground(new java.awt.Color(51, 52, 57));
+        btnSearchPart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSearchPart.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        btnSearchPart.setText("Search part");
+        btnSearchPart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnSearchPart.setFocusPainted(false);
+        btnSearchPart.setIconTextGap(10);
+        btnSearchPart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchPartMouseClicked(evt);
+            }
+        });
+
+        btnAddService.setBackground(new java.awt.Color(51, 52, 57));
+        btnAddService.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddService.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddService.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/plus.png"))); // NOI18N
+        btnAddService.setText("Add service");
+        btnAddService.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnAddService.setFocusPainted(false);
+        btnAddService.setIconTextGap(10);
+        btnAddService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServiceActionPerformed(evt);
+            }
+        });
+
+        btnEditService.setBackground(new java.awt.Color(51, 52, 57));
+        btnEditService.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditService.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditService.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pencil.png"))); // NOI18N
+        btnEditService.setText("Edit service");
+        btnEditService.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnEditService.setFocusPainted(false);
+        btnEditService.setIconTextGap(10);
+        btnEditService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditServiceActionPerformed(evt);
+            }
+        });
+
+        btnDeleteService.setBackground(new java.awt.Color(51, 52, 57));
+        btnDeleteService.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDeleteService.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteService.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/trash.png"))); // NOI18N
+        btnDeleteService.setText("Delete service");
+        btnDeleteService.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnDeleteService.setFocusPainted(false);
+        btnDeleteService.setIconTextGap(10);
+        btnDeleteService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteServiceActionPerformed(evt);
             }
         });
 
@@ -82,11 +143,16 @@ public class PanelInventory extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addComponent(btnParts, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                    .addComponent(btnServices, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTitle)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnAddPart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditPart, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(btnSearchPart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator2)
+                    .addComponent(btnAddService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditService, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(btnDeleteService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -97,49 +163,108 @@ public class PanelInventory extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnParts, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAddPart, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnServices, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addComponent(btnEditPart, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSearchPart, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAddService, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditService, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeleteService, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPartsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPartsMouseClicked
-        openCarParts();
-    }//GEN-LAST:event_btnPartsMouseClicked
+    private void btnEditPartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditPartMouseClicked
+        openUpdateCarPart();
+    }//GEN-LAST:event_btnEditPartMouseClicked
 
-    private void btnServicesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnServicesMouseClicked
-        openServices();
-    }//GEN-LAST:event_btnServicesMouseClicked
+    private void btnSearchPartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchPartMouseClicked
+        openSearchCarPart();
+    }//GEN-LAST:event_btnSearchPartMouseClicked
+
+    private void btnAddPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPartActionPerformed
+        openAddCarParts();
+    }//GEN-LAST:event_btnAddPartActionPerformed
+
+    private void btnAddServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServiceActionPerformed
+        openAddServices();
+    }//GEN-LAST:event_btnAddServiceActionPerformed
+
+    private void btnEditServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditServiceActionPerformed
+        openUpdateService();
+    }//GEN-LAST:event_btnEditServiceActionPerformed
+
+    private void btnDeleteServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteServiceActionPerformed
+        openDeleteService();
+    }//GEN-LAST:event_btnDeleteServiceActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnParts;
-    private javax.swing.JButton btnServices;
+    private javax.swing.JButton btnAddPart;
+    private javax.swing.JButton btnAddService;
+    private javax.swing.JButton btnDeleteService;
+    private javax.swing.JButton btnEditPart;
+    private javax.swing.JButton btnEditService;
+    private javax.swing.JButton btnSearchPart;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
     public void preparePanel() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         lblTitle.setText(resourceBundle.getString("inventory_submenu_title"));
-        btnParts.setText(resourceBundle.getString("inventory_submenu_parts"));
-        btnServices.setText(resourceBundle.getString("inventory_submenu_services"));
+        btnAddPart.setText(resourceBundle.getString("car_parts_submenu_add"));
+        btnEditPart.setText(resourceBundle.getString("car_parts_submenu_update"));
+        btnSearchPart.setText(resourceBundle.getString("car_parts_submenu_search"));
+        btnAddService.setText(resourceBundle.getString("service_submenu_add"));
+        btnDeleteService.setText(resourceBundle.getString("service_submenu_delete"));
+        btnEditService.setText(resourceBundle.getString("service_submenu_update"));
     }
 
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
 
-    private void openCarParts() {
+    private void openAddCarParts() {
         for (FormListener formListener : formListeners) {
-            formListener.openCarParts();
+            formListener.openAddCarPart();
         }
     }
 
-    private void openServices() {
+    private void openAddServices() {
         for (FormListener formListener : formListeners) {
-            formListener.openServices();
+            formListener.openAddService();
+        }
+    }
+
+    private void openUpdateCarPart() {
+        for (FormListener formListener : formListeners) {
+            formListener.openUpdateCarPart();
+        }
+    }
+
+    private void openSearchCarPart() {
+        for (FormListener formListener : formListeners) {
+            formListener.openSearchCarPart();
+        }
+    }
+
+    private void openUpdateService() {
+        for (FormListener formListener : formListeners) {
+            formListener.openUpdateService();
+        }
+    }
+
+    private void openDeleteService() {
+        for (FormListener formListener : formListeners) {
+            formListener.openDeleteService();
         }
     }
 }

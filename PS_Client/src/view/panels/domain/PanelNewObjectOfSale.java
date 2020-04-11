@@ -6,19 +6,32 @@
 package view.panels.domain;
 
 import controller.Controller;
+import domain.DomainObject;
 import domain.PoreskaStopa;
 import domain.PredmetProdaje;
+import events.ClickButtonEvent;
+import events.SelectionChangeEvent;
+import events.TextEnterEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
+import listeners.ComboBoxListener;
+import listeners.CustomComponentListener;
+import listeners.GenerateListener;
+import listeners.TextFieldListener;
 import view.interf.iFormValue;
 
 /**
  *
  * @author nikol
  */
-public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormValue {
+public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormValue, CustomComponentListener, TextFieldListener, ComboBoxListener {
+
+    private List<GenerateListener> generateListeners = new ArrayList<>();
 
     /**
      * Creates new form PanelObjectOfSale
@@ -54,10 +67,10 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
             .addGroup(panelObjectOfSaleLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelObjectOfSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
-                    .addComponent(panelTax, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE))
+                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(panelPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(panelPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(panelTax, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelObjectOfSaleLayout.setVerticalGroup(
@@ -100,24 +113,31 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
     private view.panels.components.PanelLCbS panelTax;
     // End of variables declaration//GEN-END:variables
 
-    public void preparePanel() {
+    public void preparePanel(List<DomainObject> toComboBox) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
         panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel")));
         panelID.setElementText(resourceBundle.getString("sale_btn_generate"),
-                resourceBundle.getString("sale_object_of_sale_id" + ":"), "");
+                resourceBundle.getString("sale_object_of_sale_id") + ":", "");
         panelID.getTextField().setEnabled(false);
-        panelPrice.setElementText(resourceBundle.getString("sale_price") + ":", "");
-        panelPriceWithTax.setElementText(resourceBundle.getString("sale_price_with_tax") + ":", "");
-
-        panelTax.setElementText(resourceBundle.getString("sale_tax") + ":", new ArrayList<>());
+        panelID.addListener(this);
+        panelPrice.setElementText(resourceBundle.getString("sale_price") + ":", "0");
+        panelPriceWithTax.setElementText(resourceBundle.getString("sale_price_with_tax") + ":", "0");
+        panelPriceWithTax.getTextField().setEditable(false);
+        panelTax.setElementText(resourceBundle.getString("sale_tax") + ":", toComboBox);
+        panelPrice.addListener(this);
+        panelTax.addListener(this);
     }
 
     public void clearPanel() {
         panelID.clearPanel();
-        panelPrice.clearPanel();
-        panelPriceWithTax.clearPanel();
+        panelPrice.setValue("0");
+        panelPriceWithTax.setValue("0");
         panelTax.clearPanel();
+    }
+
+    public void addListener(GenerateListener toAdd) {
+        generateListeners.add(toAdd);
     }
 
     @Override
@@ -127,8 +147,8 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
         BigDecimal priceWithTax = new BigDecimal((String) panelPriceWithTax.getValue());
         PoreskaStopa tax = (PoreskaStopa) panelTax.getValue();
 
-        PredmetProdaje objectOfSale = new PredmetProdaje(price, priceWithTax, tax);
-        objectOfSale.setSifraPredmetaProdaje(id);
+        PredmetProdaje objectOfSale = new PredmetProdaje(id, price, priceWithTax, tax);
+
         return objectOfSale;
     }
 
@@ -139,6 +159,34 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
         panelPrice.setValue(objectOfSale.getCena());
         panelPriceWithTax.setValue(objectOfSale.getCenaSaPorezom());
         panelTax.setValue(objectOfSale.getPoreskaStopa());
+    }
+
+    @Override
+    public void pressButton(ClickButtonEvent evt) {
+        for (GenerateListener generateListener : generateListeners) {
+            try {
+                DomainObject odo = generateListener.generateOdo(new PredmetProdaje());
+                panelID.setValue(odo.getObjectId() + "");
+            } catch (Exception ex) {
+                Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void onInputText(TextEnterEvent evt) {
+        PoreskaStopa poreskaStopa = (PoreskaStopa) panelTax.getValue();
+        BigDecimal value = poreskaStopa.getVrednost();
+        BigDecimal input = new BigDecimal((String) panelPrice.getValue());
+        panelPriceWithTax.setValue(input.add(value.multiply(input)) + "");
+    }
+
+    @Override
+    public void onChangeSelected(SelectionChangeEvent evt) {
+        PoreskaStopa poreskaStopa = (PoreskaStopa) panelTax.getValue();
+        BigDecimal value = poreskaStopa.getVrednost();
+        BigDecimal input = new BigDecimal((String) panelPrice.getValue());
+        panelPriceWithTax.setValue(input.add(value.multiply(input)) + "");
     }
 
 }
