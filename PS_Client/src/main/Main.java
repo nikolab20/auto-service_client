@@ -1,11 +1,7 @@
 package main;
 
-import controller.Controller;
-import javax.swing.JFrame;
-import view.FrmClient;
 import view.FrmLanguage;
 import view.SplashScreen;
-import view.dialog.MessageDialog;
 
 public class Main {
 

@@ -59,11 +59,11 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
 
         panelBill = new javax.swing.JPanel();
         panelID = new view.panels.components.PanelLTBS();
-        panelDate = new view.panels.components.PanelLTS();
         panelTotalPrice = new view.panels.components.PanelLTS();
         panelTotalPriceWithTax = new view.panels.components.PanelLTS();
         panelWorker = new view.panels.components.PanelLTS();
         panelCustomer = new view.panels.components.PanelLTBS();
+        panelDate = new view.panels.components.PanelLDpS();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -77,12 +77,12 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
             .addGroup(panelBillLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                    .addComponent(panelDate, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                    .addComponent(panelTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                    .addComponent(panelTotalPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                    .addComponent(panelWorker, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                    .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE))
+                    .addComponent(panelID, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addComponent(panelTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelTotalPriceWithTax, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelWorker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelBillLayout.setVerticalGroup(
@@ -125,7 +125,7 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel panelBill;
     private view.panels.components.PanelLTBS panelCustomer;
-    private view.panels.components.PanelLTS panelDate;
+    private view.panels.components.PanelLDpS panelDate;
     private view.panels.components.PanelLTBS panelID;
     private view.panels.components.PanelLTS panelTotalPrice;
     private view.panels.components.PanelLTS panelTotalPriceWithTax;
@@ -139,7 +139,7 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
         panelBill.setBorder(new TitledBorder(resourceBundle.getString("bill_border")));
         panelID.setElementText(resourceBundle.getString("sale_btn_generate"),
                 resourceBundle.getString("bill_id") + ":", "");
-        panelDate.setElementText(resourceBundle.getString("bill_date") + ":", "");
+        panelDate.setElementText(resourceBundle.getString("bill_date") + ":", new Date());
         panelTotalPrice.setElementText(resourceBundle.getString("bill_total_price") + ":", "");
         panelTotalPriceWithTax.setElementText(resourceBundle.getString("bill_total_price_with_tax") + ":", "");
         panelWorker.setElementText(resourceBundle.getString("bill_worker") + ":", "");
@@ -150,7 +150,7 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
         panelTotalPrice.getTextField().setEnabled(false);
         panelTotalPriceWithTax.getTextField().setEnabled(false);
         panelWorker.getTextField().setEnabled(false);
-        panelDate.getTextField().setEnabled(false);
+        panelDate.getDatePicker().setEnabled(false);
 
         panelID.addListener(this);
         panelCustomer.addListener(this);
@@ -177,7 +177,7 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
                 try {
                     DomainObject odo = generateListener.generateOdo(new Racun());
                     panelID.setValue(odo.getObjectId() + "");
-                    panelDate.setValue(new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+                    panelDate.setValue(new Date());
                     panelTotalPrice.setValue("0");
                     panelTotalPriceWithTax.setValue("0");
                     Radnik radnik = Controller.getInstance().getRadnik();
@@ -193,26 +193,20 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
 
     @Override
     public Object getValue() {
-        try {
-            Long id = Long.parseLong((String) panelID.getValue());
-            Date date = new SimpleDateFormat("dd.MM.yyyy").parse((String) panelDate.getValue());
-            BigDecimal price = new BigDecimal((String) panelTotalPrice.getValue());
-            BigDecimal priceWithTax = new BigDecimal((String) panelTotalPriceWithTax.getValue());
-            Radnik radnik = Controller.getInstance().getRadnik();
+        Long id = Long.parseLong((String) panelID.getValue());
+        Date date = (Date) panelDate.getValue();
+        BigDecimal price = new BigDecimal((String) panelTotalPrice.getValue());
+        BigDecimal priceWithTax = new BigDecimal((String) panelTotalPriceWithTax.getValue());
+        Radnik radnik = Controller.getInstance().getRadnik();
 
-            return new Racun(id, date, price, priceWithTax, false, false, radnik, klijent);
-
-        } catch (ParseException ex) {
-            Logger.getLogger(PanelBill.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        return new Racun(id, date, price, priceWithTax, false, false, radnik, klijent);
     }
 
     @Override
     public void setValue(Object object) {
         Racun racun = (Racun) object;
         panelID.setValue(racun.getBrojRacuna() + "");
-        panelDate.setValue(new SimpleDateFormat("dd.MM.yyyy").format(racun.getDatumIzdavanja()));
+        panelDate.setValue(racun.getDatumIzdavanja());
         panelTotalPrice.setValue(racun.getUkupnaVrednost() + "");
         panelTotalPriceWithTax.setValue(racun.getUkupnaVrednostSaPorezom() + "");
         panelWorker.setValue(racun.getRadnik().getImeRadnika() + " " + racun.getRadnik().getPrezimeRadnika());

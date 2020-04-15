@@ -1,19 +1,42 @@
 package controller;
 
 import domain.Klijent;
+import domain.Racun;
 import domain.Radnik;
+import java.io.File;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 import java.util.ResourceBundle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderExtent;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.ss.util.PropertyTemplate;
+import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Controller {
 
@@ -142,5 +165,261 @@ public class Controller {
                 .toString();
 
         return generatedString;
+    }
+
+    public void saveReportBillFromDate(List<Racun> racuni, String path) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Sheet1");
+            String[] columnNames = new String[]{"Redni broj", "Broj racuna", "Datum izdavanja",
+                "Ukupna vrednost (RSD)", "Ukupna vrednost sa porezom (RSD)", "Klijent",
+                "Radnik"};
+
+            makeTitle(sheet, "Izvestaj", 0, 6, IndexedColors.GREY_25_PERCENT.getIndex(), FillPatternType.ALT_BARS,
+                    IndexedColors.WHITE.getIndex(), true, workbook);
+
+            Row row = sheet.createRow(1);
+            createHeader(row, columnNames);
+
+            defaultSetCellOfRow(row, workbook, IndexedColors.BLUE_GREY.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                    IndexedColors.WHITE.getIndex(), true);
+
+            int rownum = 2;
+            for (Racun racun : racuni) {
+                row = sheet.createRow(rownum++);
+                createCellsBill(racun, row, rownum - 2);
+            }
+
+            PropertyTemplate pt = new PropertyTemplate();
+            pt.drawBorders(new CellRangeAddress(0, rownum - 1, 0, 6),
+                    BorderStyle.THIN, BorderExtent.ALL);
+            pt.applyBorders(sheet);
+
+            for (int i = 2; i <= sheet.getPhysicalNumberOfRows() - 1; i++) {
+                defaultSetCellOfRow(sheet.getRow(i), workbook, IndexedColors.WHITE.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                        IndexedColors.BLACK.getIndex(), false);
+            }
+
+            rownum += 1;
+            row = sheet.createRow(rownum);
+
+            Cell cell = row.createCell(0);
+            cell.setCellValue("Total:");
+
+            setFormulaToCell("SUM(D" + 3 + ":D" + (rownum - 1) + ")", row, 3);
+            setFormulaToCell("SUM(E" + 3 + ":E" + (rownum - 1) + ")", row, 4);
+
+            pt.drawBorders(new CellRangeAddress(rownum, rownum, 0, 6),
+                    BorderStyle.THIN, BorderExtent.ALL);
+            pt.applyBorders(sheet);
+
+            defaultSetCellOfRow(sheet.getRow(rownum), workbook, IndexedColors.GREY_25_PERCENT.getIndex(), FillPatternType.ALT_BARS,
+                    IndexedColors.WHITE.getIndex(), true);
+
+            setColumnAutoSize(sheet, columnNames.length);
+
+            FileOutputStream out = new FileOutputStream(new File(path + ".xlsx"));
+            workbook.write(out);
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setColumnAutoSize(XSSFSheet sheet, int numberOfColumns) {
+        for (int i = 0; i < numberOfColumns; i++) {
+            sheet.autoSizeColumn(i);
+        }
+    }
+
+    private void createHeader(Row row, String[] columnNames) {
+        Cell cell;
+
+        for (int i = 0; i < columnNames.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(columnNames[i]);
+        }
+    }
+
+    private void createCellsBill(Racun racun, Row row, int i) {
+        Cell cell = row.createCell(0);
+        cell.setCellValue(i);
+
+        cell = row.createCell(1);
+        cell.setCellValue(racun.getBrojRacuna());
+
+        cell = row.createCell(2);
+        cell.setCellValue(new SimpleDateFormat("dd.MM.yyyy.").format(racun.getDatumIzdavanja()));
+
+        cell = row.createCell(3);
+        cell.setCellValue(Double.parseDouble(racun.getUkupnaVrednost() + ""));
+
+        cell = row.createCell(4);
+        cell.setCellValue(Double.parseDouble(racun.getUkupnaVrednostSaPorezom() + ""));
+
+        cell = row.createCell(5);
+        cell.setCellValue(racun.getKlijent().getImeKlijenta() + " " + racun.getKlijent().getPrezimeKlijenta());
+
+        cell = row.createCell(6);
+        cell.setCellValue(racun.getRadnik().getImeRadnika() + " " + racun.getRadnik().getPrezimeRadnika());
+    }
+
+    private void makeTitle(XSSFSheet sheet, String title, int i, int j, short foregroundColor, FillPatternType fillPatern,
+            short fontColor, boolean isBold, XSSFWorkbook workbook) {
+        Row row = sheet.createRow(0);
+        Cell cell = row.createCell(0);
+        cell.setCellValue(title);
+        CellRangeAddress mergedCell = new CellRangeAddress(0, i, 0, j);
+        sheet.addMergedRegion(mergedCell);
+
+        cell.getCellStyle().setFillBackgroundColor(foregroundColor);
+        cell.getCellStyle().setFillPattern(fillPatern);
+        Font font = workbook.createFont();
+        font.setColor(fontColor);
+        font.setBold(isBold);
+        cell.getCellStyle().setFont(font);
+        CellUtil.setAlignment(cell, HorizontalAlignment.CENTER);
+        CellUtil.setVerticalAlignment(cell, VerticalAlignment.CENTER);
+    }
+
+    private void defaultSetCellOfRow(Row row, XSSFWorkbook workbook, short foregraoundColor, FillPatternType fillPatern,
+            short fontColor, boolean isBold) {
+        for (Cell cell : row) {
+            cell.getCellStyle().setFillForegroundColor(foregraoundColor);
+            cell.getCellStyle().setFillPattern(fillPatern);
+            Font font = workbook.createFont();
+            font.setColor(fontColor);
+            font.setBold(isBold);
+            cell.getCellStyle().setFont(font);
+            CellUtil.setAlignment(cell, HorizontalAlignment.CENTER);
+            CellUtil.setVerticalAlignment(cell, VerticalAlignment.CENTER);
+        }
+    }
+
+    private void setFormulaToCell(String formula, Row row, int cellIndex) {
+        Cell cell = row.createCell(cellIndex);
+        cell.setCellFormula(formula);
+    }
+
+    public void saveReportNewClientsFromDate(List<Klijent> klijenti, String path) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Sheet1");
+            String[] columnNames = new String[]{"Redni broj", "Sifra klijenta", "Ime klijenta", "Prezime klijenta",
+                "Broj poseta", "Dug"};
+
+            makeTitle(sheet, "Novi klijenti", 0, 5, IndexedColors.GREY_25_PERCENT.getIndex(), FillPatternType.ALT_BARS,
+                    IndexedColors.WHITE.getIndex(), true, workbook);
+
+            Row row = sheet.createRow(1);
+            createHeader(row, columnNames);
+
+            defaultSetCellOfRow(row, workbook, IndexedColors.BLUE_GREY.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                    IndexedColors.WHITE.getIndex(), true);
+
+            int rownum = 2;
+            for (Klijent klijent : klijenti) {
+                row = sheet.createRow(rownum++);
+                createCellsClient(klijent, row, rownum - 2);
+            }
+
+            PropertyTemplate pt = new PropertyTemplate();
+            pt.drawBorders(new CellRangeAddress(0, rownum - 1, 0, 5),
+                    BorderStyle.THIN, BorderExtent.ALL);
+            pt.applyBorders(sheet);
+
+            for (int i = 2; i <= sheet.getPhysicalNumberOfRows() - 1; i++) {
+                defaultSetCellOfRow(sheet.getRow(i), workbook, IndexedColors.WHITE.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                        IndexedColors.BLACK.getIndex(), false);
+            }
+
+            setColumnAutoSize(sheet, columnNames.length);
+
+            FileOutputStream out = new FileOutputStream(new File(path + ".xlsx"));
+            workbook.write(out);
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void saveReportClientsDebt(List<Klijent> klijenti, String path) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Sheet1");
+            String[] columnNames = new String[]{"Redni broj", "Sifra klijenta", "Ime klijenta", "Prezime klijenta",
+                "Broj poseta", "Dug"};
+
+            makeTitle(sheet, "Dugovanja klijenata", 0, 5, IndexedColors.GREY_25_PERCENT.getIndex(), FillPatternType.ALT_BARS,
+                    IndexedColors.WHITE.getIndex(), true, workbook);
+
+            Row row = sheet.createRow(1);
+            createHeader(row, columnNames);
+
+            defaultSetCellOfRow(row, workbook, IndexedColors.BLUE_GREY.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                    IndexedColors.WHITE.getIndex(), true);
+
+            int rownum = 2;
+            for (Klijent klijent : klijenti) {
+                row = sheet.createRow(rownum++);
+                createCellsClient(klijent, row, rownum - 2);
+            }
+
+            PropertyTemplate pt = new PropertyTemplate();
+            pt.drawBorders(new CellRangeAddress(0, rownum - 1, 0, 5),
+                    BorderStyle.THIN, BorderExtent.ALL);
+            pt.applyBorders(sheet);
+
+            for (int i = 2; i <= sheet.getPhysicalNumberOfRows() - 1; i++) {
+                defaultSetCellOfRow(sheet.getRow(i), workbook, IndexedColors.WHITE.getIndex(), FillPatternType.SOLID_FOREGROUND,
+                        IndexedColors.BLACK.getIndex(), false);
+            }
+            
+            rownum += 1;
+            row = sheet.createRow(rownum);
+
+            Cell cell = row.createCell(0);
+            cell.setCellValue("Ukupno:");
+
+            setFormulaToCell("SUM(F" + 3 + ":F" + (rownum - 1) + ")", row, 5);
+
+            pt.drawBorders(new CellRangeAddress(rownum, rownum, 0, 5),
+                    BorderStyle.THIN, BorderExtent.ALL);
+            pt.applyBorders(sheet);
+
+            defaultSetCellOfRow(sheet.getRow(rownum), workbook, IndexedColors.GREY_25_PERCENT.getIndex(), FillPatternType.ALT_BARS,
+                    IndexedColors.WHITE.getIndex(), true);
+
+            setColumnAutoSize(sheet, columnNames.length);
+
+            FileOutputStream out = new FileOutputStream(new File(path + ".xlsx"));
+            workbook.write(out);
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createCellsClient(Klijent klijent, Row row, int i) {
+        Cell cell = row.createCell(0);
+        cell.setCellValue(i);
+
+        cell = row.createCell(1);
+        cell.setCellValue(klijent.getSifraKlijenta());
+
+        cell = row.createCell(2);
+        cell.setCellValue(klijent.getImeKlijenta());
+
+        cell = row.createCell(3);
+        cell.setCellValue(klijent.getPrezimeKlijenta());
+
+        cell = row.createCell(4);
+        cell.setCellValue(klijent.getBrojPoseta());
+
+        cell = row.createCell(5);
+        cell.setCellValue(Double.parseDouble(klijent.getDug() + ""));
     }
 }

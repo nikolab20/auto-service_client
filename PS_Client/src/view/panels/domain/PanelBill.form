@@ -57,12 +57,12 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelID" pref="589" max="32767" attributes="0"/>
-                      <Component id="panelDate" pref="589" max="32767" attributes="0"/>
-                      <Component id="panelTotalPrice" alignment="0" pref="589" max="32767" attributes="0"/>
-                      <Component id="panelTotalPriceWithTax" alignment="0" pref="589" max="32767" attributes="0"/>
-                      <Component id="panelWorker" alignment="0" pref="589" max="32767" attributes="0"/>
-                      <Component id="panelCustomer" alignment="0" pref="589" max="32767" attributes="0"/>
+                      <Component id="panelID" pref="606" max="32767" attributes="0"/>
+                      <Component id="panelTotalPrice" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelTotalPriceWithTax" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelWorker" alignment="0" max="32767" attributes="0"/>
+                      <Component id="panelCustomer" alignment="0" pref="606" max="32767" attributes="0"/>
+                      <Component id="panelDate" alignment="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -91,8 +91,6 @@
       <SubComponents>
         <Component class="view.panels.components.PanelLTBS" name="panelID">
         </Component>
-        <Component class="view.panels.components.PanelLTS" name="panelDate">
-        </Component>
         <Component class="view.panels.components.PanelLTS" name="panelTotalPrice">
         </Component>
         <Component class="view.panels.components.PanelLTS" name="panelTotalPriceWithTax">
@@ -100,6 +98,8 @@
         <Component class="view.panels.components.PanelLTS" name="panelWorker">
         </Component>
         <Component class="view.panels.components.PanelLTBS" name="panelCustomer">
+        </Component>
+        <Component class="view.panels.components.PanelLDpS" name="panelDate">
         </Component>
       </SubComponents>
     </Container>

@@ -6,7 +6,6 @@ import domain.Klijent;
 import domain.PredmetProdaje;
 import domain.Racun;
 import domain.Radnik;
-import domain.StavkaRacuna;
 import domain.Usluga;
 import transfer.RequestObject;
 import transfer.ResponseObject;
@@ -16,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -333,4 +333,50 @@ public class CommunicationController {
         return bills;
     }
 
+    public List<Racun> operationSearchBillFromDate(Date date) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_BILL_FROM_DATE);
+        request.setData(date);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Racun> bills = (List<Racun>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return bills;
+    }
+    
+    public List<Klijent> operationSearchNewClientsFromDate(Date date) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_NEW_CLIENTS_FROM_DATE);
+        request.setData(date);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Klijent> clients = (List<Klijent>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return clients;
+    }
+
+    public List<Klijent> operationSearchClientsWithDebt() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_CLIENTS_WITH_DEBT);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Klijent> clients = (List<Klijent>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return clients;
+    }
 }

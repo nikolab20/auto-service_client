@@ -167,6 +167,7 @@ public class DialogPayBill extends javax.swing.JDialog {
         if (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
             BigDecimal change = new BigDecimal(txtPaid.getText()).subtract(new BigDecimal(txtTotalPrice.getText()));
             txtChange.setText(change + "");
+            btnConfirm.setEnabled(true);
             
             if(change.compareTo(new BigDecimal(0)) == -1){
                 btnAddDebt.setEnabled(true);
