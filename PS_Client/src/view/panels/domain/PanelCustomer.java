@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -17,6 +12,11 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelCustomer extends javax.swing.JPanel implements iFormValue {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelCustomer
@@ -104,19 +104,24 @@ public class PanelCustomer extends javax.swing.JPanel implements iFormValue {
     private view.panels.components.PanelLTS panelNumOfVisits;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        
-        panelCustomer.setBorder(new TitledBorder(resourceBundle.getString("customer_border")));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+
+        panelCustomer.setBorder(new TitledBorder(resourceBundle.getString("customer_panel_border")));
         panelID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("customer_id") + ":", "");
-        panelID.getTextField().setEnabled(false);
-        panelFirstName.setElementText(resourceBundle.getString("customer_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("customer_last_name") + ":", "");
-        panelNumOfVisits.setElementText(resourceBundle.getString("customer_num_of_visits") + ":", "0");
-        panelDebt.setElementText(resourceBundle.getString("customer_debt") + ":", "0");
+        panelID.setElementText(resourceBundle.getString("customer_lbl_id") + ":", "");
+        panelFirstName.setElementText(resourceBundle.getString("customer_lbl_first_name") + ":", "");
+        panelLastName.setElementText(resourceBundle.getString("customer_lbl_last_name") + ":", "");
+        panelNumOfVisits.setElementText(resourceBundle.getString("customer_lbl_num_of_visits") + ":", "0");
+        panelDebt.setElementText(resourceBundle.getString("customer_lbl_debt") + ":", "0");
     }
-    
+
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelFirstName.clearPanel();
@@ -124,7 +129,18 @@ public class PanelCustomer extends javax.swing.JPanel implements iFormValue {
         panelNumOfVisits.setValue("0");
         panelDebt.setValue("0");
     }
-    
+
+    /**
+     * Method for disabling all input fields on panel.
+     */
+    public void disableAllInputFields() {
+        panelID.getTextField().setEnabled(false);
+        panelFirstName.getTextField().setEnabled(false);
+        panelLastName.getTextField().setEnabled(false);
+        panelNumOfVisits.getTextField().setEnabled(false);
+        panelDebt.getTextField().setEnabled(false);
+    }
+
     @Override
     public Object getValue() {
         long id = new Long((String) panelID.getValue());
@@ -132,12 +148,12 @@ public class PanelCustomer extends javax.swing.JPanel implements iFormValue {
         String lastName = (String) panelLastName.getValue();
         int numOfVisits = Integer.parseInt((String) panelNumOfVisits.getValue());
         BigDecimal debt = new BigDecimal((String) panelDebt.getValue());
-        
+
         Klijent klijent = new Klijent(id, firstName, lastName, numOfVisits, debt);
-        
+
         return klijent;
     }
-    
+
     @Override
     public void setValue(Object object) {
         Klijent klijent = (Klijent) object;

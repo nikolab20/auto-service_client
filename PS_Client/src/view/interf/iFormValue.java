@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.interf;
 
 /**
@@ -11,7 +6,17 @@ package view.interf;
  */
 public interface iFormValue {
 
+    /**
+     * Method for getting an object from data from form.
+     *
+     * @return an object from form.
+     */
     public Object getValue();
 
+    /**
+     * Method for placing an object data on a form.
+     *
+     * @param object is the object to be placed on the form.
+     */
     public void setValue(Object object);
 }

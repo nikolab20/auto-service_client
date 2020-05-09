@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.submenu;
 
 import controller.Controller;
@@ -17,12 +12,21 @@ import listeners.FormListener;
  */
 public class PanelExcel extends javax.swing.JPanel {
 
-    private List<FormListener> formListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<FormListener> formListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelExcel
      */
     public PanelExcel() {
+        this.formListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -39,7 +43,7 @@ public class PanelExcel extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         btnBillsFromDate = new javax.swing.JButton();
         btnClientsFromDate = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnClientsDebt = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 52, 57));
 
@@ -75,17 +79,17 @@ public class PanelExcel extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(51, 52, 57));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/debt.png"))); // NOI18N
-        jButton2.setText("Clients debt");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton2.setFocusPainted(false);
-        jButton2.setIconTextGap(10);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnClientsDebt.setBackground(new java.awt.Color(51, 52, 57));
+        btnClientsDebt.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClientsDebt.setForeground(new java.awt.Color(255, 255, 255));
+        btnClientsDebt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/debt.png"))); // NOI18N
+        btnClientsDebt.setText("Clients debt");
+        btnClientsDebt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnClientsDebt.setFocusPainted(false);
+        btnClientsDebt.setIconTextGap(10);
+        btnClientsDebt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnClientsDebtActionPerformed(evt);
             }
         });
 
@@ -102,7 +106,7 @@ public class PanelExcel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTitle)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnClientsDebt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -117,7 +121,7 @@ public class PanelExcel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnClientsFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClientsDebt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(66, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -130,44 +134,66 @@ public class PanelExcel extends javax.swing.JPanel {
         openNewClientsFromDate();
     }//GEN-LAST:event_btnClientsFromDateActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnClientsDebtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientsDebtActionPerformed
         openClientsDebts();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnClientsDebtActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBillsFromDate;
+    private javax.swing.JButton btnClientsDebt;
     private javax.swing.JButton btnClientsFromDate;
-    private javax.swing.JButton jButton2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("excel_submenu_title"));
-        btnBillsFromDate.setText(resourceBundle.getString("excel_submenu_by_date"));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("excel_submenu_lbl_title"));
+        btnBillsFromDate.setText(resourceBundle.getString("excel_submenu_btn_by_date"));
+        btnClientsFromDate.setText(resourceBundle.getString("excel_submenu_btn_new_clients"));
+        btnClientsDebt.setText(resourceBundle.getString("excel_submenu_btn_client_debt"));
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements FormListener interface.
+     */
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that client clicked on bills from date
+     * button.
+     */
     private void openBillsFromDate() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openBillsFromDate();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on new clients
+     * button.
+     */
     private void openNewClientsFromDate() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openNewClientsFromDate();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on clients debts
+     * button.
+     */
     private void openClientsDebts() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openClientsDebt();
-        }
+        });
     }
 }

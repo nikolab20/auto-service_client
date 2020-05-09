@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.submenu;
 
 import controller.Controller;
@@ -16,14 +11,23 @@ import listeners.FormListener;
  * @author nikol
  */
 public class PanelEmployee extends javax.swing.JPanel {
-    
-    private List<FormListener> formListeners = new ArrayList<>();
+
+    /**
+     * A list of listeners.
+     */
+    private final List<FormListener> formListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelEmployee
      */
     public PanelEmployee() {
         initComponents();
+        this.formListeners = new ArrayList<>();
     }
 
     /**
@@ -146,33 +150,53 @@ public class PanelEmployee extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("employee_submenu_title"));
-        btnAddEmployee.setText(resourceBundle.getString("employee_submenu_add"));
-        btnEditEmployee.setText(resourceBundle.getString("employee_submenu_update"));
-        btnDeleteEmployee.setText(resourceBundle.getString("employee_submenu_delete"));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("employee_submenu_lbl_title"));
+        btnAddEmployee.setText(resourceBundle.getString("employee_submenu_btn_add"));
+        btnEditEmployee.setText(resourceBundle.getString("employee_submenu_btn_update"));
+        btnDeleteEmployee.setText(resourceBundle.getString("employee_submenu_btn_delete"));
     }
-    
+
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements FormListener interface.
+     */
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
-    
+
+    /**
+     * A method for notifying listeners that client clicked on add employee
+     * button.
+     */
     private void openAddEmployee() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openAddEmployee();
-        }
+        });
     }
-    
+
+    /**
+     * A method for notifying listeners that client clicked on update employee
+     * button.
+     */
     private void openUpdateEmployee() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openUpdateEmployee();
-        }
+        });
     }
-    
+
+    /**
+     * A method for notifying listeners that client clicked on delete employee
+     * button.
+     */
     private void openDeleteEmployee() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openDeleteEmployee();
-        }
+        });
     }
 }

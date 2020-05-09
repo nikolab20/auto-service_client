@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.submenu;
 
 import controller.Controller;
@@ -17,12 +12,21 @@ import listeners.FormListener;
  */
 public class PanelCustomer extends javax.swing.JPanel {
 
-    private List<FormListener> formListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<FormListener> formListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelCustomer
      */
     public PanelCustomer() {
+        this.formListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -145,33 +149,53 @@ public class PanelCustomer extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("customer_submenu_title"));
-        btnAddCustomer.setText(resourceBundle.getString("customer_submenu_add"));
-        btnUpdateCustomer.setText(resourceBundle.getString("customer_submenu_update"));
-        btnSearchCustomer.setText(resourceBundle.getString("customer_submenu_search"));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("customer_submenu_lbl_title"));
+        btnAddCustomer.setText(resourceBundle.getString("customer_submenu_btn_add"));
+        btnUpdateCustomer.setText(resourceBundle.getString("customer_submenu_btn_update"));
+        btnSearchCustomer.setText(resourceBundle.getString("customer_submenu_btn_search"));
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements FormListener interface.
+     */
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that client clicked on add customer
+     * button.
+     */
     private void openAddClient() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openAddCustomer();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on update customer
+     * button.
+     */
     private void openUpdateClient() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openUpdateCustomer();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on add search
+     * customer button.
+     */
     private void openSearchClient() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openSearchCustomer();
-        }
+        });
     }
 }

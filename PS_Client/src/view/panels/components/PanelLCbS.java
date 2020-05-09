@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import domain.DomainObject;
@@ -22,12 +17,16 @@ import view.interf.iFormValue;
  */
 public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
 
-    private List<ComboBoxListener> comboBoxListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<ComboBoxListener> comboBoxListeners;
 
     /**
      * Creates new form PaneaLCbS
      */
     public PanelLCbS() {
+        this.comboBoxListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -91,19 +90,35 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param comboBoxElements is list of elements for combo box.
+     */
     public void setElementText(String labelText, List<DomainObject> comboBoxElements) {
         label.setText(labelText);
 
-        for (DomainObject comboBoxElement : comboBoxElements) {
+        comboBoxElements.forEach((DomainObject comboBoxElement) -> {
             comboBox.addItem(comboBoxElement);
-        }
+        });
     }
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param cbModel is the object of class that implements
+     * DefaultComboBoxModel interface.
+     */
     public void setElementText(String labelText, DefaultComboBoxModel cbModel) {
         label.setText(labelText);
         comboBox.setModel(cbModel);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         comboBox.setSelectedIndex(0);
     }
@@ -142,14 +157,23 @@ public class PanelLCbS extends javax.swing.JPanel implements iFormValue {
         this.separator = separator;
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements ComboBoxListener interface.
+     */
     public void addListener(ComboBoxListener toAdd) {
         comboBoxListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that selected item of combo box has been
+     * changed.
+     */
     private void changeSelection() {
-        for (ComboBoxListener comboBoxListener : comboBoxListeners) {
+        comboBoxListeners.forEach((comboBoxListener) -> {
             comboBoxListener.onChangeSelected(new SelectionChangeEvent(this));
-        }
+        });
     }
 
 }

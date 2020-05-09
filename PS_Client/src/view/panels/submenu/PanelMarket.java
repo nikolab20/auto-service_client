@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.submenu;
 
 import controller.Controller;
@@ -17,7 +12,15 @@ import listeners.FormListener;
  */
 public class PanelMarket extends javax.swing.JPanel {
 
-    private List<FormListener> formListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<FormListener> formListeners = new ArrayList<>();
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelMarket
@@ -122,26 +125,41 @@ public class PanelMarket extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("market_submenu_title"));
-        btnAddBill.setText(resourceBundle.getString("market_submenu_add"));
-        btnInvalidate.setText(resourceBundle.getString("market_submenu_invalidate"));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("market_submenu_lbl_title"));
+        btnAddBill.setText(resourceBundle.getString("market_submenu_btn_add"));
+        btnInvalidate.setText(resourceBundle.getString("market_submenu_btn_invalidate"));
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements FormListener interface.
+     */
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that client clicked on add bill button.
+     */
     private void openAddBill() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openAddBill();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on invalidate bill
+     * button.
+     */
     private void openInvalidateBIll() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openInvalidateBill();
-        }
+        });
     }
 }

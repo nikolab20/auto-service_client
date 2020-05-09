@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.submenu;
 
 import controller.Controller;
+import domain.Radnik;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,12 +13,21 @@ import listeners.FormListener;
  */
 public class PanelInventory extends javax.swing.JPanel {
 
-    private List<FormListener> formListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<FormListener> formListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelInventory
      */
     public PanelInventory() {
+        this.formListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -217,54 +222,95 @@ public class PanelInventory extends javax.swing.JPanel {
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        lblTitle.setText(resourceBundle.getString("inventory_submenu_title"));
-        btnAddPart.setText(resourceBundle.getString("car_parts_submenu_add"));
-        btnEditPart.setText(resourceBundle.getString("car_parts_submenu_update"));
-        btnSearchPart.setText(resourceBundle.getString("car_parts_submenu_search"));
-        btnAddService.setText(resourceBundle.getString("service_submenu_add"));
-        btnDeleteService.setText(resourceBundle.getString("service_submenu_delete"));
-        btnEditService.setText(resourceBundle.getString("service_submenu_update"));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        lblTitle.setText(resourceBundle.getString("inventory_submenu_lbl_title"));
+        btnAddPart.setText(resourceBundle.getString("car_parts_submenu_btn_add"));
+        btnEditPart.setText(resourceBundle.getString("car_parts_submenu_btn_update"));
+        btnSearchPart.setText(resourceBundle.getString("car_parts_submenu_btn_search"));
+        btnAddService.setText(resourceBundle.getString("service_submenu_btn_add"));
+        btnDeleteService.setText(resourceBundle.getString("service_submenu_btn_delete"));
+        btnEditService.setText(resourceBundle.getString("service_submenu_btn_update"));
+
+        Radnik loggedWorker = Controller.getInstance().getRadnik();
+
+        if (!loggedWorker.isAdministrator()) {
+            btnAddPart.setEnabled(false);
+            btnEditPart.setEnabled(false);
+            btnAddService.setEnabled(false);
+            btnDeleteService.setEnabled(false);
+            btnEditService.setEnabled(false);
+        }
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements FormListener interface.
+     */
     public void addListener(FormListener toAdd) {
         formListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that client clicked on add part button.
+     */
     private void openAddCarParts() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openAddCarPart();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on add service
+     * button.
+     */
     private void openAddServices() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openAddService();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on update part
+     * button.
+     */
     private void openUpdateCarPart() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openUpdateCarPart();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on search part
+     * button.
+     */
     private void openSearchCarPart() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openSearchCarPart();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on update service
+     * button.
+     */
     private void openUpdateService() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openUpdateService();
-        }
+        });
     }
 
+    /**
+     * A method for notifying listeners that client clicked on delete service
+     * button.
+     */
     private void openDeleteService() {
-        for (FormListener formListener : formListeners) {
+        formListeners.forEach((FormListener formListener) -> {
             formListener.openDeleteService();
-        }
+        });
     }
 }

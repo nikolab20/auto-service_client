@@ -25,7 +25,7 @@
               <Component id="label" min="-2" pref="120" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="separator" pref="375" max="32767" attributes="0"/>
+                  <Component id="separator" pref="239" max="32767" attributes="0"/>
                   <Component id="textField" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>

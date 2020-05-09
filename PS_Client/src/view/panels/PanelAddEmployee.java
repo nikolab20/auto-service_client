@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -10,18 +5,20 @@ import controller.Controller;
 import domain.DomainObject;
 import domain.Radnik;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import listeners.GenerateListener;
 import listeners.PasswordListener;
-import view.FrmClient;
+import view.MessageDialog;
 
 /**
  *
  * @author nikol
  */
 public class PanelAddEmployee extends javax.swing.JPanel implements GenerateListener, PasswordListener {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelAddEmployee
@@ -95,13 +92,12 @@ public class PanelAddEmployee extends javax.swing.JPanel implements GenerateList
         try {
             Radnik radnik = (Radnik) panelNewEmployee.getValue();
             radnik = (Radnik) CommunicationController.getInstance().operationUpdate(radnik);
-            JOptionPane.showMessageDialog(this, "Uspesno insertovan radnik " + radnik.getImeRadnika()
-                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("employee_success_add")
+                    + " " + radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika(),
+                    resourceBundle.getString("success_title"));
             panelNewEmployee.clearPanel();
-            btnAdd.setEnabled(false);
-            btnClear.setEnabled(false);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -112,31 +108,38 @@ public class PanelAddEmployee extends javax.swing.JPanel implements GenerateList
     private view.panels.domain.PanelNewEmployee panelNewEmployee;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnAdd.setText(resourceBundle.getString("employee_btn_add"));
         btnClear.setText(resourceBundle.getString("employee_btn_clear"));
         panelNewEmployee.preparePanel();
         panelNewEmployee.addListener(this);
         panelNewEmployee.addPasswordListener(this);
+        btnAdd.setEnabled(false);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelNewEmployee.clearPanel();
+        btnAdd.setEnabled(false);
     }
 
     @Override
-    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+    public DomainObject generateOdo(DomainObject domainObject) {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(this, "Uspesno generisan radnik!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("employee_success_generated"),
+                    resourceBundle.getString("success_title"));
             btnAdd.setEnabled(true);
-            btnClear.setEnabled(true);
             return odo;
         } catch (Exception ex) {
-            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            return null;
         }
     }
 

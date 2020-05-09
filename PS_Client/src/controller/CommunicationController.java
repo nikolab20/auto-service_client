@@ -3,6 +3,7 @@ package controller;
 import domain.Deo;
 import domain.DomainObject;
 import domain.Klijent;
+import domain.PoreskaStopa;
 import domain.PredmetProdaje;
 import domain.Racun;
 import domain.Radnik;
@@ -39,18 +40,12 @@ public class CommunicationController {
      * A socket that it uses to communicate between the server and the client
      * application.
      */
-    private Socket socket;
+    private final Socket socket;
 
     /**
-     * The worker which logged.
-     *
-     * @return an object of class {@link Radnik} that represents a logged in
-     * worker.
-     */
-    //@Getter
-    //private Radnik radnik;
-    /**
      * Constructor for this class without parameters.
+     *
+     * @throws java.io.IOException
      */
     public CommunicationController() throws IOException {
         String host = Controller.getInstance().readPropertiesFile().getProperty("default_host");
@@ -64,6 +59,12 @@ public class CommunicationController {
         socket = new Socket(host, port);
     }
 
+    /**
+     * Method for getting an instance of this class.
+     *
+     * @return an instance of CommunicationController class.
+     * @throws IOException if problems with making new instance of class occurs.
+     */
     public static CommunicationController getInstance() throws IOException {
         if (instance == null) {
             instance = new CommunicationController();
@@ -100,7 +101,14 @@ public class CommunicationController {
         return response;
     }
 
-    public void operationChooseLanguage(Locale locale) throws IOException, ClassNotFoundException, Exception {
+    /**
+     * Method for sending request to server for choosing language for
+     * application.
+     *
+     * @param locale a language region requested from user.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public void operationChooseLanguage(Locale locale) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_CHOOSE_LANGUAGE);
 
@@ -113,6 +121,13 @@ public class CommunicationController {
         }
     }
 
+    /**
+     * Method for sending request to server for logging user.
+     *
+     * @param username is username of user.
+     * @param password is password of user.
+     * @throws Exception if problem with sending request occurs.
+     */
     public void operationLoginWorker(String username, String password) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_LOGIN_WORKER);
@@ -132,6 +147,13 @@ public class CommunicationController {
         }
     }
 
+    /**
+     * Method for sending request to generate new domain object.
+     *
+     * @param odo is requested object for generate.
+     * @return generated domain object.
+     * @throws Exception if problem with sending request occurs.
+     */
     public DomainObject operationGenerate(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_GENERATE);
@@ -148,6 +170,13 @@ public class CommunicationController {
         return odo;
     }
 
+    /**
+     * Method for sending request to insert domain object into a database.
+     *
+     * @param odo is requested object for insert.
+     * @return inserted domain object.
+     * @throws Exception if problem with sending request occurs.
+     */
     public DomainObject operationInsert(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_INSERT);
@@ -164,6 +193,13 @@ public class CommunicationController {
         return odo;
     }
 
+    /**
+     * Method for sending request to update domain object from database.
+     *
+     * @param odo is requested object for update.
+     * @return updated domain object.
+     * @throws Exception if problem with sending request occurs.
+     */
     public DomainObject operationUpdate(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_UPDATE);
@@ -179,6 +215,13 @@ public class CommunicationController {
         return (DomainObject) response.getData();
     }
 
+    /**
+     * Method for sending request to delete domain object from database.
+     *
+     * @param odo is requested object for delete.
+     * @return deleted domain object.
+     * @throws Exception if problem with sending request occurs.
+     */
     public DomainObject operationDelete(DomainObject odo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_DELETE);
@@ -194,10 +237,17 @@ public class CommunicationController {
         return (DomainObject) response.getData();
     }
 
-    public List<Klijent> operationSearchCustomer(String criteria) throws Exception {
+    /**
+     * Method for sending request for searching customers.
+     *
+     * @param customerID is criteria for customer search.
+     * @return list of customer objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Klijent> operationSearchCustomer(Long customerID) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_CUSTOMER);
-        request.setData(criteria);
+        request.setData(customerID);
 
         sendRequest(request);
         ResponseObject response = receiveResponse();
@@ -210,10 +260,17 @@ public class CommunicationController {
         return customers;
     }
 
-    public List<Radnik> operationSearchEmployee(String criteria) throws Exception {
+    /**
+     * Method for sending request for searching employees.
+     *
+     * @param employeeID is criteria for employees search.
+     * @return list of employee objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Radnik> operationSearchEmployee(Long employeeID) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_EMPLOYEE);
-        request.setData(criteria);
+        request.setData(employeeID);
 
         sendRequest(request);
         ResponseObject response = receiveResponse();
@@ -226,7 +283,13 @@ public class CommunicationController {
         return radnici;
     }
 
-    public List<DomainObject> operationSelectAllTax() throws Exception {
+    /**
+     * Method for sending request for getting all of tax rates.
+     *
+     * @return list of tax rate objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<? extends DomainObject> operationSelectAllTax() throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SELECT_ALL_TAX);
 
@@ -237,10 +300,17 @@ public class CommunicationController {
             throw response.getException();
         }
 
-        return (List<DomainObject>) response.getData();
+        return (List<? extends DomainObject>) response.getData();
     }
 
-    public List<Deo> operationSearchCarPart(String criteria) throws Exception {
+    /**
+     * Method for sending request for searching car parts.
+     *
+     * @param criteria is criteria for car parts search.
+     * @return list of car part objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Deo> operationSearchCarPart(Long criteria) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_CAR_PART);
         request.setData(criteria);
@@ -256,7 +326,14 @@ public class CommunicationController {
         return parts;
     }
 
-    public List<Usluga> operationSearchService(String criteria) throws Exception {
+    /**
+     * Method for sending request for searching services.
+     *
+     * @param criteria is criteria for services search.
+     * @return list of service objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Usluga> operationSearchService(Long criteria) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_SERVICE);
         request.setData(criteria);
@@ -272,6 +349,13 @@ public class CommunicationController {
         return services;
     }
 
+    /**
+     * Method for sending request for searching objects of sale.
+     *
+     * @param criteria is criteria for object of sale search.
+     * @return list of object of sale objects.
+     * @throws Exception if problem with sending request occurs.
+     */
     public PredmetProdaje operationSearchObjectOfSale(Long criteria) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_OBJECT_OF_SALE);
@@ -288,9 +372,16 @@ public class CommunicationController {
         return predmetProdaje;
     }
 
-    public Map<DomainObject, String> operationGetAllObjectOfSale(String criteria) throws Exception {
+    /**
+     * Method for sending request for getting all of objects of sale.
+     *
+     * @param criteria is an String that represents criteria for search,
+     * @return list of tax rate objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public Map<DomainObject, String> operationSearchAllObjectOfSale(String criteria) throws Exception {
         RequestObject request = new RequestObject();
-        request.setOperation(Operation.OPERATION_GET_ALL_OBJECT_OF_SALES);
+        request.setOperation(Operation.OPERATION_SEARCH_ALL_OBJECT_OF_SALES);
         request.setData(criteria);
 
         sendRequest(request);
@@ -304,6 +395,12 @@ public class CommunicationController {
         return predmetiProdaje;
     }
 
+    /**
+     * Method for sending request to insert list of domain object into database.
+     *
+     * @param listOdo is requested list of objects for insert.
+     * @throws Exception if problem with sending request occurs.
+     */
     public void operationInsertListOfDomainObject(List<? extends DomainObject> listOdo) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_INSERT_LIST);
@@ -317,7 +414,14 @@ public class CommunicationController {
         }
     }
 
-    public List<Racun> operationSearchBill(String criteria) throws Exception {
+    /**
+     * Method for sending request for searching bills.
+     *
+     * @param criteria is criteria for bill search.
+     * @return list of bill objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Racun> operationSearchBill(Long criteria) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_BILL);
         request.setData(criteria);
@@ -333,6 +437,13 @@ public class CommunicationController {
         return bills;
     }
 
+    /**
+     * Method for sending request for searching bills from date.
+     *
+     * @param date is criteria for bill search.
+     * @return list of bill objects.
+     * @throws Exception if problem with sending request occurs.
+     */
     public List<Racun> operationSearchBillFromDate(Date date) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_BILL_FROM_DATE);
@@ -348,7 +459,14 @@ public class CommunicationController {
 
         return bills;
     }
-    
+
+    /**
+     * Method for sending request for searching new clients from date.
+     *
+     * @param date is criteria for clients search.
+     * @return list of client objects.
+     * @throws Exception if problem with sending request occurs.
+     */
     public List<Klijent> operationSearchNewClientsFromDate(Date date) throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_NEW_CLIENTS_FROM_DATE);
@@ -365,6 +483,12 @@ public class CommunicationController {
         return clients;
     }
 
+    /**
+     * Method for sending request for searching clients with debt.
+     *
+     * @return list of client objects.
+     * @throws Exception if problem with sending request occurs.
+     */
     public List<Klijent> operationSearchClientsWithDebt() throws Exception {
         RequestObject request = new RequestObject();
         request.setOperation(Operation.OPERATION_SEARCH_CLIENTS_WITH_DEBT);
@@ -378,5 +502,186 @@ public class CommunicationController {
         }
 
         return clients;
+    }
+
+    /**
+     * Method for sending request for searching tax rates.
+     *
+     * @param id is criteria for tax rates search.
+     * @return list of tax rate objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<PoreskaStopa> operationSearchTax(Long id) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_TAX);
+        request.setData(id);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<PoreskaStopa> tax = (List<PoreskaStopa>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return tax;
+    }
+
+    /**
+     * Method for sending request for client disconnection.
+     *
+     * @throws Exception if problem with sending request occurs.
+     */
+    public void operationDisconnect() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_DISCONNECT);
+
+        if (socket.isConnected()) {
+            sendRequest(request);
+        }
+    }
+
+    /**
+     * Method for sending request for getting all of employees.
+     *
+     * @return list of employee objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Radnik> operationSelectAllEmployees() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_EMPLOYEES);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (List<Radnik>) response.getData();
+    }
+
+    /**
+     * Method for sending request for getting all of car parts.
+     *
+     * @return list of car part objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Deo> operationSelectAllCarParts() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_CAR_PARTS);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (List<Deo>) response.getData();
+    }
+
+    /**
+     * Method for sending request for getting all of services.
+     *
+     * @return list of service objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Usluga> operationSelectAllServices() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_SERVICES);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (List<Usluga>) response.getData();
+    }
+
+    /**
+     * Method for sending request for getting all of bills.
+     *
+     * @return list of bill objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Racun> operationSelectAllBills() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_BILLS);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (List<Racun>) response.getData();
+    }
+
+    /**
+     * Method for sending request for getting all of customers.
+     *
+     * @return list of customer objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Klijent> operationSelectAllCustomers() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_CUSTOMERS);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return (List<Klijent>) response.getData();
+    }
+
+    /**
+     * Method for sending request for getting all of objects of sale.
+     *
+     * @return list of object of sale objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public Map<DomainObject, String> operationSelectAllObjectOfSale() throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SELECT_ALL_OBJECT_OF_SALE);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        Map<DomainObject, String> predmetiProdaje = (HashMap<DomainObject, String>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return predmetiProdaje;
+    }
+
+    /**
+     * Method for sending request for searching bills.
+     *
+     * @param customerId is criteria for bill search.
+     * @return list of bill objects.
+     * @throws Exception if problem with sending request occurs.
+     */
+    public List<Racun> operationSearchBillByCustomer(Long customerId) throws Exception {
+        RequestObject request = new RequestObject();
+        request.setOperation(Operation.OPERATION_SEARCH_BILL_BY_CUSTOMER);
+        request.setData(customerId);
+
+        sendRequest(request);
+        ResponseObject response = receiveResponse();
+        List<Racun> bills = (List<Racun>) response.getData();
+
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+
+        return bills;
     }
 }

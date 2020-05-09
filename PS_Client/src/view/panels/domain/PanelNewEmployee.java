@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
 import domain.DomainObject;
-import domain.Klijent;
 import domain.Radnik;
 import events.ClickButtonEvent;
 import java.util.ArrayList;
@@ -27,13 +21,27 @@ import view.interf.iFormValue;
  */
 public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue, CustomComponentListener {
 
-    private List<GenerateListener> generateListeners = new ArrayList<>();
-    private List<PasswordListener> passwordListeners = new ArrayList<>();
+    /**
+     * A list of GenerateListener listeners.
+     */
+    private final List<GenerateListener> generateListeners;
+
+    /**
+     * A list of PasswordListener listeners.
+     */
+    private final List<PasswordListener> passwordListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelNewEmployee
      */
     public PanelNewEmployee() {
+        this.passwordListeners = new ArrayList<>();
+        this.generateListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -136,31 +144,37 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue, 
     private view.panels.components.PanelLTS panelUsername;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelEmployee.setBorder(new TitledBorder(resourceBundle.getString("employee_border")));
+        panelEmployee.setBorder(new TitledBorder(resourceBundle.getString("employee_panel_border")));
         panelID.getTextField().setEnabled(false);
         panelID.setElementText(resourceBundle.getString("employee_btn_generate"),
-                resourceBundle.getString("employee_id") + ":", "");
+                resourceBundle.getString("employee_lbl_id") + ":", "");
         panelID.getButton().requestFocus();
         panelID.getTextField().setEditable(false);
-        panelFirstName.setElementText(resourceBundle.getString("employee_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("employee_last_name") + ":", "");
-        panelAddress.setElementText(resourceBundle.getString("employee_adress") + ":", "");
-        panelPhone.setElementText(resourceBundle.getString("employee_phone") + ":", "");
-        panelIdentificationNumber.setElementText(resourceBundle.getString("employee_id_number") + ":", "");
-        panelAdministrator.setElementText(resourceBundle.getString("employee_administrator") + ":",
+        panelFirstName.setElementText(resourceBundle.getString("employee_lbl_first_name") + ":", "");
+        panelLastName.setElementText(resourceBundle.getString("employee_lbl_last_name") + ":", "");
+        panelAddress.setElementText(resourceBundle.getString("employee_lbl_address") + ":", "");
+        panelPhone.setElementText(resourceBundle.getString("employee_lbl_phone") + ":", "");
+        panelIdentificationNumber.setElementText(resourceBundle.getString("employee_lbl_id_number") + ":", "");
+        panelAdministrator.setElementText(resourceBundle.getString("employee_lbl_administrator") + ":",
                 resourceBundle.getString("employee_administrator_true"),
                 resourceBundle.getString("employee_administrator_false"));
-        panelUsername.setElementText(resourceBundle.getString("employee_username") + ":", "");
+        panelUsername.setElementText(resourceBundle.getString("employee_lbl_username") + ":", "");
         panelPassword.setElementText(resourceBundle.getString("employee_btn_generate"),
-                resourceBundle.getString("employee_password") + ":", "");
+                resourceBundle.getString("employee_lbl_password") + ":", "");
 
         panelID.addListener(this);
         panelPassword.addListener(this);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelFirstName.clearPanel();
@@ -190,10 +204,20 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue, 
         return radnik;
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements GenerateListener interface.
+     */
     public void addListener(GenerateListener toAdd) {
         generateListeners.add(toAdd);
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements PasswordListener interface.
+     */
     public void addPasswordListener(PasswordListener toAdd) {
         passwordListeners.add(toAdd);
     }
@@ -215,23 +239,23 @@ public class PanelNewEmployee extends javax.swing.JPanel implements iFormValue, 
     @Override
     public void pressButton(ClickButtonEvent evt) {
         if (evt.getSource() == panelID) {
-            for (GenerateListener generateListener : generateListeners) {
+            generateListeners.forEach((GenerateListener generateListener) -> {
                 try {
                     DomainObject odo = generateListener.generateOdo(new Radnik());
                     panelID.setValue(odo.getObjectId() + "");
                 } catch (Exception ex) {
                     Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            });
         } else {
-            for (PasswordListener passwordListener : passwordListeners) {
+            passwordListeners.forEach((PasswordListener passwordListener) -> {
                 try {
                     String pass = passwordListener.generatePassword();
                     panelPassword.setValue(pass);
                 } catch (Exception ex) {
                     Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            });
         }
     }
 }

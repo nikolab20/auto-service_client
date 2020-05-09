@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -10,12 +5,10 @@ import controller.Controller;
 import domain.DomainObject;
 import domain.PredmetProdaje;
 import domain.Usluga;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import listeners.GenerateListener;
-import view.FrmClient;
+import view.MessageDialog;
 
 /**
  *
@@ -23,7 +16,15 @@ import view.FrmClient;
  */
 public class PanelAddService extends javax.swing.JPanel implements GenerateListener {
 
+    /**
+     * The object of the sale which service is connected.
+     */
     private PredmetProdaje predmetProdaje;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelAddService
@@ -97,7 +98,8 @@ public class PanelAddService extends javax.swing.JPanel implements GenerateListe
         try {
             predmetProdaje = (PredmetProdaje) panelObjectOfSale.getValue();
             predmetProdaje = (PredmetProdaje) CommunicationController.getInstance().operationUpdate(predmetProdaje);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovan predmet prodaje!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_object_of_sale_success_add"),
+                    resourceBundle.getString("success_title"));
             btnAddObject.setEnabled(false);
             panelObjectOfSale.clearPanel();
             Usluga usluga = new Usluga();
@@ -106,7 +108,7 @@ public class PanelAddService extends javax.swing.JPanel implements GenerateListe
             panelService.setValue(usluga);
             btnAddService.setEnabled(true);
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddObjectActionPerformed
 
@@ -115,11 +117,12 @@ public class PanelAddService extends javax.swing.JPanel implements GenerateListe
             Usluga usluga = (Usluga) panelService.getValue();
             usluga.setPredmetProdaje(predmetProdaje);
             usluga = (Usluga) CommunicationController.getInstance().operationUpdate(usluga);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovana usluga " + usluga.getNazivUsluge() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_success_add") + " "
+                    + usluga.getNazivUsluge() + ".", resourceBundle.getString("success_title"));
             btnAddService.setEnabled(false);
             panelService.clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddServiceActionPerformed
 
@@ -131,36 +134,46 @@ public class PanelAddService extends javax.swing.JPanel implements GenerateListe
     private view.panels.domain.PanelService panelService;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
         try {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-            panelObjectOfSale.preparePanel(CommunicationController.getInstance().operationSelectAllTax());
+            panelObjectOfSale.preparePanel((List<DomainObject>) CommunicationController.getInstance().operationSelectAllTax());
             panelService.preparePanel();
             panelObjectOfSale.addListener(this);
-            btnAddObject.setText(resourceBundle.getString("part_button_add"));
-            btnAddService.setText(resourceBundle.getString("part_button_add"));
+            btnAddObject.setText(resourceBundle.getString("object_btn_add"));
+            btnAddService.setText(resourceBundle.getString("service_btn_add"));
+            btnAddObject.setEnabled(false);
+            btnAddService.setEnabled(false);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelObjectOfSale.clearPanel();
         panelService.clearPanel();
+        btnAddObject.setEnabled(false);
+        btnAddService.setEnabled(false);
     }
 
     @Override
-    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+    public DomainObject generateOdo(DomainObject domainObject) {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(null, "Uspesno generisan predmet prodaje!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_object_of_sale_success_generated"),
+                    resourceBundle.getString("success_title"));
             btnAddObject.setEnabled(true);
             return odo;
         } catch (Exception ex) {
-            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            return null;
         }
     }
 }

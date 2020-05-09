@@ -1,26 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
 import controller.Controller;
 import domain.Racun;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
+import view.MessageDialog;
 
 /**
  *
  * @author nikol
  */
 public class PanelSearchBillsFromDate extends javax.swing.JPanel {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelSearchBillsFromDatw
@@ -38,11 +36,14 @@ public class PanelSearchBillsFromDate extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
         panelChooseDate = new javax.swing.JPanel();
         panelDate = new view.panels.components.PanelLDpS();
         btnChoose = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         panelChooseDate.setBackground(new java.awt.Color(255, 255, 255));
         panelChooseDate.setBorder(javax.swing.BorderFactory.createTitledBorder("Choose date"));
@@ -53,7 +54,7 @@ public class PanelSearchBillsFromDate extends javax.swing.JPanel {
             panelChooseDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelChooseDateLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelDate, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelChooseDateLayout.setVerticalGroup(
@@ -71,27 +72,42 @@ public class PanelSearchBillsFromDate extends javax.swing.JPanel {
             }
         });
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelChooseDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 478, Short.MAX_VALUE)
+                .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelChooseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnChoose)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelChooseDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelChooseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnChoose)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,26 +116,34 @@ public class PanelSearchBillsFromDate extends javax.swing.JPanel {
             List<Racun> racuni = CommunicationController.getInstance().operationSearchBillFromDate((Date) panelDate.getValue());
             PanelChoosePath panelChoosePath = new PanelChoosePath();
             String path = panelChoosePath.showChooseFile().getAbsolutePath();
-            Controller.getInstance().saveReportBillFromDate(racuni, path);
+            Controller.getInstance().saveReportBillFromDate(racuni, path, (Date) panelDate.getValue());
             panelDate.clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchBillsFromDate.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnChooseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoose;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel panelChooseDate;
     private view.panels.components.PanelLDpS panelDate;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        btnChoose.setText(resourceBundle.getString("search_btn_choose"));
-        panelChooseDate.setBorder(new TitledBorder(resourceBundle.getString("search_title_border")));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        btnChoose.setText(resourceBundle.getString("search_bill_btn_choose"));
+        panelChooseDate.setBorder(new TitledBorder(resourceBundle.getString("search_bill_title_border")));
+        panelDate.setElementText(resourceBundle.getString("search_bill_date"), new Date());
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelDate.clearPanel();
     }

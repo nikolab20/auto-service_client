@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -16,6 +11,11 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelCarPart
@@ -108,20 +108,25 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
     private view.panels.components.PanelLTS panelStock;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelCarPart.setBorder(new TitledBorder(resourceBundle.getString("part_panel")));
-        panelObjectOfSaleID.setElementText(resourceBundle.getString("part_object_of_sale_id") + ":", "");
+        panelCarPart.setBorder(new TitledBorder(resourceBundle.getString("part_panel_border")));
+        panelObjectOfSaleID.setElementText(resourceBundle.getString("part_lbl_object_of_sale_id") + ":", "");
         panelObjectOfSaleID.getTextField().setEnabled(false);
-        panelSerialNumber.setElementText(resourceBundle.getString("part_serial_number"), "");
-        panelSerialNumber.getTextField().setEnabled(false);
-        panelName.setElementText(resourceBundle.getString("part_name") + ":", "");
-        panelManufacturer.setElementText(resourceBundle.getString("part_manufacturer") + ":", "");
-        panelDescription.setElementText(resourceBundle.getString("part_description") + ":", "");
-        panelStock.setElementText(resourceBundle.getString("part_stock") + ":", "");
+        panelSerialNumber.setElementText(resourceBundle.getString("part_lbl_serial_number"), "");
+        panelName.setElementText(resourceBundle.getString("part_lbl_name") + ":", "");
+        panelManufacturer.setElementText(resourceBundle.getString("part_lbl_manufacturer") + ":", "");
+        panelDescription.setElementText(resourceBundle.getString("part_lbl_description") + ":", "");
+        panelStock.setElementText(resourceBundle.getString("part_lbl_stock") + ":", "");
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelObjectOfSaleID.clearPanel();
         panelSerialNumber.clearPanel();
@@ -133,7 +138,6 @@ public class PanelCarPart extends javax.swing.JPanel implements iFormValue {
 
     @Override
     public Object getValue() {
-        //long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
         long serialNumber = new Long((String) panelSerialNumber.getValue());
         String name = (String) panelName.getValue();
         String manufacturer = (String) panelManufacturer.getValue();

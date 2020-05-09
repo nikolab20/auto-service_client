@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import events.ClickButtonEvent;
@@ -21,12 +16,16 @@ import listeners.CustomComponentListener;
  */
 public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
 
-    private List<CustomComponentListener> customComponentListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<CustomComponentListener> customComponentListeners;
 
     /**
      * Creates new form PanelLTBS
      */
     public PanelLTBS() {
+        this.customComponentListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -70,7 +69,7 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
                 .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(separator, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                    .addComponent(separator, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addComponent(textField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -99,12 +98,22 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param buttonText is text value for button.
+     * @param labelText is text value for label.
+     * @param textFieldString is text value for text field.
+     */
     public void setElementText(String buttonText, String labelText, String textFieldString) {
         button.setText(buttonText);
         label.setText(labelText);
         textField.setText(textFieldString);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue("");
     }
@@ -151,13 +160,21 @@ public class PanelLTBS extends javax.swing.JPanel implements iFormValue {
         textField.setText((String) object);
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements CustomComponenteListener interface.
+     */
     public void addListener(CustomComponentListener toAdd) {
         customComponentListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that button has been clicked.
+     */
     private void clickButton() {
-        for (CustomComponentListener customComponentListener : customComponentListeners) {
+        customComponentListeners.forEach((customComponentListener) -> {
             customComponentListener.pressButton(new ClickButtonEvent(this));
-        }
+        });
     }
 }

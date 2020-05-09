@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,15 +6,19 @@ import domain.Klijent;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
+import view.MessageDialog;
 
 /**
  *
  * @author nikol
  */
 public class PanelSearchNewClientsFromDate extends javax.swing.JPanel {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelSearchNewClientsFromDate
@@ -37,11 +36,14 @@ public class PanelSearchNewClientsFromDate extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         panelDate = new javax.swing.JPanel();
         panelChooseDate = new view.panels.components.PanelLDpS();
         btnChoose = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         panelDate.setBackground(new java.awt.Color(255, 255, 255));
         panelDate.setBorder(javax.swing.BorderFactory.createTitledBorder("Choose"));
@@ -71,27 +73,42 @@ public class PanelSearchNewClientsFromDate extends javax.swing.JPanel {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 514, Short.MAX_VALUE)
+                .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnChoose)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 514, Short.MAX_VALUE)
-                        .addComponent(btnChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnChoose)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,26 +117,34 @@ public class PanelSearchNewClientsFromDate extends javax.swing.JPanel {
             List<Klijent> klijenti = CommunicationController.getInstance().operationSearchNewClientsFromDate((Date) panelChooseDate.getValue());
             PanelChoosePath panelChoosePath = new PanelChoosePath();
             String path = panelChoosePath.showChooseFile().getAbsolutePath();
-            Controller.getInstance().saveReportNewClientsFromDate(klijenti, path);
+            Controller.getInstance().saveReportNewClientsFromDate(klijenti, path, (Date) panelChooseDate.getValue());
             panelChooseDate.clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchBillsFromDate.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnChooseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoose;
+    private javax.swing.JPanel jPanel1;
     private view.panels.components.PanelLDpS panelChooseDate;
     private javax.swing.JPanel panelDate;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        btnChoose.setText(resourceBundle.getString("search_btn_choose"));
-        panelDate.setBorder(new TitledBorder(resourceBundle.getString("search_title_border")));
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        btnChoose.setText(resourceBundle.getString("search_customers_btn_choose"));
+        panelDate.setBorder(new TitledBorder(resourceBundle.getString("search_customers_panel_border")));
+        panelChooseDate.setElementText(resourceBundle.getString("search_customers_date"), new Date());
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelChooseDate.clearPanel();
     }

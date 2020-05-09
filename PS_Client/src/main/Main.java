@@ -6,6 +6,7 @@ import view.SplashScreen;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
+
         SplashScreen splashScreen = new SplashScreen();
 
         for (int i = 0; i <= 100; i++) {
@@ -17,8 +18,5 @@ public class Main {
 
         new FrmLanguage().setVisible(true);
         splashScreen.dispose();
-
-        //new MessageDialog(new JFrame(), true).setVisible(true);
-        //new FrmClient().setVisible(true);
     }
 }

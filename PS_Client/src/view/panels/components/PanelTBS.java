@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import events.ClickButtonEvent;
@@ -18,13 +13,17 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelTBS extends javax.swing.JPanel implements iFormValue {
-    
-    private List<CustomComponentListener> customComponentListeners = new ArrayList<>();
+
+    /**
+     * A list of listeners.
+     */
+    private final List<CustomComponentListener> customComponentListeners;
 
     /**
      * Creates new form PanelTBS
      */
     public PanelTBS() {
+        this.customComponentListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -87,48 +86,65 @@ public class PanelTBS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param buttonText is text value for button.
+     * @param textFieldString is text value for text field.
+     */
     public void setElementText(String buttonText, String textFieldString) {
         button.setText(buttonText);
         textField.setText(textFieldString);
     }
-    
+
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue("");
     }
-    
+
     public JButton getButton() {
         return button;
     }
-    
+
     public void setButton(JButton button) {
         this.button = button;
     }
-    
+
     public JTextField getTextField() {
         return textField;
     }
-    
+
     public void setTextField(JTextField textField) {
         this.textField = textField;
     }
-    
+
     @Override
     public Object getValue() {
         return textField.getText();
     }
-    
+
     @Override
     public void setValue(Object object) {
         textField.setText((String) object);
     }
-    
+
+    /**
+     * Method for adding listener on this dialog.
+     *
+     * @param toAdd a object that implements CustomComponentListener interface.
+     */
     public void addListener(CustomComponentListener toAdd) {
         customComponentListeners.add(toAdd);
     }
-    
+
+    /**
+     * A method for notifying listeners that button has been clicked.
+     */
     private void clickButton() {
-        for (CustomComponentListener customComponentListener : customComponentListeners) {
+        customComponentListeners.forEach((customComponentListener) -> {
             customComponentListener.pressButton(new ClickButtonEvent(this));
-        }
+        });
     }
 }

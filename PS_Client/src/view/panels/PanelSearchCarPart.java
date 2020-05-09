@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,11 +6,9 @@ import domain.Deo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
+import view.MessageDialog;
 import view.tablemodels.TableModelCarPart;
 
 /**
@@ -24,8 +17,20 @@ import view.tablemodels.TableModelCarPart;
  */
 public class PanelSearchCarPart extends javax.swing.JPanel implements SearchListener {
 
+    /**
+     * Reference on car part table model.
+     */
     private TableModelCarPart tmcp;
+
+    /**
+     * A list of car parts.
+     */
     private List<Deo> delovi;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelSearchCarPart
@@ -71,27 +76,44 @@ public class PanelSearchCarPart extends javax.swing.JPanel implements SearchList
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        tmcp = new TableModelCarPart(delovi);
-        panelSearch.preparePanel(tmcp);
-        panelSearch.addListener(this);
+        try {
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            delovi = CommunicationController.getInstance().operationSelectAllCarParts();
+            tmcp = new TableModelCarPart(delovi);
+            panelSearch.preparePanel(tmcp);
+            panelSearch.addListener(this);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        delovi.clear();
-        panelSearch.clearPanel(new TableModelCarPart(delovi));
+        try {
+            delovi = CommunicationController.getInstance().operationSelectAllCarParts();
+            panelSearch.clearPanel(new TableModelCarPart(delovi));
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            delovi = CommunicationController.getInstance().operationSearchCarPart(criteria);
-            JOptionPane.showMessageDialog(this, "Uspesno vraceni delovi!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            delovi = CommunicationController.getInstance().operationSearchCarPart(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("part_search_success"),
+                    resourceBundle.getString("success_title"));
             return new TableModelCarPart(delovi);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            delovi.clear();
+            return new TableModelCarPart(delovi);
         }
     }
 }

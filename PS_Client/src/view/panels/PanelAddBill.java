@@ -1,30 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
 import controller.Controller;
+import domain.Deo;
 import domain.DomainObject;
 import domain.Klijent;
 import domain.Racun;
 import domain.StavkaRacuna;
 import java.awt.Frame;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import listeners.GenerateListener;
 import listeners.ObjectOfSaleDialogListener;
 import listeners.PayBillDialogListener;
-import view.FrmClient;
+import view.MessageDialog;
 import view.dialog.DialogChooseObjectOfSale;
 import view.dialog.DialogPayBill;
 import view.tablemodels.TableModelBillItem;
@@ -35,12 +27,40 @@ import view.tablemodels.TableModelBillItem;
  */
 public class PanelAddBill extends javax.swing.JPanel implements GenerateListener, ObjectOfSaleDialogListener, PayBillDialogListener {
 
+    /**
+     * The bill that is the subject of the entry
+     */
     private Racun racun;
+
+    /**
+     * The client the bill is being created for.
+     */
     private Klijent klijent;
-    private List<StavkaRacuna> stavkeRacuna;
+
+    /**
+     * List of the bill items.
+     */
+    private final List<StavkaRacuna> stavkeRacuna;
+
+    /**
+     * A reference on dialog for bill item choosing.
+     */
     private DialogChooseObjectOfSale dialogChooseObjectOfSale;
+
+    /**
+     * A reference on dialog for paying a bill.
+     */
     private DialogPayBill dialogPayBill;
+
+    /**
+     * A reference on bill item table model.
+     */
     private TableModelBillItem tmbi;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelAddBill
@@ -174,11 +194,12 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
         try {
             racun = (Racun) panelBill.getValue();
             racun = (Racun) CommunicationController.getInstance().operationUpdate(racun);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovan racun!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("bill_success_add"),
+                    resourceBundle.getString("success_title"));
             btnAddBill.setEnabled(false);
             btnAddItem.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddBillActionPerformed
 
@@ -193,13 +214,11 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
             racun = (Racun) panelBill.getValue();
             racun.setStorniran(true);
             racun = (Racun) CommunicationController.getInstance().operationUpdate(racun);
-            JOptionPane.showMessageDialog(null, "Uspesno storniran racun!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
-            btnAddBill.setEnabled(false);
-            btnCancel.setVisible(false);
-            btnAddItem.setVisible(false);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("bill_success_invalidate"),
+                    resourceBundle.getString("success_title"));
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -208,6 +227,20 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
         dialogPayBill = new DialogPayBill((Frame) SwingUtilities.getWindowAncestor(this), false, klijent, racun);
         dialogPayBill.addListener(this);
         dialogPayBill.setVisible(true);
+
+        stavkeRacuna.forEach((StavkaRacuna stavkaRacuna) -> {
+            try {
+                List<Deo> delovi = CommunicationController.getInstance().operationSearchCarPart(stavkaRacuna.getPredmetProdaje().getSifraPredmetaProdaje());
+                BigDecimal amount = stavkaRacuna.getKolicina();
+
+                if (delovi.size() == 1) {
+                    delovi.get(0).setStanje(delovi.get(0).getStanje() - amount.intValue());
+                    CommunicationController.getInstance().operationUpdate(delovi.get(0));
+                }
+            } catch (Exception ex) {
+                MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            }
+        });
     }//GEN-LAST:event_btnProcessBillActionPerformed
 
 
@@ -222,13 +255,15 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
     private javax.swing.JTable tableBillItems;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnAddBill.setText(resourceBundle.getString("btn_add_bill"));
-        btnAddItem.setText(resourceBundle.getString("btn_add_item"));
-        btnCancel.setText(resourceBundle.getString("btn_cancel"));
-        btnProcessBill.setText(resourceBundle.getString("btn_process"));
+        btnAddItem.setText(resourceBundle.getString("btn_add_bill_item"));
+        btnCancel.setText(resourceBundle.getString("btn_invalidate_bill"));
+        btnProcessBill.setText(resourceBundle.getString("btn_process_bill"));
         panelBill.addListener(this);
         tmbi = new TableModelBillItem(stavkeRacuna);
         tableBillItems.setModel(tmbi);
@@ -236,29 +271,36 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
         btnCancel.setVisible(false);
         btnAddItem.setVisible(false);
         btnAddBill.setEnabled(false);
-
+        btnProcessBill.setEnabled(false);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         stavkeRacuna.clear();
         panelBill.clearPanel();
         tmbi = new TableModelBillItem(stavkeRacuna);
         tableBillItems.setModel(tmbi);
+        btnCancel.setVisible(false);
+        btnAddItem.setVisible(false);
+        btnAddBill.setEnabled(false);
+        btnProcessBill.setEnabled(false);
     }
 
     @Override
-    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+    public DomainObject generateOdo(DomainObject domainObject) {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(null, "Uspesno generisan racun!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("bill_success_generated"),
+                    resourceBundle.getString("success_title"));
             btnAddBill.setEnabled(true);
             btnCancel.setVisible(true);
             btnAddBill.setEnabled(true);
             return odo;
         } catch (Exception ex) {
-            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            return null;
         }
     }
 
@@ -270,6 +312,7 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
         racun.setUkupnaVrednostSaPorezom(racun.getUkupnaVrednostSaPorezom().add(stavkaRacuna.getUkupnaCenaSaPorezom()));
         panelBill.setValue(racun);
         tmbi.updateTable(stavkeRacuna);
+        btnProcessBill.setEnabled(true);
     }
 
     @Override
@@ -283,7 +326,7 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
             CommunicationController.getInstance().operationInsertListOfDomainObject(stavkeRacuna);
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 
@@ -298,7 +341,7 @@ public class PanelAddBill extends javax.swing.JPanel implements GenerateListener
             CommunicationController.getInstance().operationInsertListOfDomainObject(stavkeRacuna);
             clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddBill.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 }

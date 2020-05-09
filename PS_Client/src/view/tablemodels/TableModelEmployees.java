@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
@@ -17,17 +12,28 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelEmployees extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private List<Radnik> radnici;
-    private String[] columnNames;
-    private ResourceBundle resourceBundle;
+
+    /**
+     * Array of strings that represents names of columns.
+     */
+    private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
 
     public TableModelEmployees(List<Radnik> radnici) {
         this.radnici = radnici;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        this.columnNames = new String[]{resourceBundle.getString("column_id_employee"),
-            resourceBundle.getString("column_first_name"), resourceBundle.getString("column_last_name"),
-            resourceBundle.getString("column_address"), resourceBundle.getString("column_phone"),
-            resourceBundle.getString("column_idnumber"), resourceBundle.getString("column_administrator")};
+        this.columnNames = new String[]{resourceBundle.getString("column_employee_id_employee"),
+            resourceBundle.getString("column_employee_first_name"), resourceBundle.getString("column_employee_last_name"),
+            resourceBundle.getString("column_employee_address"), resourceBundle.getString("column_employee_phone"),
+            resourceBundle.getString("column_employee_id_number"), resourceBundle.getString("column_employee_administrator")};
     }
 
     @Override
@@ -69,6 +75,11 @@ public class TableModelEmployees extends AbstractTableModel {
         return columnNames[column];
     }
 
+    /**
+     * Method for updating data into a table.
+     *
+     * @param radnici is updated list of data for table.
+     */
     public void updateTable(List<Radnik> radnici) {
         this.radnici = radnici;
         fireTableDataChanged();

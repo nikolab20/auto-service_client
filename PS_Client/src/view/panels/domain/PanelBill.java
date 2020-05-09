@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -13,20 +8,17 @@ import domain.Radnik;
 import events.ClickButtonEvent;
 import java.awt.Frame;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import listeners.CustomComponentListener;
 import listeners.CustomerDialogListener;
 import listeners.GenerateListener;
 import lombok.Setter;
+import view.MessageDialog;
 import view.dialog.DialogChooseCustomer;
 import view.interf.iFormValue;
 
@@ -37,14 +29,31 @@ import view.interf.iFormValue;
 @Setter
 public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomComponentListener, CustomerDialogListener {
 
-    private List<GenerateListener> generateListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<GenerateListener> generateListeners;
+
+    /**
+     * The client the bill is being created for.
+     */
     private Klijent klijent;
+
+    /**
+     * A reference on dialog for customer choosing.
+     */
     private DialogChooseCustomer dialogChooseCustomer;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelBill
      */
     public PanelBill() {
+        this.generateListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -132,19 +141,22 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
     private view.panels.components.PanelLTS panelWorker;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
         dialogChooseCustomer = new DialogChooseCustomer((Frame) SwingUtilities.getWindowAncestor(this), false);
-        panelBill.setBorder(new TitledBorder(resourceBundle.getString("bill_border")));
-        panelID.setElementText(resourceBundle.getString("sale_btn_generate"),
-                resourceBundle.getString("bill_id") + ":", "");
-        panelDate.setElementText(resourceBundle.getString("bill_date") + ":", new Date());
-        panelTotalPrice.setElementText(resourceBundle.getString("bill_total_price") + ":", "");
-        panelTotalPriceWithTax.setElementText(resourceBundle.getString("bill_total_price_with_tax") + ":", "");
-        panelWorker.setElementText(resourceBundle.getString("bill_worker") + ":", "");
+        panelBill.setBorder(new TitledBorder(resourceBundle.getString("bill_panel_border")));
+        panelID.setElementText(resourceBundle.getString("bill_btn_generate"),
+                resourceBundle.getString("bill_lbl_id") + ":", "");
+        panelDate.setElementText(resourceBundle.getString("bill_lbl_date") + ":", new Date());
+        panelTotalPrice.setElementText(resourceBundle.getString("bill_lbl_total_price") + ":", "");
+        panelTotalPriceWithTax.setElementText(resourceBundle.getString("bill_lbl_total_price_with_tax") + ":", "");
+        panelWorker.setElementText(resourceBundle.getString("bill_lbl_worker") + ":", "");
         panelCustomer.setElementText(resourceBundle.getString("bill_btn_choose"),
-                resourceBundle.getString("bill_customer") + ":", "");
+                resourceBundle.getString("bill_lbl_customer") + ":", "");
         panelID.getTextField().setEnabled(false);
         panelCustomer.getTextField().setEnabled(false);
         panelTotalPrice.getTextField().setEnabled(false);
@@ -157,6 +169,9 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
         dialogChooseCustomer.addListener(this);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelDate.clearPanel();
@@ -166,6 +181,11 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
         panelCustomer.clearPanel();
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements GenerateListener interface.
+     */
     public void addListener(GenerateListener toAdd) {
         generateListeners.add(toAdd);
     }
@@ -173,7 +193,7 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
     @Override
     public void pressButton(ClickButtonEvent evt) {
         if (evt.getSource() == panelID) {
-            for (GenerateListener generateListener : generateListeners) {
+            generateListeners.forEach((GenerateListener generateListener) -> {
                 try {
                     DomainObject odo = generateListener.generateOdo(new Racun());
                     panelID.setValue(odo.getObjectId() + "");
@@ -183,9 +203,9 @@ public class PanelBill extends javax.swing.JPanel implements iFormValue, CustomC
                     Radnik radnik = Controller.getInstance().getRadnik();
                     panelWorker.setValue(radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika());
                 } catch (Exception ex) {
-                    Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                    MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
                 }
-            }
+            });
         } else if (evt.getSource() == panelCustomer) {
             dialogChooseCustomer.setVisible(true);
         }

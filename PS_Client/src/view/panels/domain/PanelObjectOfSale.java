@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -12,7 +7,6 @@ import domain.PredmetProdaje;
 import events.SelectionChangeEvent;
 import events.TextEnterEvent;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.border.TitledBorder;
@@ -25,6 +19,11 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue, TextFieldListener, ComboBoxListener {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelObjectOfSale
@@ -107,21 +106,29 @@ public class PanelObjectOfSale extends javax.swing.JPanel implements iFormValue,
     private view.panels.components.PanelLCbS panelTax;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     *
+     * @param toComboBox is list of elements for combo box.
+     */
     public void preparePanel(List<DomainObject> toComboBox) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel")));
-        panelID.setElementText(resourceBundle.getString("sale_object_of_sale_id") + ":", "");
+        panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel_border")));
+        panelID.setElementText(resourceBundle.getString("sale_lbl_object_of_sale_id") + ":", "");
         panelID.getTextField().setEnabled(false);
-        panelPrice.setElementText(resourceBundle.getString("sale_price") + ":", "0");
-        panelPriceWithTax.setElementText(resourceBundle.getString("sale_price_with_tax") + ":", "0");
+        panelPrice.setElementText(resourceBundle.getString("sale_lbl_price") + ":", "0");
+        panelPriceWithTax.setElementText(resourceBundle.getString("sale_lbl_price_with_tax") + ":", "0");
         panelPriceWithTax.getTextField().setEditable(false);
 
-        panelTax.setElementText(resourceBundle.getString("sale_tax") + ":", toComboBox);
+        panelTax.setElementText(resourceBundle.getString("sale_lbl_tax") + ":", toComboBox);
         panelPrice.addListener(this);
         panelTax.addListener(this);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelPrice.setValue("0");

@@ -1,33 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.dialog;
 
+import controller.Controller;
 import domain.Klijent;
 import domain.Racun;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import listeners.PayBillDialogListener;
 
 /**
  *
  * @author nikol
  */
-public class DialogPayBill extends javax.swing.JDialog {
-    
-    private final Klijent klijent;
-    private final Racun racun;
-    private List<PayBillDialogListener> payBillDialogListeners = new ArrayList<>();
+public final class DialogPayBill extends javax.swing.JDialog {
 
     /**
-     * Creates new form DialogPayBill
+     * The client for whom the employee forms an account.
+     */
+    private final Klijent klijent;
+
+    /**
+     * The bill that the client pays.
+     */
+    private final Racun racun;
+
+    /**
+     * A list of listeners.
+     */
+    private final List<PayBillDialogListener> payBillDialogListeners;
+
+    /**
+     * Creates new dialog DialogPayBill
+     *
+     * @param parent is parent element of this dialog.
+     * @param modal showing if the dialog is modal or not.
+     * @param klijent is the client for whom the employee forms an account.
+     * @param racun is the bill that the client pays.
      */
     public DialogPayBill(java.awt.Frame parent, boolean modal, Klijent klijent, Racun racun) {
         super(parent, modal);
+        this.payBillDialogListeners = new ArrayList<>();
         initComponents();
         this.klijent = klijent;
         this.racun = racun;
@@ -168,8 +182,8 @@ public class DialogPayBill extends javax.swing.JDialog {
             BigDecimal change = new BigDecimal(txtPaid.getText()).subtract(new BigDecimal(txtTotalPrice.getText()));
             txtChange.setText(change + "");
             btnConfirm.setEnabled(true);
-            
-            if(change.compareTo(new BigDecimal(0)) == -1){
+
+            if (change.compareTo(new BigDecimal(0)) == -1) {
                 btnAddDebt.setEnabled(true);
             }
         }
@@ -195,7 +209,18 @@ public class DialogPayBill extends javax.swing.JDialog {
     private javax.swing.JTextField txtTotalPrice;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for dialog preparation.
+     */
     public void prepareDialog() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+
+        lblTotalPrice.setText(resourceBundle.getString("pay_bill_lbl_total_price") + ":");
+        lblPaid.setText(resourceBundle.getString("pay_bill_lbl_paid") + ":");
+        lblChange.setText(resourceBundle.getString("pay_bill_lbl_change") + ":");
+        btnConfirm.setText(resourceBundle.getString("pay_bill_btn_confirm"));
+        btnAddDebt.setText(resourceBundle.getString("pay_bill_btn_add_debt"));
+
         txtTotalPrice.setText(racun.getUkupnaVrednostSaPorezom() + "");
         txtTotalPrice.setEnabled(false);
         txtChange.setEnabled(false);
@@ -203,22 +228,33 @@ public class DialogPayBill extends javax.swing.JDialog {
         btnConfirm.setEnabled(false);
         setLocationRelativeTo(null);
     }
-    
+
+    /**
+     * Method for adding listener on this dialog.
+     *
+     * @param toAdd a object that implements CustomerDialogListener interface.
+     */
     public void addListener(PayBillDialogListener toAdd) {
         payBillDialogListeners.add(toAdd);
     }
-    
+
+    /**
+     * A method for notifying listeners that bill has been confirmed.
+     */
     private void confirmBill() {
-        for (PayBillDialogListener payBillDialogListener : payBillDialogListeners) {
+        payBillDialogListeners.forEach((PayBillDialogListener payBillDialogListener) -> {
             payBillDialogListener.confirmBill();
-        }
+        });
         dispose();
     }
-    
+
+    /**
+     * A method for notifying listeners that debt has been added to the client.
+     */
     private void addDebt() {
-        for (PayBillDialogListener payBillDialogListener : payBillDialogListeners) {
-            payBillDialogListener.addDebt(new BigDecimal(txtChange.getText()));
-        }
+        payBillDialogListeners.forEach((PayBillDialogListener payBillDialogListener) -> {
+            payBillDialogListener.addDebt(new BigDecimal(txtChange.getText()).abs());
+        });
         dispose();
     }
 }

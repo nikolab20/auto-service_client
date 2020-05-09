@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,13 +6,11 @@ import domain.Klijent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
-import view.tablemodels.TableModelClients;
+import view.MessageDialog;
+import view.tablemodels.TableModelCustomers;
 
 /**
  *
@@ -25,8 +18,20 @@ import view.tablemodels.TableModelClients;
  */
 public class PanelUpdateCustomer extends javax.swing.JPanel implements SearchListener, TableListener {
 
-    private TableModelClients tmc;
+    /**
+     * Reference on customer table model.
+     */
+    private TableModelCustomers tmc;
+
+    /**
+     * A list of customers.
+     */
     private List<Klijent> klijenti;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelUpdateCustomer
@@ -90,12 +95,13 @@ public class PanelUpdateCustomer extends javax.swing.JPanel implements SearchLis
         try {
             Klijent klijent = (Klijent) panelCustomer.getValue();
             klijent = (Klijent) CommunicationController.getInstance().operationUpdate(klijent);
-            JOptionPane.showMessageDialog(this, "Uspesno izmenjen klijent " + klijent.getImeKlijenta()
-                    + " " + klijent.getPrezimeKlijenta() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("customer_update_success") + " "
+                    + klijent.getImeKlijenta() + " " + klijent.getPrezimeKlijenta(),
+                    resourceBundle.getString("success_title"));
             this.clearPanel();
             btnUpdate.setEnabled(false);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -106,33 +112,50 @@ public class PanelUpdateCustomer extends javax.swing.JPanel implements SearchLis
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        btnUpdate.setText(resourceBundle.getString("customer_btn_update"));
-        btnUpdate.setEnabled(false);
-        tmc = new TableModelClients(klijenti);
-        panelSearch.preparePanel(tmc);
-        panelCustomer.preparePanel();
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
+        try {
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            btnUpdate.setText(resourceBundle.getString("customer_btn_update"));
+            btnUpdate.setEnabled(false);
+            klijenti = CommunicationController.getInstance().operationSelectAllCustomers();
+            tmc = new TableModelCustomers(klijenti);
+            panelSearch.preparePanel(tmc);
+            panelCustomer.preparePanel();
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        klijenti.clear();
-        panelCustomer.clearPanel();
-        panelSearch.clearPanel(new TableModelClients(klijenti));
-        btnUpdate.setEnabled(false);
+        try {
+            klijenti = CommunicationController.getInstance().operationSelectAllCustomers();
+            panelCustomer.clearPanel();
+            panelSearch.clearPanel(new TableModelCustomers(klijenti));
+            btnUpdate.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            klijenti = CommunicationController.getInstance().operationSearchCustomer(criteria);
-            JOptionPane.showMessageDialog(this, "Uspesno vraceni klijenti!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
-            return new TableModelClients(klijenti);
+            klijenti = CommunicationController.getInstance().operationSearchCustomer(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("customer_search_success"),
+                    resourceBundle.getString("success_title"));
+            return new TableModelCustomers(klijenti);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            klijenti.clear();
+            return new TableModelCustomers(klijenti);
         }
     }
 

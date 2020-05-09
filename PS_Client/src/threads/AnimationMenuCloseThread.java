@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threads;
 
 import java.util.logging.Level;
@@ -16,8 +11,16 @@ import view.FrmClient;
  */
 public class AnimationMenuCloseThread extends Thread {
 
-    private JPanel panel1;
+    /**
+     * Panel which user wants to close.
+     */
+    private final JPanel panel1;
 
+    /**
+     * Parameterized constructor for this class.
+     *
+     * @param panel1 is an object of JPanel class.
+     */
     public AnimationMenuCloseThread(JPanel panel1) {
         this.panel1 = panel1;
     }

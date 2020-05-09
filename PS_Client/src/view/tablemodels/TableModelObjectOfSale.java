@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
 import domain.DomainObject;
 import domain.PredmetProdaje;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
@@ -19,18 +13,33 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelObjectOfSale extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private final Map<DomainObject, String> predmetiProdaje;
+
+    /**
+     * Array of strings that represents names of columns.
+     */
     private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
     private final ResourceBundle resourceBundle;
+
+    /**
+     * A tranformed map to array.
+     */
     private Object[][] data;
 
     public TableModelObjectOfSale(Map<DomainObject, String> predmetiProdaje) {
         this.predmetiProdaje = predmetiProdaje;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         this.columnNames = new String[]{
-            resourceBundle.getString("column_id_object_of_sale"), resourceBundle.getString("column_price"),
-            resourceBundle.getString("column_price_with_tax"), resourceBundle.getString("column_tax"),
-            resourceBundle.getString("column_name")};
+            resourceBundle.getString("column_sale_id_object_of_sale"), resourceBundle.getString("column_sale_price"),
+            resourceBundle.getString("column_sale_price_with_tax"), resourceBundle.getString("column_sale_tax"),
+            resourceBundle.getString("column_sale_name")};
     }
 
     @Override
@@ -72,6 +81,11 @@ public class TableModelObjectOfSale extends AbstractTableModel {
         return columnNames[column];
     }
 
+    /**
+     * A method for transforming map to array.
+     *
+     * @return a repacked map to array.
+     */
     public Object[][] repack() {
         Object niz[][] = new Object[predmetiProdaje.keySet().size()][columnNames.length];
 

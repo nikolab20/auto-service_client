@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -16,13 +11,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
 import listeners.ComboBoxListener;
 import listeners.CustomComponentListener;
 import listeners.GenerateListener;
 import listeners.TextFieldListener;
+import view.MessageDialog;
 import view.interf.iFormValue;
 
 /**
@@ -31,12 +25,21 @@ import view.interf.iFormValue;
  */
 public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormValue, CustomComponentListener, TextFieldListener, ComboBoxListener {
 
-    private List<GenerateListener> generateListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<GenerateListener> generateListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelObjectOfSale
      */
     public PanelNewObjectOfSale() {
+        this.generateListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -113,22 +116,28 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
     private view.panels.components.PanelLCbS panelTax;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel(List<DomainObject> toComboBox) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel")));
+        panelObjectOfSale.setBorder(new TitledBorder(resourceBundle.getString("sale_panel_border")));
         panelID.setElementText(resourceBundle.getString("sale_btn_generate"),
-                resourceBundle.getString("sale_object_of_sale_id") + ":", "");
+                resourceBundle.getString("sale_lbl_object_of_sale_id") + ":", "");
         panelID.getTextField().setEnabled(false);
         panelID.addListener(this);
-        panelPrice.setElementText(resourceBundle.getString("sale_price") + ":", "0");
-        panelPriceWithTax.setElementText(resourceBundle.getString("sale_price_with_tax") + ":", "0");
+        panelPrice.setElementText(resourceBundle.getString("sale_lbl_price") + ":", "0");
+        panelPriceWithTax.setElementText(resourceBundle.getString("sale_lbl_price_with_tax") + ":", "0");
         panelPriceWithTax.getTextField().setEditable(false);
-        panelTax.setElementText(resourceBundle.getString("sale_tax") + ":", toComboBox);
+        panelTax.setElementText(resourceBundle.getString("sale_lbl_tax") + ":", toComboBox);
         panelPrice.addListener(this);
         panelTax.addListener(this);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelPrice.setValue("0");
@@ -136,6 +145,11 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
         panelTax.clearPanel();
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements GenerateListener interface.
+     */
     public void addListener(GenerateListener toAdd) {
         generateListeners.add(toAdd);
     }
@@ -163,14 +177,14 @@ public class PanelNewObjectOfSale extends javax.swing.JPanel implements iFormVal
 
     @Override
     public void pressButton(ClickButtonEvent evt) {
-        for (GenerateListener generateListener : generateListeners) {
+        generateListeners.forEach((GenerateListener generateListener) -> {
             try {
                 DomainObject odo = generateListener.generateOdo(new PredmetProdaje());
                 panelID.setValue(odo.getObjectId() + "");
             } catch (Exception ex) {
-                Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
             }
-        }
+        });
     }
 
     @Override

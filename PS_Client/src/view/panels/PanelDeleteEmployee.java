@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,12 +6,10 @@ import domain.Radnik;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
+import view.MessageDialog;
 import view.tablemodels.TableModelEmployees;
 
 /**
@@ -25,9 +18,25 @@ import view.tablemodels.TableModelEmployees;
  */
 public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchListener, TableListener {
 
+    /**
+     * Reference on employees table model.
+     */
     private TableModelEmployees tme;
+
+    /**
+     * A list of employees.
+     */
     private List<Radnik> radnici;
+
+    /**
+     * Selected employee from list of employees.
+     */
     private Radnik radnik;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelDeleteEmployee
@@ -86,12 +95,12 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try {
             radnik = (Radnik) CommunicationController.getInstance().operationDelete(radnik);
-            JOptionPane.showMessageDialog(this, "Uspesno obrisan radnik " + radnik.getImeRadnika()
-                    + " " + radnik.getPrezimeRadnika() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("employee_success_delete") + " "
+                    + radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika(),
+                    resourceBundle.getString("success_title"));
             this.clearPanel();
-            btnDelete.setEnabled(false);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -101,30 +110,49 @@ public class PanelDeleteEmployee extends javax.swing.JPanel implements SearchLis
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        tme = new TableModelEmployees(radnici);
-        panelSearch.preparePanel(tme);
-        btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
+        try {
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            radnici = CommunicationController.getInstance().operationSelectAllEmployees();
+            tme = new TableModelEmployees(radnici);
+            panelSearch.preparePanel(tme);
+            btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
+            btnDelete.setEnabled(false);
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        radnik = null;
-        radnici.clear();
-        panelSearch.clearPanel(new TableModelEmployees(radnici));
+        try {
+            radnik = null;
+            radnici = CommunicationController.getInstance().operationSelectAllEmployees();
+            btnDelete.setEnabled(false);
+            panelSearch.clearPanel(new TableModelEmployees(radnici));
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            radnici = CommunicationController.getInstance().operationSearchEmployee(criteria);
-            JOptionPane.showMessageDialog(this, "Uspesno vraceni radnici!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            radnici = CommunicationController.getInstance().operationSearchEmployee(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("employee_success_search"),
+                    resourceBundle.getString("success_title"));
             return new TableModelEmployees(radnici);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            radnici.clear();
+            return new TableModelEmployees(radnici);
         }
     }
 

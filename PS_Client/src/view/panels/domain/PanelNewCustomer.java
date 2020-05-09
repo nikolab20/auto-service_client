@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -13,11 +8,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
 import listeners.CustomComponentListener;
 import listeners.GenerateListener;
+import view.MessageDialog;
 import view.interf.iFormValue;
 
 /**
@@ -26,12 +20,21 @@ import view.interf.iFormValue;
  */
 public class PanelNewCustomer extends javax.swing.JPanel implements iFormValue, CustomComponentListener {
 
-    private List<GenerateListener> generateListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<GenerateListener> generateListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelNewCustomer
      */
     public PanelNewCustomer() {
+        this.generateListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -114,22 +117,28 @@ public class PanelNewCustomer extends javax.swing.JPanel implements iFormValue, 
     private view.panels.components.PanelLTS panelNumOfVisits;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelCustomer.setBorder(new TitledBorder(resourceBundle.getString("customer_border")));
+        panelCustomer.setBorder(new TitledBorder(resourceBundle.getString("customer_panel_border")));
         panelID.addListener(this);
-        panelID.getTextField().setEnabled(false);
+
         panelID.setElementText(resourceBundle.getString("customer_btn_generate"),
-                resourceBundle.getString("customer_id") + ":", "");
+                resourceBundle.getString("customer_lbl_id") + ":", "");
         panelID.getButton().requestFocus();
         panelID.getTextField().setEditable(false);
-        panelFirstName.setElementText(resourceBundle.getString("customer_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("customer_last_name") + ":", "");
-        panelNumOfVisits.setElementText(resourceBundle.getString("customer_num_of_visits") + ":", "0");
-        panelDebt.setElementText(resourceBundle.getString("customer_debt") + ":", "0");
+        panelFirstName.setElementText(resourceBundle.getString("customer_lbl_first_name") + ":", "");
+        panelLastName.setElementText(resourceBundle.getString("customer_lbl_last_name") + ":", "");
+        panelNumOfVisits.setElementText(resourceBundle.getString("customer_lbl_num_of_visits") + ":", "0");
+        panelDebt.setElementText(resourceBundle.getString("customer_lbl_debt") + ":", "0");
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelFirstName.clearPanel();
@@ -161,20 +170,25 @@ public class PanelNewCustomer extends javax.swing.JPanel implements iFormValue, 
         panelDebt.setValue(klijent.getDug());
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements GenerateListener interface.
+     */
     public void addListener(GenerateListener toAdd) {
         generateListeners.add(toAdd);
     }
 
     @Override
     public void pressButton(ClickButtonEvent evt) {
-        for (GenerateListener generateListener : generateListeners) {
+        generateListeners.forEach((GenerateListener generateListener) -> {
             try {
                 DomainObject odo = generateListener.generateOdo(new Klijent());
                 panelID.setValue(odo.getObjectId() + "");
             } catch (Exception ex) {
-                Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
             }
-        }
+        });
     }
 
 }

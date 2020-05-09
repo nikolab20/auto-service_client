@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.dialog;
 
 import controller.CommunicationController;
+import controller.Controller;
 import domain.DomainObject;
 import domain.PredmetProdaje;
 import domain.Racun;
@@ -14,16 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
-import listeners.CustomComponentListener;
-import listeners.CustomerDialogListener;
 import listeners.ObjectOfSaleDialogListener;
 import listeners.SearchListener;
 import listeners.TableListener;
-import view.panels.PanelSearchCustomer;
+import view.MessageDialog;
 import view.tablemodels.TableModelObjectOfSale;
 
 /**
@@ -32,19 +24,55 @@ import view.tablemodels.TableModelObjectOfSale;
  */
 public class DialogChooseObjectOfSale extends javax.swing.JDialog implements SearchListener, TableListener {
 
+    /**
+     * Reference on object of sale table model.
+     */
     private TableModelObjectOfSale tmoos;
-    private Map<DomainObject, String> predmetiProdaje;
-    private Racun racun;
-    private PredmetProdaje predmetProdaje;
-    private long numberOfItems;
-    private List<ObjectOfSaleDialogListener> objectOfSaleDialogListeners = new ArrayList<>();
 
     /**
-     * Creates new form DialogChooseObjectOfSale
+     * A map of key-value pair object of sale and name of item which connected
+     * to object of sale.
+     */
+    private Map<DomainObject, String> predmetiProdaje;
+
+    /**
+     * A bill for which the worker selects the items.
+     */
+    private final Racun racun;
+
+    /**
+     * Selected bill item.
+     */
+    private PredmetProdaje predmetProdaje;
+
+    /**
+     * Number of previously selected bill items.
+     */
+    private final long numberOfItems;
+
+    /**
+     * A list of listeners.
+     */
+    private final List<ObjectOfSaleDialogListener> objectOfSaleDialogListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
+
+    /**
+     * Creates new dialog DialogChooseObjectOfSale.
+     *
+     * @param parent is parent element of this dialog.
+     * @param modal showing if the dialog is modal or not.
+     * @param racun is a bill for which the worker selects the items.
+     * @param numberOfItems is number of previously selected bill items.
      */
     public DialogChooseObjectOfSale(java.awt.Frame parent, boolean modal, Racun racun, long numberOfItems) {
         super(parent, modal);
         initComponents();
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        this.objectOfSaleDialogListeners = new ArrayList<>();
         this.racun = racun;
         predmetiProdaje = new HashMap<>();
         this.numberOfItems = numberOfItems;
@@ -136,42 +164,72 @@ public class DialogChooseObjectOfSale extends javax.swing.JDialog implements Sea
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for dialog preparation.
+     */
     private void prepareDialog() {
-        tmoos = new TableModelObjectOfSale(predmetiProdaje);
-        panelSearch.preparePanel(tmoos);
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
-        panelBillItem.preparePanel();
-        setLocationRelativeTo(null);
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
+        try {
+            predmetiProdaje = CommunicationController.getInstance().operationSelectAllObjectOfSale();
+            tmoos = new TableModelObjectOfSale(predmetiProdaje);
+            btnAdd.setText(resourceBundle.getString("dialog_btn_add"));
+            panelSearch.preparePanel(tmoos);
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+            panelBillItem.preparePanel();
+            setLocationRelativeTo(null);
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting dialog elements on default values.
+     */
     public void clearDialog() {
-        predmetiProdaje.clear();
-        tmoos = new TableModelObjectOfSale(predmetiProdaje);
-        panelSearch.clearPanel(tmoos);
-        panelBillItem.clearPanel();
+        try {
+            predmetiProdaje = CommunicationController.getInstance().operationSelectAllObjectOfSale();
+            tmoos = new TableModelObjectOfSale(predmetiProdaje);
+            panelSearch.clearPanel(tmoos);
+            panelBillItem.clearPanel();
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for adding listener on this dialog.
+     *
+     * @param toAdd a object that implements ObjectOfSaleDialogListener
+     * interface.
+     */
     public void addListener(ObjectOfSaleDialogListener toAdd) {
         objectOfSaleDialogListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that bill item has been added to the
+     * bill.
+     */
     private void addBillItem() {
-        for (ObjectOfSaleDialogListener objectOfSaleDialogListener : objectOfSaleDialogListeners) {
+        objectOfSaleDialogListeners.forEach((ObjectOfSaleDialogListener objectOfSaleDialogListener) -> {
             objectOfSaleDialogListener.addBillItem((StavkaRacuna) panelBillItem.getValue());
-        }
+        });
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            predmetiProdaje = CommunicationController.getInstance().operationGetAllObjectOfSale(criteria);
+            predmetiProdaje = CommunicationController.getInstance().operationSearchAllObjectOfSale(criteria);
             return new TableModelObjectOfSale(predmetiProdaje);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+            predmetiProdaje.clear();
+            return new TableModelObjectOfSale(predmetiProdaje);
         }
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -10,12 +5,10 @@ import controller.Controller;
 import domain.Deo;
 import domain.DomainObject;
 import domain.PredmetProdaje;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import listeners.GenerateListener;
-import view.FrmClient;
+import view.MessageDialog;
 
 /**
  *
@@ -23,7 +16,15 @@ import view.FrmClient;
  */
 public class PanelAddCarPart extends javax.swing.JPanel implements GenerateListener {
 
+    /**
+     * The object of the sale which car part is connected.
+     */
     private PredmetProdaje predmetProdaje;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelAddCarPart
@@ -97,15 +98,16 @@ public class PanelAddCarPart extends javax.swing.JPanel implements GenerateListe
         try {
             predmetProdaje = (PredmetProdaje) panelObjectOfSale.getValue();
             predmetProdaje = (PredmetProdaje) CommunicationController.getInstance().operationUpdate(predmetProdaje);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovan predmet prodaje!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("part_object_of_sale_success_add"),
+                    resourceBundle.getString("success_title"));
             btnAddObject.setEnabled(false);
-            panelObjectOfSale.clearPanel();
+
             Deo deo = new Deo();
             deo.setPredmetProdaje(predmetProdaje);
             panelCarPart.setValue(deo);
             btnAddPart.setEnabled(true);
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddObjectActionPerformed
 
@@ -113,12 +115,14 @@ public class PanelAddCarPart extends javax.swing.JPanel implements GenerateListe
         try {
             Deo deo = (Deo) panelCarPart.getValue();
             deo.setPredmetProdaje(predmetProdaje);
-            deo = (Deo) CommunicationController.getInstance().operationInsert(deo);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovan deo!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            CommunicationController.getInstance().operationInsert(deo);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("part_success_add"),
+                    resourceBundle.getString("success_title"));
             btnAddPart.setEnabled(false);
+            panelObjectOfSale.clearPanel();
             panelCarPart.clearPanel();
         } catch (Exception ex) {
-            Logger.getLogger(PanelAddCarPart.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddPartActionPerformed
 
@@ -130,36 +134,46 @@ public class PanelAddCarPart extends javax.swing.JPanel implements GenerateListe
     private view.panels.domain.PanelNewObjectOfSale panelObjectOfSale;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
         try {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-            panelObjectOfSale.preparePanel(CommunicationController.getInstance().operationSelectAllTax());
+            panelObjectOfSale.preparePanel((List<DomainObject>) CommunicationController.getInstance().operationSelectAllTax());
             panelCarPart.preparePanel();
             panelObjectOfSale.addListener(this);
-            btnAddObject.setText(resourceBundle.getString("part_button_add"));
-            btnAddPart.setText(resourceBundle.getString("part_button_add"));
+            btnAddObject.setText(resourceBundle.getString("object_btn_add"));
+            btnAddPart.setText(resourceBundle.getString("part_btn_add"));
+            btnAddObject.setEnabled(false);
+            btnAddPart.setEnabled(false);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelObjectOfSale.clearPanel();
         panelCarPart.clearPanel();
+        btnAddObject.setEnabled(false);
+        btnAddPart.setEnabled(false);
     }
 
     @Override
-    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+    public DomainObject generateOdo(DomainObject domainObject) {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(null, "Uspesno generisan klijent!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("part_object_of_sale_success_generated"),
+                    resourceBundle.getString("success_title"));
             btnAddObject.setEnabled(true);
             return odo;
         } catch (Exception ex) {
-            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            return null;
         }
     }
 }

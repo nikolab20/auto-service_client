@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,13 +6,10 @@ import domain.Usluga;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
-import view.tablemodels.TableModelEmployees;
+import view.MessageDialog;
 import view.tablemodels.TableModelService;
 
 /**
@@ -26,9 +18,25 @@ import view.tablemodels.TableModelService;
  */
 public class PanelDeleteService extends javax.swing.JPanel implements SearchListener, TableListener {
 
+    /**
+     * Reference on service table model.
+     */
     private TableModelService tms;
+
+    /**
+     * A list of services.
+     */
     private List<Usluga> usluge;
+
+    /**
+     * Selected service from list of services.
+     */
     private Usluga usluga;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelDeleteService
@@ -86,12 +94,13 @@ public class PanelDeleteService extends javax.swing.JPanel implements SearchList
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try {
             usluga = (Usluga) CommunicationController.getInstance().operationDelete(usluga);
-            JOptionPane.showMessageDialog(this, "Uspesno obrisan radnik " + usluga.getNazivUsluge() + "!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_success_delete") + " "
+                    + usluga.getNazivUsluge(),
+                    resourceBundle.getString("success_title"));
             this.clearPanel();
             btnDelete.setEnabled(false);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -101,37 +110,55 @@ public class PanelDeleteService extends javax.swing.JPanel implements SearchList
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        tms = new TableModelService(usluge);
-        panelSearch.preparePanel(tms);
-        btnDelete.setText(resourceBundle.getString("employee_btn_delete"));
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
+        try {
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            usluge = CommunicationController.getInstance().operationSelectAllServices();
+            tms = new TableModelService(usluge);
+            panelSearch.preparePanel(tms);
+            btnDelete.setText(resourceBundle.getString("service_btn_delete"));
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+            btnDelete.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        usluga = null;
-        usluge.clear();
-        panelSearch.clearPanel(new TableModelService(usluge));
+        try {
+            usluga = null;
+            usluge = CommunicationController.getInstance().operationSelectAllServices();
+            panelSearch.clearPanel(new TableModelService(usluge));
+            btnDelete.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            usluge = CommunicationController.getInstance().operationSearchService(criteria);
-            JOptionPane.showMessageDialog(this, "Uspesno vracene usluge!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            usluge = CommunicationController.getInstance().operationSearchService(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_success_search"),
+                    resourceBundle.getString("success_title"));
             return new TableModelService(usluge);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            usluge.clear();
+            return new TableModelService(usluge);
         }
     }
 
     @Override
     public void clickRow(int row) {
         usluga = usluge.get(row);
-        btnDelete.setEnabled(true);
         btnDelete.setEnabled(true);
     }
 }

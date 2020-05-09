@@ -1,23 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
 import controller.Controller;
+import domain.DomainObject;
 import domain.PredmetProdaje;
 import domain.Usluga;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
+import view.MessageDialog;
 import view.tablemodels.TableModelService;
 
 /**
@@ -26,8 +20,20 @@ import view.tablemodels.TableModelService;
  */
 public class PanelUpdateService extends javax.swing.JPanel implements SearchListener, TableListener {
 
+    /**
+     * Reference on service table model.
+     */
     private TableModelService tms;
+
+    /**
+     * A list of services.
+     */
     private List<Usluga> usluge;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelUpdateService
@@ -97,12 +103,12 @@ public class PanelUpdateService extends javax.swing.JPanel implements SearchList
             predmetProdaje = (PredmetProdaje) CommunicationController.getInstance().operationUpdate(predmetProdaje);
             usluga.setPredmetProdaje(predmetProdaje);
             usluga = (Usluga) CommunicationController.getInstance().operationUpdate(usluga);
-            JOptionPane.showMessageDialog(null, "Uspesno izmenjena usluga " + usluga.getNazivUsluge()
-                    + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_update_success") + " "
+                    + usluga.getNazivUsluge(), resourceBundle.getString("success_title"));
             this.clearPanel();
             btnUpdate.setEnabled(false);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -114,38 +120,52 @@ public class PanelUpdateService extends javax.swing.JPanel implements SearchList
     private view.panels.domain.PanelService panelService;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
         try {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-            btnUpdate.setText(resourceBundle.getString("customer_btn_update"));
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            btnUpdate.setText(resourceBundle.getString("service_btn_update"));
             btnUpdate.setEnabled(false);
+            usluge = CommunicationController.getInstance().operationSelectAllServices();
             tms = new TableModelService(usluge);
             panelSearch.preparePanel(tms);
             panelService.preparePanel();
             panelSearch.addListener(this);
             panelSearch.addTableListener(this);
-            panelObjectOfSale.preparePanel(CommunicationController.getInstance().operationSelectAllTax());
+            panelObjectOfSale.preparePanel((List<DomainObject>) CommunicationController.getInstance().operationSelectAllTax());
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateService.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        usluge.clear();
-        panelService.clearPanel();
-        panelSearch.clearPanel(new TableModelService(usluge));
-        panelObjectOfSale.clearPanel();
+        try {
+            usluge = CommunicationController.getInstance().operationSelectAllServices();
+            panelService.clearPanel();
+            panelSearch.clearPanel(new TableModelService(usluge));
+            panelObjectOfSale.clearPanel();
+            btnUpdate.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            usluge = CommunicationController.getInstance().operationSearchService(criteria);
-            JOptionPane.showMessageDialog(null, "Uspesno vracene usluge!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            usluge = CommunicationController.getInstance().operationSearchService(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_search_success"),
+                    resourceBundle.getString("success_title"));
             return new TableModelService(usluge);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            usluge.clear();
+            return new TableModelService(usluge);
         }
     }
 
@@ -158,7 +178,7 @@ public class PanelUpdateService extends javax.swing.JPanel implements SearchList
             panelService.setValue(usluga);
             btnUpdate.setEnabled(true);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateService.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }
 }

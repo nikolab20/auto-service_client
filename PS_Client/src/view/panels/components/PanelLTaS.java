@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import javax.swing.JLabel;
@@ -59,7 +54,7 @@ public class PanelLTaS extends javax.swing.JPanel implements iFormValue {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(separator)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,55 +75,64 @@ public class PanelLTaS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param textAreaString is text value for text area.
+     */
     public void setElementText(String labelText, String textAreaString) {
         label.setText(labelText);
         textArea.setText(textAreaString);
     }
-    
+
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue("");
     }
-    
+
     @Override
     public Object getValue() {
         return textArea.getText();
     }
-    
+
     @Override
     public void setValue(Object object) {
         textArea.setText((String) object);
     }
-    
+
     public JScrollPane getjScrollPane1() {
         return jScrollPane1;
     }
-    
+
     public void setjScrollPane1(JScrollPane jScrollPane1) {
         this.jScrollPane1 = jScrollPane1;
     }
-    
+
     public JLabel getLabel() {
         return label;
     }
-    
+
     public void setLabel(JLabel label) {
         this.label = label;
     }
-    
+
     public JSeparator getSeparator() {
         return separator;
     }
-    
+
     public void setSeparator(JSeparator separator) {
         this.separator = separator;
     }
-    
+
     public JTextArea getTextArea() {
         return textArea;
     }
-    
+
     public void setTextArea(JTextArea textArea) {
         this.textArea = textArea;
     }
-    
+
 }

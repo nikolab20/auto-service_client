@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -16,6 +11,11 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelEmployee extends javax.swing.JPanel implements iFormValue {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelEmployee
@@ -123,26 +123,32 @@ public class PanelEmployee extends javax.swing.JPanel implements iFormValue {
     private view.panels.components.PanelLTS panelUsername;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelEmployee.setBorder(new TitledBorder(resourceBundle.getString("employee_border")));
+        panelEmployee.setBorder(new TitledBorder(resourceBundle.getString("employee_panel_border")));
         panelID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("employee_id") + ":", "");
+        panelID.setElementText(resourceBundle.getString("employee_lbl_id") + ":", "");
         panelFirstName.getTextField().requestFocus();
         panelID.getTextField().setEditable(false);
-        panelFirstName.setElementText(resourceBundle.getString("employee_first_name") + ":", "");
-        panelLastName.setElementText(resourceBundle.getString("employee_last_name") + ":", "");
-        panelAddress.setElementText(resourceBundle.getString("employee_adress") + ":", "");
-        panelPhone.setElementText(resourceBundle.getString("employee_phone") + ":", "");
-        panelIdentificationNumber.setElementText(resourceBundle.getString("employee_id_number") + ":", "");
-        panelAdministrator.setElementText(resourceBundle.getString("employee_administrator") + ":",
+        panelFirstName.setElementText(resourceBundle.getString("employee_lbl_first_name") + ":", "");
+        panelLastName.setElementText(resourceBundle.getString("employee_lbl_last_name") + ":", "");
+        panelAddress.setElementText(resourceBundle.getString("employee_lbl_address") + ":", "");
+        panelPhone.setElementText(resourceBundle.getString("employee_lbl_phone") + ":", "");
+        panelIdentificationNumber.setElementText(resourceBundle.getString("employee_lbl_id_number") + ":", "");
+        panelAdministrator.setElementText(resourceBundle.getString("employee_lbl_administrator") + ":",
                 resourceBundle.getString("employee_administrator_true"),
                 resourceBundle.getString("employee_administrator_false"));
-        panelUsername.setElementText(resourceBundle.getString("employee_username") + ":", "");
-        panelPassword.setElementText(resourceBundle.getString("employee_password") + ":", "");
+        panelUsername.setElementText(resourceBundle.getString("employee_lbl_username") + ":", "");
+        panelPassword.setElementText(resourceBundle.getString("employee_lbl_password") + ":", "");
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelID.clearPanel();
         panelFirstName.clearPanel();

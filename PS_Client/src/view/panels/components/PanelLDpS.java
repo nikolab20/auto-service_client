@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import org.jdesktop.swingx.JXDatePicker;
 import view.interf.iFormValue;
 
@@ -74,11 +68,20 @@ public class PanelLDpS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param date is Date value for date picker.
+     */
     public void setElementText(String labelText, Date date) {
         label.setText(labelText);
         datePicker.setDate(date);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue(new Date());
     }

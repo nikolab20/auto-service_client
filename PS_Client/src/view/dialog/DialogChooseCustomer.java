@@ -1,47 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.dialog;
 
 import controller.CommunicationController;
+import controller.Controller;
 import domain.Klijent;
-import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 import listeners.CustomerDialogListener;
 import listeners.SearchListener;
 import listeners.TableListener;
-import view.FrmClient;
-import view.panels.PanelSearchCustomer;
-import view.panels.domain.PanelBill;
-import view.tablemodels.TableModelClients;
+import view.MessageDialog;
+import view.tablemodels.TableModelCustomers;
 
 /**
  *
  * @author nikol
  */
-public class DialogChooseCustomer extends javax.swing.JDialog implements TableListener, SearchListener {
+public final class DialogChooseCustomer extends javax.swing.JDialog implements TableListener, SearchListener {
 
-    private TableModelClients tmc;
+    /**
+     * Reference on customer table model.
+     */
+    private TableModelCustomers tmc;
+
+    /**
+     * A list of clients for table.
+     */
     private List<Klijent> klijenti;
-    private List<CustomerDialogListener> customerDialogListeners = new ArrayList<>();
+
+    /**
+     * A list of listeners.
+     */
+    private final List<CustomerDialogListener> customerDialogListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
 
     /**
      * Creates new form DialogChooseCustomer
+     *
+     * @param parent is parent element of this dialog.
+     * @param modal showing if the dialog is modal or not.
      */
     public DialogChooseCustomer(Frame parent, boolean modal) {
         super(parent, modal);
+        this.customerDialogListeners = new ArrayList<>();
         initComponents();
         klijenti = new ArrayList<>();
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         prepareDialog();
     }
 
@@ -78,20 +88,42 @@ public class DialogChooseCustomer extends javax.swing.JDialog implements TableLi
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for dialog preparation.
+     */
     public void prepareDialog() {
-        tmc = new TableModelClients(klijenti);
-        panelSearch.preparePanel(tmc);
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
-        setLocationRelativeTo(null);
+        try {
+            klijenti = CommunicationController.getInstance().operationSelectAllCustomers();
+            tmc = new TableModelCustomers(klijenti);
+            panelSearch.preparePanel(tmc);
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+            setLocationRelativeTo(null);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting dialog elements on default values.
+     */
     public void clearDialog() {
-        klijenti.clear();
-        tmc = new TableModelClients(klijenti);
-        panelSearch.clearPanel(tmc);
+        try {
+            klijenti = CommunicationController.getInstance().operationSelectAllCustomers();
+            tmc = new TableModelCustomers(klijenti);
+            panelSearch.clearPanel(tmc);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for adding listener on this dialog.
+     *
+     * @param toAdd a object that implements CustomerDialogListener interface.
+     */
     public void addListener(CustomerDialogListener toAdd) {
         customerDialogListeners.add(toAdd);
     }
@@ -99,21 +131,24 @@ public class DialogChooseCustomer extends javax.swing.JDialog implements TableLi
     @Override
     public void clickRow(int row) {
         Klijent klijent = klijenti.get(row);
-        for (CustomerDialogListener customerDialogListener : customerDialogListeners) {
+        customerDialogListeners.forEach((CustomerDialogListener customerDialogListener) -> {
             customerDialogListener.chooseCustomer(klijent);
-        }
+        });
         clearDialog();
         this.dispose();
     }
 
     @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
+    public AbstractTableModel searchOdo(String criteria) {
         try {
-            klijenti = CommunicationController.getInstance().operationSearchCustomer(criteria);
-            return new TableModelClients(klijenti);
+            klijenti = CommunicationController.getInstance().operationSearchCustomer(new Long(criteria));
+            return new TableModelCustomers(klijenti);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
+            klijenti.clear();
+            return new TableModelCustomers(klijenti);
         }
+
     }
 }

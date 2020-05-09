@@ -1,29 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
 import controller.Controller;
 import domain.DomainObject;
 import domain.Klijent;
-import java.io.IOException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import listeners.GenerateListener;
-import view.FrmClient;
-import view.panels.domain.PanelNewCustomer;
+import view.MessageDialog;
 
 /**
  *
  * @author nikol
  */
 public class PanelAddCustomer extends javax.swing.JPanel implements GenerateListener {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelAddCustomer
@@ -48,6 +42,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
         setBackground(new java.awt.Color(255, 255, 255));
 
         btnAdd.setText("Add");
+        btnAdd.setEnabled(false);
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -68,7 +63,7 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelNewCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                    .addComponent(panelNewCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -89,23 +84,22 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        panelNewCustomer.clearPanel();
-    }//GEN-LAST:event_btnClearActionPerformed
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
             Klijent klijent = (Klijent) panelNewCustomer.getValue();
             klijent = (Klijent) CommunicationController.getInstance().operationUpdate(klijent);
-            JOptionPane.showMessageDialog(null, "Uspesno insertovan klijent " + klijent.getImeKlijenta()
-                    + " " + klijent.getPrezimeKlijenta() + "!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("customer_success_add") + " "
+                    + klijent.getImeKlijenta() + " " + klijent.getPrezimeKlijenta(),
+                    resourceBundle.getString("success_title"));
             panelNewCustomer.clearPanel();
-            btnAdd.setEnabled(false);
-            btnClear.setEnabled(false);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        panelNewCustomer.clearPanel();
+    }//GEN-LAST:event_btnClearActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -114,30 +108,39 @@ public class PanelAddCustomer extends javax.swing.JPanel implements GenerateList
     private view.panels.domain.PanelNewCustomer panelNewCustomer;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         btnAdd.setText(resourceBundle.getString("customer_btn_add"));
         btnClear.setText(resourceBundle.getString("customer_btn_clear"));
         panelNewCustomer.addListener(this);
         panelNewCustomer.preparePanel();
+        btnAdd.setEnabled(false);
+        btnClear.setEnabled(true);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelNewCustomer.clearPanel();
+        btnAdd.setEnabled(false);
+        btnClear.setEnabled(true);
     }
 
     @Override
-    public DomainObject generateOdo(DomainObject domainObject) throws Exception {
+    public DomainObject generateOdo(DomainObject domainObject) {
         try {
             DomainObject odo = CommunicationController.getInstance().operationGenerate(domainObject);
-            JOptionPane.showMessageDialog(null, "Uspesno generisan klijent!",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("customer_success_generated"),
+                    resourceBundle.getString("success_title"));
             btnAdd.setEnabled(true);
-            btnClear.setEnabled(true);
             return odo;
         } catch (Exception ex) {
-            Logger.getLogger(FrmClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            return null;
         }
     }
 }

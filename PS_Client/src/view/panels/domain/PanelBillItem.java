@@ -1,19 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
+import controller.CommunicationController;
 import controller.Controller;
+import domain.Deo;
 import domain.JedinicaMere;
 import domain.PredmetProdaje;
 import domain.StavkaRacuna;
 import events.TextEnterEvent;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.TitledBorder;
 import listeners.TextFieldListener;
+import view.MessageDialog;
 import view.interf.iFormValue;
 
 /**
@@ -22,8 +22,20 @@ import view.interf.iFormValue;
  */
 public class PanelBillItem extends javax.swing.JPanel implements iFormValue, TextFieldListener {
 
+    /**
+     * The bill item for whom the form is intended.
+     */
     private StavkaRacuna stavkaRacuna;
+
+    /**
+     * Selected object of sale for bill item.
+     */
     private PredmetProdaje predmetProdaje;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelBillItem
@@ -111,20 +123,27 @@ public class PanelBillItem extends javax.swing.JPanel implements iFormValue, Tex
     private view.panels.components.PanelLTS panelTotalPriceWithTax;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelAmount.setElementText(resourceBundle.getString("bill_item_amount") + ":", "0");
-        panelTotalPrice.setElementText(resourceBundle.getString("bill_item_total_price") + ":", "0");
+        panelBillItem.setBorder(new TitledBorder(resourceBundle.getString("bill_item_panel_border")));
+        panelAmount.setElementText(resourceBundle.getString("bill_item_lbl_amount") + ":", "0");
+        panelTotalPrice.setElementText(resourceBundle.getString("bill_item_lbl_total_price") + ":", "0");
         panelTotalPrice.getTextField().setEnabled(false);
-        panelTotalPriceWithTax.setElementText(resourceBundle.getString("bill_item_total_price_with_tax") + ":", "0");
+        panelTotalPriceWithTax.setElementText(resourceBundle.getString("bill_item_lbl_total_price_with_tax") + ":", "0");
         panelTotalPriceWithTax.getTextField().setEnabled(false);
-        panelMeasurementUnit.setElementText(resourceBundle.getString("bill_item_measurement_unit") + ":", new DefaultComboBoxModel(JedinicaMere.values()));
-        panelObjectOfSaleID.setElementText(resourceBundle.getString("bill_item_id_object_of_sale") + ":", "");
+        panelMeasurementUnit.setElementText(resourceBundle.getString("bill_item_lbl_measurement_unit") + ":", new DefaultComboBoxModel(JedinicaMere.values()));
+        panelObjectOfSaleID.setElementText(resourceBundle.getString("bill_item_lbl_id_object_of_sale") + ":", "");
         panelObjectOfSaleID.getTextField().setEnabled(false);
         panelAmount.addListener(this);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelAmount.setValue("0");
         panelTotalPrice.setValue("0");
@@ -159,11 +178,24 @@ public class PanelBillItem extends javax.swing.JPanel implements iFormValue, Tex
     @Override
     public void onInputText(TextEnterEvent evt) {
         if (evt.getSource() == panelAmount) {
-            BigDecimal amount = new BigDecimal((String) panelAmount.getValue());
-            BigDecimal totalPrice = amount.multiply(predmetProdaje.getCena());
-            BigDecimal totalPriceWithTax = amount.multiply(predmetProdaje.getCenaSaPorezom());
-            panelTotalPrice.setValue(totalPrice + "");
-            panelTotalPriceWithTax.setValue(totalPriceWithTax + "");
+            try {
+                BigDecimal amount = new BigDecimal((String) panelAmount.getValue());
+                List<Deo> delovi = CommunicationController.getInstance().operationSearchCarPart(stavkaRacuna.getPredmetProdaje().getSifraPredmetaProdaje());
+
+                if (delovi.size() == 1) {
+                    if (amount.intValue() > delovi.get(0).getStanje()) {
+                        amount = new BigDecimal(delovi.get(0).getStanje());
+                    }
+                }
+
+                panelAmount.setValue(amount + "");
+                BigDecimal totalPrice = amount.multiply(predmetProdaje.getCena());
+                BigDecimal totalPriceWithTax = amount.multiply(predmetProdaje.getCenaSaPorezom());
+                panelTotalPrice.setValue(totalPrice + "");
+                panelTotalPriceWithTax.setValue(totalPriceWithTax + "");
+            } catch (Exception ex) {
+                MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            }
         }
     }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.CommunicationController;
@@ -11,24 +6,37 @@ import domain.Racun;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import listeners.SearchListener;
 import listeners.TableListener;
+import view.MessageDialog;
 import view.tablemodels.TableModelBill;
-import view.tablemodels.TableModelEmployees;
 
 /**
  *
  * @author nikol
  */
 public class PanelInvalidateBill extends javax.swing.JPanel implements SearchListener, TableListener {
-    
+
+    /**
+     * Reference on bill table model.
+     */
     private TableModelBill tmb;
+
+    /**
+     * A list of bills.
+     */
     private List<Racun> racuni;
+
+    /**
+     * Selected bill from list of bills.
+     */
     private Racun racun;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelInvalidateBill
@@ -88,11 +96,11 @@ public class PanelInvalidateBill extends javax.swing.JPanel implements SearchLis
         try {
             racun.setStorniran(true);
             racun = (Racun) CommunicationController.getInstance().operationUpdate(racun);
-            JOptionPane.showMessageDialog(null, "Uspesno storniran racun!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("bill_success_invalidate"),
+                    resourceBundle.getString("success_title"));
             this.clearPanel();
-            btnInvalidate.setEnabled(false);
         } catch (Exception ex) {
-            Logger.getLogger(PanelUpdateCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnInvalidateActionPerformed
 
@@ -102,30 +110,49 @@ public class PanelInvalidateBill extends javax.swing.JPanel implements SearchLis
     private view.panels.domain.PanelSearch panelSearch;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        tmb = new TableModelBill(racuni);
-        panelSearch.preparePanel(tmb);
-        btnInvalidate.setText(resourceBundle.getString("btn_invalidate"));
-        panelSearch.addListener(this);
-        panelSearch.addTableListener(this);
+        try {
+            resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+            racuni = CommunicationController.getInstance().operationSelectAllBills();
+            tmb = new TableModelBill(racuni);
+            panelSearch.preparePanel(tmb);
+            btnInvalidate.setText(resourceBundle.getString("bill_btn_invalidate"));
+            panelSearch.addListener(this);
+            panelSearch.addTableListener(this);
+            btnInvalidate.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
-        racun = null;
-        racuni.clear();
-        panelSearch.clearPanel(new TableModelBill(racuni));
-    }
-    
-    @Override
-    public AbstractTableModel searchOdo(String criteria) throws Exception {
         try {
-            racuni = CommunicationController.getInstance().operationSearchBill(criteria);
-            JOptionPane.showMessageDialog(null, "Uspesno vraceni racuni!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+            racun = null;
+            racuni = CommunicationController.getInstance().operationSelectAllBills();
+            panelSearch.clearPanel(new TableModelBill(racuni));
+            btnInvalidate.setEnabled(false);
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+        }
+    }
+
+    @Override
+    public AbstractTableModel searchOdo(String criteria) {
+        try {
+            racuni = CommunicationController.getInstance().operationSearchBill(new Long(criteria));
+            MessageDialog.showSuccessMessage(null, resourceBundle.getString("service_success_search"),
+                    resourceBundle.getString("success_title"));
             return new TableModelBill(racuni);
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+            racuni.clear();
+            return new TableModelBill(racuni);
         }
     }
 

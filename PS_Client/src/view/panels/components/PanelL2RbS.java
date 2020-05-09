@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import javax.swing.ButtonGroup;
@@ -91,74 +86,80 @@ public class PanelL2RbS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param firstRdbtnText is text value for first radio button.
+     * @param secondRdbtnText is text value for second radio button.
+     */
     public void setElementText(String labelText, String firstRdbtnText, String secondRdbtnText) {
         label.setText(labelText);
         firstRadioButton.setText(firstRdbtnText);
         secondRadioButton.setText(secondRdbtnText);
     }
-    
+
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue(true);
     }
-    
+
     public ButtonGroup getButtonGroup1() {
         return buttonGroup1;
     }
-    
+
     public void setButtonGroup1(ButtonGroup buttonGroup1) {
         this.buttonGroup1 = buttonGroup1;
     }
-    
+
     public JRadioButton getFirstRadioButton() {
         return firstRadioButton;
     }
-    
+
     public void setFirstRadioButton(JRadioButton firstRadioButton) {
         this.firstRadioButton = firstRadioButton;
     }
-    
+
     public JLabel getLabel() {
         return label;
     }
-    
+
     public void setLabel(JLabel label) {
         this.label = label;
     }
-    
+
     public JRadioButton getSecondRadioButton() {
         return secondRadioButton;
     }
-    
+
     public void setSecondRadioButton(JRadioButton secondRadioButton) {
         this.secondRadioButton = secondRadioButton;
     }
-    
+
     public JSeparator getSeparator() {
         return separator;
     }
-    
+
     public void setSeparator(JSeparator separator) {
         this.separator = separator;
     }
-    
+
     @Override
     public Object getValue() {
-        if (firstRadioButton.isSelected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return firstRadioButton.isSelected();
     }
-    
+
     @Override
     public void setValue(Object object) {
         boolean isTrue = (boolean) object;
-        
+
         if (isTrue) {
             firstRadioButton.setSelected(true);
         } else {
             secondRadioButton.setSelected(true);
         }
     }
-    
+
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -16,6 +11,11 @@ import view.interf.iFormValue;
  * @author nikol
  */
 public class PanelService extends javax.swing.JPanel implements iFormValue {
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelService
@@ -98,19 +98,25 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JPanel panelService;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     public void preparePanel() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
-        panelService.setBorder(new TitledBorder(resourceBundle.getString("service_panel")));
+        panelService.setBorder(new TitledBorder(resourceBundle.getString("service_panel_border")));
         panelObjectOfSaleID.getTextField().setEnabled(false);
         panelID.getTextField().setEnabled(false);
-        panelObjectOfSaleID.setElementText(resourceBundle.getString("service_object_of_sale_id") + ":", "");
+        panelObjectOfSaleID.setElementText(resourceBundle.getString("service_lbl_object_of_sale_id") + ":", "");
         panelObjectOfSaleID.getTextField().setEnabled(false);
-        panelID.setElementText(resourceBundle.getString("service_service_id"), "");
-        panelName.setElementText(resourceBundle.getString("service_name") + ":", "");
-        panelDescription.setElementText(resourceBundle.getString("service_description") + ":", "");
+        panelID.setElementText(resourceBundle.getString("service_lbl_service_id"), "");
+        panelName.setElementText(resourceBundle.getString("service_lbl_name") + ":", "");
+        panelDescription.setElementText(resourceBundle.getString("service_lbl_description") + ":", "");
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         panelObjectOfSaleID.clearPanel();
         panelID.clearPanel();
@@ -120,7 +126,6 @@ public class PanelService extends javax.swing.JPanel implements iFormValue {
 
     @Override
     public Object getValue() {
-        //long objectOfSaleID = new Long((String) panelObjectOfSaleID.getValue());
         long serviceID = new Long((String) panelID.getValue());
         String name = (String) panelName.getValue();
         String description = (String) panelDescription.getValue();

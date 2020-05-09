@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.net.URL;
@@ -97,14 +92,27 @@ public class SplashScreen extends javax.swing.JFrame {
     private javax.swing.JProgressBar pbLoading;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for getting reference on loading label.
+     *
+     * @return an object of JLabel class.
+     */
     public JLabel getLblLoading() {
         return lblLoading;
     }
 
+    /**
+     * Method for getting reference on progress bar.
+     *
+     * @return an object of JProgressBar class.
+     */
     public JProgressBar getPbLoading() {
         return pbLoading;
     }
 
+    /**
+     * Method for form preparation.
+     */
     private void prepareView() {
         pack();
         setLocationRelativeTo(null);

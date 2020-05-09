@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
@@ -17,9 +12,20 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelBill extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private List<Racun> racuni;
-    private String[] columnNames;
-    private ResourceBundle resourceBundle;
+
+    /**
+     * Array of strings that represents names of columns.
+     */
+    private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
 
     public TableModelBill(List<Racun> racuni) {
         this.racuni = racuni;
@@ -72,6 +78,11 @@ public class TableModelBill extends AbstractTableModel {
         return columnNames[column];
     }
 
+    /**
+     * Method for updating data into a table.
+     *
+     * @param racuni is updated list of data for table.
+     */
     public void updateTable(List<Racun> racuni) {
         this.racuni = racuni;
         fireTableDataChanged();

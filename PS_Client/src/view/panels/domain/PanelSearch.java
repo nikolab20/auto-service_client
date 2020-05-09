@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.domain;
 
 import controller.Controller;
@@ -10,14 +5,13 @@ import events.ClickButtonEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import listeners.CustomComponentListener;
 import listeners.SearchListener;
 import view.interf.iFormValue;
 import listeners.TableListener;
+import view.MessageDialog;
 
 /**
  *
@@ -25,13 +19,27 @@ import listeners.TableListener;
  */
 public class PanelSearch extends javax.swing.JPanel implements iFormValue, CustomComponentListener {
 
-    private List<SearchListener> searchListeners = new ArrayList<>();
-    private List<TableListener> tableListeners = new ArrayList<>();
+    /**
+     * A list of SearchListener listeners.
+     */
+    private final List<SearchListener> searchListeners;
+
+    /**
+     * A list of TableListener listeners.
+     */
+    private final List<TableListener> tableListeners;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private ResourceBundle resourceBundle;
 
     /**
      * Creates new form PanelSearch
      */
     public PanelSearch() {
+        this.tableListeners = new ArrayList<>();
+        this.searchListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -122,14 +130,24 @@ public class PanelSearch extends javax.swing.JPanel implements iFormValue, Custo
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     *
+     * @param tableModel is the table model for table.
+     */
     public void preparePanel(AbstractTableModel tableModel) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        panelSearch.setBorder(new TitledBorder(resourceBundle.getString("search_border")));
-        panelCriteria.setElementText(resourceBundle.getString("customer_btn_search"), "");
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+        panelSearch.setBorder(new TitledBorder(resourceBundle.getString("search_panel_border")));
+        panelCriteria.setElementText(resourceBundle.getString("search_btn_search"), "");
         panelCriteria.addListener(this);
         table.setModel(tableModel);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     *
+     * @param tableModel is the table model for table.
+     */
     public void clearPanel(AbstractTableModel tableModel) {
         panelCriteria.clearPanel();
         table.setModel(tableModel);
@@ -146,30 +164,46 @@ public class PanelSearch extends javax.swing.JPanel implements iFormValue, Custo
         table.setModel(tableModel);
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements SearchListener interface.
+     */
     public void addListener(SearchListener toAdd) {
         searchListeners.add(toAdd);
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements TableListener interface.
+     */
     public void addTableListener(TableListener toAdd) {
         tableListeners.add(toAdd);
     }
 
     @Override
     public void pressButton(ClickButtonEvent evt) {
-        for (SearchListener searchListener : searchListeners) {
-            try {
-                AbstractTableModel tableModel = searchListener.searchOdo((String) panelCriteria.getValue());
-                table.setModel(tableModel);
-                panelCriteria.setValue("");
-            } catch (Exception ex) {
-                Logger.getLogger(PanelNewCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (!panelCriteria.getValue().equals("")) {
+            searchListeners.forEach((SearchListener searchListener) -> {
+                try {
+                    AbstractTableModel tableModel = searchListener.searchOdo((String) panelCriteria.getValue());
+                    table.setModel(tableModel);
+                    panelCriteria.setValue("");
+                } catch (Exception ex) {
+                    MessageDialog.showErrorMessage(null, ex.getMessage(), resourceBundle.getString("error_title"));
+                }
+            });
         }
     }
 
+    /**
+     * A method for notifying listeners that row of table has been clicked by
+     * user.
+     */
     private void clickTable(int row) {
-        for (TableListener tableListener : tableListeners) {
+        tableListeners.forEach((TableListener tableListener) -> {
             tableListener.clickRow(row);
-        }
+        });
     }
 }

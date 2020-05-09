@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
@@ -15,18 +10,29 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author nikol
  */
-public class TableModelClients extends AbstractTableModel {
+public class TableModelCustomers extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private List<Klijent> klijenti;
-    private String[] columnNames;
-    private ResourceBundle resourceBundle;
 
-    public TableModelClients(List<Klijent> klijenti) {
+    /**
+     * Array of strings that represents names of columns.
+     */
+    private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
+
+    public TableModelCustomers(List<Klijent> klijenti) {
         this.klijenti = klijenti;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
-        this.columnNames = new String[]{resourceBundle.getString("column_id_client"),
-            resourceBundle.getString("column_first_name"), resourceBundle.getString("column_last_name"),
-            resourceBundle.getString("column_num_of_visits"), resourceBundle.getString("column_debt")};
+        this.columnNames = new String[]{resourceBundle.getString("column_customer_id_client"),
+            resourceBundle.getString("column_customer_first_name"), resourceBundle.getString("column_customer_last_name"),
+            resourceBundle.getString("column_customer_num_of_visits"), resourceBundle.getString("column_customer_debt")};
     }
 
     @Override
@@ -64,6 +70,11 @@ public class TableModelClients extends AbstractTableModel {
         return columnNames[column];
     }
 
+    /**
+     * Method for updating data into a table.
+     *
+     * @param klijenti is updated list of data for table.
+     */
     public void updateTable(List<Klijent> klijenti) {
         this.klijenti = klijenti;
         fireTableDataChanged();

@@ -1,11 +1,9 @@
 package view;
 
 import controller.Controller;
-import java.awt.Dimension;
 import java.net.URL;
 import java.util.Locale;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 /**
  *
@@ -68,23 +66,15 @@ public class FrmLanguage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblIconRSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconRSMouseClicked
-        try {
-            Controller.getInstance().setLocale(new Locale("sr", "RS"));
-            new FrmConfiguration().setVisible(true);
-            dispose();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Controller.getInstance().setLocale(new Locale("sr", "RS"));
+        new FrmConfiguration().setVisible(true);
+        dispose();
     }//GEN-LAST:event_lblIconRSMouseClicked
 
     private void lblIconUKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconUKMouseClicked
-        try {
-            Controller.getInstance().setLocale(new Locale("en", "UK"));
-            new FrmConfiguration().setVisible(true);
-            dispose();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Controller.getInstance().setLocale(new Locale("en", "UK"));
+        new FrmConfiguration().setVisible(true);
+        dispose();
     }//GEN-LAST:event_lblIconUKMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

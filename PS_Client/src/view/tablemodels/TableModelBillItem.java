@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
@@ -17,34 +12,46 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelBillItem extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private List<StavkaRacuna> stavkeRacuna;
-    private String[] columnNames;
-    private ResourceBundle resourceBundle;
 
+    /**
+     * Array of strings that represents names of columns.
+     */
+    private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
+    
     public TableModelBillItem(List<StavkaRacuna> stavkeRacuna) {
         this.stavkeRacuna = stavkeRacuna;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         this.columnNames = new String[]{
-            resourceBundle.getString("column_id_bill"), resourceBundle.getString("column_number"),
-            resourceBundle.getString("column_amount"), resourceBundle.getString("column_total_price"),
-            resourceBundle.getString("column_total_price_with_tax"), resourceBundle.getString("column_measurement_unit"),
-            resourceBundle.getString("column_id_object_of_sale")};
+            resourceBundle.getString("column_bill_item_id_bill"), resourceBundle.getString("column_bill_item_number"),
+            resourceBundle.getString("column_bill_item_amount"), resourceBundle.getString("column_bill_item_total_price"),
+            resourceBundle.getString("column_bill_item_total_price_with_tax"), resourceBundle.getString("column_bill_item_measurement_unit"),
+            resourceBundle.getString("column_bill_item_id_object_of_sale")
+        };
     }
-
+    
     @Override
     public int getRowCount() {
         return stavkeRacuna.size();
     }
-
+    
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
-
+    
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         StavkaRacuna stavkaRacuna = stavkeRacuna.get(rowIndex);
-
+        
         switch (columnIndex) {
             case 0:
                 return stavkaRacuna.getRacun().getBrojRacuna();
@@ -64,15 +71,20 @@ public class TableModelBillItem extends AbstractTableModel {
                 return "n/a";
         }
     }
-
+    
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
+    /**
+     * Method for updating data into a table.
+     *
+     * @param stavkeRacuna is updated list of data for table.
+     */
     public void updateTable(List<StavkaRacuna> stavkeRacuna) {
         this.stavkeRacuna = stavkeRacuna;
         fireTableDataChanged();
     }
-
+    
 }

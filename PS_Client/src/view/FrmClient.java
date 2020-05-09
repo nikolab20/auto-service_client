@@ -6,36 +6,47 @@ import domain.Klijent;
 import domain.Radnik;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Date;
+import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import listeners.FormListener;
+import listeners.LanguageChangeListener;
 import lombok.Getter;
 import threads.AnimationMenuCloseThread;
 import threads.AnimationMenuThread;
 import view.panels.PanelChoosePath;
-import view.panels.PanelSearchBillsFromDate;
 
 /**
  *
  * @author nikol
  */
-public class FrmClient extends javax.swing.JFrame implements FormListener {
+public class FrmClient extends javax.swing.JFrame implements FormListener, LanguageChangeListener {
 
+    /**
+     * Reference of resource bundle as dictionary.
+     */
     private ResourceBundle resourceBundle;
 
+    /**
+     * Indicator for current active panel on form.
+     *
+     * @return JPanel object as current active panel.
+     */
     @Getter
     private JPanel activePanel;
 
+    /**
+     * Default non-parameterized constructor.
+     */
     public FrmClient() {
         initComponents();
-        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         prepareView();
+        setListenersToPanels();
+        setAllLayerInvisible(lpContentPane);
+        setAllLayerInvisible(lpSubMenu);
     }
 
     @SuppressWarnings("unchecked")
@@ -57,6 +68,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelCustomer = new view.panels.submenu.PanelCustomer();
         panelMarket = new view.panels.submenu.PanelMarket();
         panelExcel = new view.panels.submenu.PanelExcel();
+        panelSettings = new view.panels.submenu.PanelSettings();
         panelHeader = new javax.swing.JPanel();
         lblIconUser = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
@@ -79,10 +91,17 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelInvalidateBill = new view.panels.PanelInvalidateBill();
         panelSearchBillsFromDate = new view.panels.PanelSearchBillsFromDate();
         panelSearchNewClientsFromDate = new view.panels.PanelSearchNewClientsFromDate();
+        panelAddTax = new view.panels.PanelAddTax();
+        panelChooseLanguage = new view.panels.PanelChooseLanguage();
+        panelDeleteTax = new view.panels.PanelDeleteTax();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(450, 450));
-        setPreferredSize(new java.awt.Dimension(548, 550));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         panelMenu.setBackground(new java.awt.Color(51, 52, 57));
 
@@ -218,6 +237,11 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 FrmClient.this.mouseExited(evt);
             }
         });
+        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingsActionPerformed(evt);
+            }
+        });
 
         btnExit.setBackground(new java.awt.Color(51, 52, 57));
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -234,6 +258,11 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 FrmClient.this.mouseExited(evt);
+            }
+        });
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
             }
         });
 
@@ -268,7 +297,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addComponent(btnInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -278,6 +307,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lpSubMenu.setLayer(panelCustomer, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelMarket, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpSubMenu.setLayer(panelExcel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpSubMenu.setLayer(panelSettings, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpSubMenuLayout = new javax.swing.GroupLayout(lpSubMenu);
         lpSubMenu.setLayout(lpSubMenuLayout);
@@ -300,18 +330,24 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addGroup(lpSubMenuLayout.createSequentialGroup()
                     .addComponent(panelExcel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpSubMenuLayout.createSequentialGroup()
+                    .addComponent(panelSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         lpSubMenuLayout.setVerticalGroup(
             lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+            .addComponent(panelCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelEmployee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
+                .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelMarket, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
             .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelExcel, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+            .addGroup(lpSubMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelSubMenuLayout = new javax.swing.GroupLayout(panelSubMenu);
@@ -384,50 +420,57 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         lpContentPane.setLayer(panelInvalidateBill, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelSearchBillsFromDate, javax.swing.JLayeredPane.DEFAULT_LAYER);
         lpContentPane.setLayer(panelSearchNewClientsFromDate, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelAddTax, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelChooseLanguage, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpContentPane.setLayer(panelDeleteTax, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout lpContentPaneLayout = new javax.swing.GroupLayout(lpContentPane);
         lpContentPane.setLayout(lpContentPaneLayout);
         lpContentPaneLayout.setHorizontalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+            .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelSearchCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelUpdateCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelAddCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelAddService, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddService, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelUpdateCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelUpdateCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelSearchCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelSearchCarPart, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelUpdateService, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelUpdateService, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelDeleteService, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelDeleteService, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelAddBill, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelAddBill, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelInvalidateBill, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelInvalidateBill, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelSearchBillsFromDate, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelSearchBillsFromDate, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelSearchNewClientsFromDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
+                .addComponent(panelSearchNewClientsFromDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAddTax, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelChooseLanguage, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelDeleteTax, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
         );
         lpContentPaneLayout.setVerticalGroup(
             lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lpContentPaneLayout.createSequentialGroup()
                 .addComponent(panelDeleteEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 714, Short.MAX_VALUE))
+                .addGap(0, 725, Short.MAX_VALUE))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addComponent(panelAddCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,8 +489,8 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                     .addGap(0, 227, Short.MAX_VALUE)))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
-                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(panelUpdateEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 316, Short.MAX_VALUE)))
             .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addComponent(panelAddCarPart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -488,6 +531,18 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
                 .addGroup(lpContentPaneLayout.createSequentialGroup()
                     .addComponent(panelSearchNewClientsFromDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 868, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelAddTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 787, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelChooseLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 857, Short.MAX_VALUE)))
+            .addGroup(lpContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpContentPaneLayout.createSequentialGroup()
+                    .addComponent(panelDeleteTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 725, Short.MAX_VALUE)))
         );
 
         scrollPane.setViewportView(lpContentPane);
@@ -496,7 +551,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,14 +584,17 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeeActionPerformed
+        panelEmployee.preparePanel();
         openSubmenu(lpSubMenu, panelEmployee, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnEmployeeActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        panelCustomer.preparePanel();
         openSubmenu(lpSubMenu, panelCustomer, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventoryActionPerformed
+        panelInventory.preparePanel();
         openSubmenu(lpSubMenu, panelInventory, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnInventoryActionPerformed
 
@@ -605,12 +663,45 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnMarketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarketActionPerformed
+        panelMarket.preparePanel();
         openSubmenu(lpSubMenu, panelMarket, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnMarketActionPerformed
 
     private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
+        panelExcel.preparePanel();
         openSubmenu(lpSubMenu, panelExcel, panelSubMenu, panelMenu);
     }//GEN-LAST:event_btnExcelActionPerformed
+
+    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
+        panelSettings.preparePanel();
+        openSubmenu(lpSubMenu, panelSettings, panelSubMenu, panelMenu);
+    }//GEN-LAST:event_btnSettingsActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        try {
+            if (MessageDialog.showYesNoOption(this, resourceBundle.getString("client_quit_message"),
+                    resourceBundle.getString("client_quit_title"), Controller.getInstance().getLocale())) {
+                CommunicationController.getInstance().operationDisconnect();
+                System.exit(0);
+            }
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, resourceBundle.getString("client_disconnect_error"),
+                    resourceBundle.getString("error_title"));
+        }
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            if (MessageDialog.showYesNoOption(this, resourceBundle.getString("client_quit_message"),
+                    resourceBundle.getString("client_quit_title"), Controller.getInstance().getLocale())) {
+                CommunicationController.getInstance().operationDisconnect();
+                System.exit(0);
+            }
+        } catch (Exception ex) {
+            MessageDialog.showErrorMessage(null, resourceBundle.getString("client_disconnect_error"),
+                    resourceBundle.getString("error_title"));
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
@@ -629,10 +720,13 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private view.panels.PanelAddCustomer panelAddCustomer;
     private view.panels.PanelAddEmployee panelAddEmployee;
     private view.panels.PanelAddService panelAddService;
+    private view.panels.PanelAddTax panelAddTax;
+    private view.panels.PanelChooseLanguage panelChooseLanguage;
     private javax.swing.JPanel panelContent;
     private view.panels.submenu.PanelCustomer panelCustomer;
     private view.panels.PanelDeleteEmployee panelDeleteEmployee;
     private view.panels.PanelDeleteService panelDeleteService;
+    private view.panels.PanelDeleteTax panelDeleteTax;
     private view.panels.submenu.PanelEmployee panelEmployee;
     private view.panels.submenu.PanelExcel panelExcel;
     private javax.swing.JPanel panelHeader;
@@ -644,6 +738,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private view.panels.PanelSearchCarPart panelSearchCarPart;
     private view.panels.PanelSearchCustomer panelSearchCustomer;
     private view.panels.PanelSearchNewClientsFromDate panelSearchNewClientsFromDate;
+    private view.panels.submenu.PanelSettings panelSettings;
     private javax.swing.JPanel panelSubMenu;
     private view.panels.PanelUpdateCarPart panelUpdateCarPart;
     private view.panels.PanelUpdateCustomer panelUpdateCustomer;
@@ -652,7 +747,12 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
     private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for form preparation.
+     */
     private void prepareView() {
+        resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
+
         setTitle(resourceBundle.getString("client_title"));
         Controller.getInstance().defaultPrepareForm(this);
         Radnik radnik = Controller.getInstance().getRadnik();
@@ -663,6 +763,7 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
             lblIconUser.setText(radnik.getImeRadnika() + " " + radnik.getPrezimeRadnika());
             btnEmployee.setEnabled(false);
             btnSettings.setEnabled(false);
+            btnExcel.setEnabled(false);
         }
 
         btnCustomer.setText(resourceBundle.getString("client_btn_customer"));
@@ -673,26 +774,40 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         btnSettings.setText(resourceBundle.getString("client_btn_setting"));
         btnExit.setText(resourceBundle.getString("client_btn_exit"));
 
-        setAllLayerInvisible(lpContentPane);
-        setAllLayerInvisible(lpSubMenu);
-        setListenersToPanels();
-        preparePanels();
     }
 
+    /**
+     * Method for setting listeners to panel.
+     */
     private void setListenersToPanels() {
         panelCustomer.addListener(this);
         panelEmployee.addListener(this);
         panelInventory.addListener(this);
         panelMarket.addListener(this);
         panelExcel.addListener(this);
+        panelSettings.addListener(this);
+        panelChooseLanguage.addListener(this);
     }
 
+    /**
+     * Method for setting all layers of layered pane invisible.
+     *
+     * @param jp a layered pane.
+     */
     private void setAllLayerInvisible(JLayeredPane jp) {
         for (Component component : jp.getComponents()) {
             ((JPanel) component).setVisible(false);
         }
     }
 
+    /**
+     * Method for setting visible panel on an layered pane.
+     *
+     * @param scrollPane a parent component of a layered pane.
+     * @param layeredPane a parent of panel.
+     * @param menu a panel with menu.
+     * @param toOpen a panel that user wants to open.
+     */
     private void openPanel(JScrollPane scrollPane, JLayeredPane layeredPane, JPanel menu, JPanel toOpen) {
         scrollPane.getVerticalScrollBar().setValue(0);
         setAllLayerInvisible(layeredPane);
@@ -701,129 +816,114 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         toOpen.setVisible(true);
     }
 
+    /**
+     * Method for opening sub-menu panel.
+     *
+     * @param submenuLayeredPane a parent component of a selected sub-menu
+     * panel.
+     * @param toOpen a sub-menu panel that user wants to open.
+     * @param panelSubMenu a parent component of sum-menu panel.
+     * @param panelMenu a component that represents main menu,
+     */
     private void openSubmenu(JLayeredPane submenuLayeredPane, JPanel toOpen, JPanel panelSubMenu, JPanel panelMenu) {
         setAllLayerInvisible(submenuLayeredPane);
         toOpen.setVisible(true);
         new AnimationMenuThread(panelSubMenu, panelMenu).start();
     }
 
-    private void preparePanels() {
-        panelCustomer.preparePanel();
-        panelAddCustomer.preparePanel();
-        panelUpdateCustomer.preparePanel();
-        panelAddEmployee.preparePanel();
-        panelUpdateEmployee.preparePanel();
-        panelDeleteEmployee.preparePanel();
-        panelSearchCustomer.preparePanel();
-        panelEmployee.preparePanel();
-        panelInventory.preparePanel();
-        panelAddCarPart.preparePanel();
-        panelAddService.preparePanel();
-        panelUpdateCarPart.preparePanel();
-        panelSearchCarPart.preparePanel();
-        panelUpdateService.preparePanel();
-        panelDeleteService.preparePanel();
-        panelMarket.preparePanel();
-        panelAddBill.preparePanel();
-        panelInvalidateBill.preparePanel();
-        panelExcel.preparePanel();
-        panelSearchBillsFromDate.preparePanel();
-        panelSearchNewClientsFromDate.preparePanel();
-    }
-
     @Override
     public void openAddCustomer() {
-        panelAddCustomer.clearPanel();
+        panelAddCustomer.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddCustomer);
     }
 
     @Override
     public void openUpdateCustomer() {
-        panelUpdateCustomer.clearPanel();
+        panelUpdateCustomer.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelUpdateCustomer);
     }
 
     @Override
     public void openSearchCustomer() {
-        panelSearchCustomer.clearPanel();
+        panelSearchCustomer.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelSearchCustomer);
     }
 
     @Override
     public void openAddEmployee() {
-        panelAddEmployee.clearPanel();
+        panelAddEmployee.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddEmployee);
     }
 
     @Override
     public void openUpdateEmployee() {
-        panelUpdateEmployee.clearPanel();
+        panelUpdateEmployee.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelUpdateEmployee);
     }
 
     @Override
     public void openDeleteEmployee() {
-        panelDeleteEmployee.clearPanel();
+        panelDeleteEmployee.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelDeleteEmployee);
     }
 
     @Override
     public void openAddCarPart() {
-        panelAddCarPart.clearPanel();
+        panelAddCarPart.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddCarPart);
     }
 
     @Override
     public void openSearchCarPart() {
-        panelSearchCarPart.clearPanel();
+        panelSearchCarPart.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelSearchCarPart);
     }
 
     @Override
     public void openAddService() {
-        panelAddService.clearPanel();
+        panelAddService.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddService);
     }
 
     @Override
     public void openUpdateService() {
-        panelUpdateService.clearPanel();
+        panelUpdateService.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelUpdateService);
     }
 
     @Override
     public void openDeleteService() {
-        panelDeleteService.clearPanel();
+        panelDeleteService.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelDeleteService);
     }
 
     @Override
     public void openUpdateCarPart() {
-        panelUpdateCarPart.clearPanel();
+        panelUpdateCarPart.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelUpdateCarPart);
     }
 
     @Override
     public void openAddBill() {
-        panelAddBill.clearPanel();
+        panelAddBill.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddBill);
     }
 
     @Override
     public void openInvalidateBill() {
-        panelInvalidateBill.clearPanel();
+        panelInvalidateBill.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelInvalidateBill);
     }
 
     @Override
     public void openBillsFromDate() {
-        panelSearchBillsFromDate.clearPanel();
+        panelSearchBillsFromDate.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelSearchBillsFromDate);
     }
 
     @Override
     public void openNewClientsFromDate() {
-        panelSearchNewClientsFromDate.clearPanel();
+        panelSearchNewClientsFromDate.preparePanel();
         openPanel(scrollPane, lpContentPane, panelSubMenu, panelSearchNewClientsFromDate);
     }
 
@@ -832,11 +932,38 @@ public class FrmClient extends javax.swing.JFrame implements FormListener {
         try {
             List<Klijent> klijenti = CommunicationController.getInstance().operationSearchClientsWithDebt();
             PanelChoosePath panelChoosePath = new PanelChoosePath();
-            String path = panelChoosePath.showChooseFile().getAbsolutePath();
-            Controller.getInstance().saveReportClientsDebt(klijenti, path);
-            new AnimationMenuCloseThread(panelSubMenu).start();
+            File file = panelChoosePath.showChooseFile();
+            if (file != null) {
+                String path = file.getAbsolutePath();
+                Controller.getInstance().saveReportClientsDebt(klijenti, path);
+                new AnimationMenuCloseThread(panelSubMenu).start();
+            }
         } catch (Exception ex) {
-            Logger.getLogger(PanelSearchBillsFromDate.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
         }
+    }
+
+    @Override
+    public void chooseLanguage() {
+        prepareView();
+    }
+
+    @Override
+    public void openChooseLanguage() {
+        panelChooseLanguage.preparePanel();
+        openPanel(scrollPane, lpContentPane, panelSubMenu, panelChooseLanguage);
+    }
+
+    @Override
+    public void openAddTax() {
+        panelAddTax.preparePanel();
+        openPanel(scrollPane, lpContentPane, panelSubMenu, panelAddTax);
+    }
+
+    @Override
+    public void openDeleteTax() {
+        panelDeleteTax.preparePanel();
+        openPanel(scrollPane, lpContentPane, panelSubMenu, panelDeleteTax);
     }
 }

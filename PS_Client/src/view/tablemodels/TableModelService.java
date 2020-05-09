@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.tablemodels;
 
 import controller.Controller;
@@ -17,17 +12,28 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelService extends AbstractTableModel {
 
+    /**
+     * List of data which represented in table.
+     */
     private List<Usluga> usluge;
-    private String[] columnNames;
-    private ResourceBundle resourceBundle;
+
+    /**
+     * Array of strings that represents names of columns.
+     */
+    private final String[] columnNames;
+
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
 
     public TableModelService(List<Usluga> usluge) {
         this.usluge = usluge;
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
         this.columnNames = new String[]{
-            resourceBundle.getString("column_service_id"), resourceBundle.getString("column_name"),
-            resourceBundle.getString("column_description"), resourceBundle.getString("column_price"),
-            resourceBundle.getString("column_price_with_tax"), resourceBundle.getString("column_tax")};
+            resourceBundle.getString("column_service_id"), resourceBundle.getString("column_service_name"),
+            resourceBundle.getString("column_service_description"), resourceBundle.getString("column_service_price"),
+            resourceBundle.getString("column_service_price_with_tax"), resourceBundle.getString("column_service_tax")};
     }
 
     @Override
@@ -67,6 +73,11 @@ public class TableModelService extends AbstractTableModel {
         return columnNames[column];
     }
 
+    /**
+     * Method for updating data into a table.
+     *
+     * @param usluge is updated list of data for table.
+     */
     public void updateTable(List<Usluga> usluge) {
         this.usluge = usluge;
         fireTableDataChanged();

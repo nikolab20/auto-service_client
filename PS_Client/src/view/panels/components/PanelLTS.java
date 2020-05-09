@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels.components;
 
 import events.TextEnterEvent;
@@ -20,12 +15,16 @@ import view.interf.iFormValue;
  */
 public class PanelLTS extends javax.swing.JPanel implements iFormValue {
 
-    private List<TextFieldListener> textFieldListeners = new ArrayList<>();
+    /**
+     * A list of listeners.
+     */
+    private final List<TextFieldListener> textFieldListeners;
 
     /**
      * Creates new form PanelLTS
      */
     public PanelLTS() {
+        this.textFieldListeners = new ArrayList<>();
         initComponents();
     }
 
@@ -91,11 +90,20 @@ public class PanelLTS extends javax.swing.JPanel implements iFormValue {
     private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for setting text on panel elements.
+     *
+     * @param labelText is text value for label.
+     * @param textFieldString is text value for text field.
+     */
     public void setElementText(String labelText, String textFieldString) {
         label.setText(labelText);
         textField.setText(textFieldString);
     }
 
+    /**
+     * Method for setting panel elements on default values.
+     */
     public void clearPanel() {
         this.setValue("");
     }
@@ -134,13 +142,21 @@ public class PanelLTS extends javax.swing.JPanel implements iFormValue {
         textField.setText((String) object);
     }
 
+    /**
+     * Method for adding listener on this panel.
+     *
+     * @param toAdd a object that implements TextFieldListener interface.
+     */
     public void addListener(TextFieldListener toAdd) {
         textFieldListeners.add(toAdd);
     }
 
+    /**
+     * A method for notifying listeners that text has been entered.
+     */
     private void inputText() {
-        for (TextFieldListener textFieldListener : textFieldListeners) {
+        textFieldListeners.forEach((textFieldListener) -> {
             textFieldListener.onInputText(new TextEnterEvent(this));
-        }
+        });
     }
 }

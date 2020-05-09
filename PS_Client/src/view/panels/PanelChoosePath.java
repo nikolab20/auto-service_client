@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.panels;
 
 import controller.Controller;
@@ -17,6 +12,9 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class PanelChoosePath extends javax.swing.JPanel {
 
+    /**
+     * Reference of resource bundle as dictionary.
+     */
     private ResourceBundle resourceBundle;
 
     /**
@@ -59,12 +57,20 @@ public class PanelChoosePath extends javax.swing.JPanel {
     private javax.swing.JFileChooser fileChooser;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for panel preparation.
+     */
     private void preparePanel() {
         resourceBundle = ResourceBundle.getBundle("props/LanguageBundle", Controller.getInstance().getLocale());
 
         fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
     }
 
+    /**
+     * Method for showing choose directory dialog.
+     *
+     * @return selected directory as object of File class.
+     */
     public File showChooseDirectory() {
         fileChooser.setDialogTitle(resourceBundle.getString("choose_path"));
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -75,6 +81,11 @@ public class PanelChoosePath extends javax.swing.JPanel {
         return null;
     }
 
+    /**
+     * Method for showing choose file dialog.
+     *
+     * @return selected file as object of File class.
+     */
     public File showChooseFile() {
         fileChooser.setDialogTitle(resourceBundle.getString("choose_path_file"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

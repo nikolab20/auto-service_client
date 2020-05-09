@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import controller.CommunicationController;
@@ -14,11 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -26,7 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class FrmConfiguration extends javax.swing.JFrame {
 
-    private ResourceBundle resourceBundle;
+    /**
+     * Reference of resource bundle as dictionary.
+     */
+    private final ResourceBundle resourceBundle;
 
     /**
      * Creates new form FrmServer
@@ -236,8 +231,8 @@ public class FrmConfiguration extends javax.swing.JFrame {
             btnConnect.setEnabled(true);
 
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, resourceBundle.getString("problemsWithFile"),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            MessageDialog.showErrorMessage(null, resourceBundle.getString("client_property_file_problem"),
+                    resourceBundle.getString("error_title"));
         }
     }//GEN-LAST:event_btnDefaultMouseClicked
 
@@ -264,13 +259,14 @@ public class FrmConfiguration extends javax.swing.JFrame {
             FrmClient frmClient = new FrmClient();
             frmClient.setVisible(true);
             dispose();
-            JOptionPane.showMessageDialog(this.getContentPane(), "Uspesno logovanje",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(FrmConfiguration.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, resourceBundle.getString("client_connection_problem"),
+                    resourceBundle.getString("error_title"));
         } catch (Exception ex) {
-            Logger.getLogger(FrmConfiguration.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDialog.showErrorMessage(null, ex.getMessage(),
+                    resourceBundle.getString("error_title"));
         }
+
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
@@ -296,9 +292,6 @@ public class FrmConfiguration extends javax.swing.JFrame {
             txtPort.setEditable(false);
             btnCancel1.setVisible(false);
             btnConnect.setEnabled(false);
-
-            JOptionPane.showMessageDialog(this.getContentPane(), "Uspesna konekcija na server",
-                    "Uspeh", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, resourceBundle.getString("problemsWithFile"),
@@ -337,6 +330,9 @@ public class FrmConfiguration extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Method for form preparation.
+     */
     private void prepareView() {
         URL imageUrl = ClassLoader.getSystemResource("img/transportation.png");
         ImageIcon icon = new ImageIcon(imageUrl);
@@ -347,16 +343,16 @@ public class FrmConfiguration extends javax.swing.JFrame {
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
 
         lblConfiguration.setText(resourceBundle.getString("client_lblConfiguration") + ":");
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnDefault") + ".png", btnDefault);
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCustom") + ".png", btnCustom);
-        lblHost.setText(resourceBundle.getString("client_lblHost") + ":");
-        lblPort.setText(resourceBundle.getString("client_lblPort") + ":");
-        lblUsername.setText(resourceBundle.getString("client_lblUsername") + ":");
-        lblPassword.setText(resourceBundle.getString("client_lblPassword") + ":");
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnLogin") + ".png", btnLogin);
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCancel") + ".png", btnCancel1);
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnCancel") + ".png", btnCancel2);
-        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btnConnect") + ".png", btnConnect);
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_default") + ".png", btnDefault);
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_custom") + ".png", btnCustom);
+        lblHost.setText(resourceBundle.getString("client_lbl_host") + ":");
+        lblPort.setText(resourceBundle.getString("client_lbl_port") + ":");
+        lblUsername.setText(resourceBundle.getString("client_lbl_username") + ":");
+        lblPassword.setText(resourceBundle.getString("client_lbl_password") + ":");
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_login") + ".png", btnLogin);
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_cancel") + ".png", btnCancel1);
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_cancel") + ".png", btnCancel2);
+        Controller.getInstance().setIconToButton("img/" + resourceBundle.getString("client_btn_connect") + ".png", btnConnect);
 
         lblUsername.setVisible(false);
         txtUsername.setVisible(false);
